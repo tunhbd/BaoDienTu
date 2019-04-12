@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Digital News</title>
+  <!-- bootstrap 4.3 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
+  <!-- slick -->
+  <link rel="stylesheet" type="text/css" href="src/assets/css/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="src/assets/css/slick/slick-theme.css" />
+  <!-- index css -->
+  <link rel="stylesheet" href="src/assets/css/index.css">
+</head>
+
+<body data-spy="scroll" data-target=".new-content">
+  <!-- <div class="container"> -->
+  <section id="section-header" class="mt-2">
+    <!-- login - register -->
+    <div class="container">
+
+      <div class="first-content d-flex justify-content-between">
+        <div class="logo">
+          <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
+        </div>
+        <div class="login">
+          <i class="far fa-user"><a href="#"><span> Đăng nhập | Đăng kí</span></a></i>
+        </div>
+      </div>
+    </div>
+    <div class="second-header mt-2">
+      <!-- logo or Digital News -->
+      <div class="content-search container d-flex justify-content-between">
+        <div class="digital-news"><a href="#">Digital News</a></div>
+        <form class="form-inline md-form form-sm mt-0">
+
+          <input class="form-control form-control-sm ml-3" type="text" placeholder="Tìm kiếm" aria-label="Search">
+          <i class="fas fa-search ml-2" aria-hidden="true"></i>
+        </form>
+      </div>
+    </div>
+    <!-- topic content -->
+    <div class="third-header mt-2">
+      <div class="container">
+        <div class="menu-topic">
+          <ul class="menu-list mt-3">
+            <li class="menu-list-item"><a href="#"><i class="fas fa-home"></i></a></li>
+            <li class="menu-list-item"><a href="#">Technology</a></li>
+            <li class="menu-list-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Information<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item"><a href="#">Artificial Intelligence</a></li>
+                <li class="dropdown-item"><a href="#">Internet of Things</a></li>
+              </ul>
+            </li>
+            <li class="menu-list-item"><a href="#">Physic</a></li>
+            <li class="menu-list-item"><a href="#">Music</a></li>
+            <li class="menu-list-item"><a href="#">Food</a></li>
+            <li class="menu-list-item"><a href="#">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="section-body" class="mt-2">
+    <section class="top-body container mt-3">
+      <div class="header d-flex justify-content-between mb-3">
+        <div>Tags:
+          <span>
+            <span class="tag">Việt đẹp trai</span>
+            <span class="tag">bla bla</span>
+          </span>
+        </div>
+        <div><span class="title-new">Tin mới nhất</span></div>
+      </div>
+      <div class="row">
+        <!-- tag nổi bật và tin mới -->
+
+        <div class="hightlight-content col-lg-8 col-md-8">
+          <!-- slick image -->
+          <div class="slick-image">
+            <div class="item-hightlight">
+              <div class="img-post">
+                <img src="media/images/demo.png" alt="" />
+              </div>
+              <div class="img-content">
+                <a href="#">
+                  <div class="d-flex topic-post">
+                    <p class="topic mr-1">INFOMATION</p>
+                    <p class="topic">PHYSIC</p>
+                  </div>
+                  <p class="title-post">A Trailblazing Korean</p>
+                  <p class="date-post">April 9</p>
+                </a>
+              </div>
+            </div>
+            <div class="item-hightlight">
+              <div class="img-post">
+                <img src="media/images/demo.png" alt="" />
+              </div>
+              <div class="img-content">
+                <a href="#">
+                  <div class="d-flex topic-post">
+                    <p class="topic mr-1">INFOMATION</p>
+                    <p class="topic">PHYSIC</p>
+                  </div>
+                  <p class="title-post">A Trailblazing Korean</p>
+                  <p class="date-post">April 9</p>
+                </a>
+              </div>
+            </div>
+            <div class="item-hightlight">
+              <div class="img-post">
+                <img src="media/images/demo.png" alt="" />
+              </div>
+              <div class="img-content">
+                <a href="#">
+                  <div class="d-flex topic-post">
+                    <p class="topic mr-1">INFOMATION</p>
+                    <p class="topic">PHYSIC</p>
+                  </div>
+                  <p class="title-post">A Trailblazing Korean</p>
+                  <p class="date-post">April 9</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="new-content col-lg-4 col-md-4">
+          <!-- new news  -->
+          <div class="slick-new-image">
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post">April 9</p>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post">April 9</p>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post">April 9</p>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post">April 9</p>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post">April 9</p>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post">April 9</p>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post">April 9</p>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post">April 9</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </section>
+  <footer id="section-footer"></footer>
+  <!-- </div> -->
+  <!-- script bootstrap jquery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src=src/assets/css/slick/slick.min.js> </script> <script src="src/assets/js/index.js"></script>
+</body>
+
+</html>

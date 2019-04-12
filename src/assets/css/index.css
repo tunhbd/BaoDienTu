@@ -1,0 +1,83 @@
+#section-header .second-header {
+  background-color: #E91E63;
+  color: white;
+  align-items: center;
+  height: 50px;
+  align-items: center; }
+  #section-header .second-header .content-search {
+    height: 50px !important;
+    margin-top: auto;
+    margin-bottom: auto; }
+    #section-header .second-header .content-search .digital-news {
+      margin-top: auto;
+      margin-bottom: auto; }
+      #section-header .second-header .content-search .digital-news a {
+        color: white;
+        font-weight: 600;
+        font-size: 20px; }
+#section-header .third-header {
+  padding: 2px;
+  background-color: rgba(0, 0, 0, 0.05); }
+  #section-header .third-header .container {
+    padding-left: 0;
+    padding-right: 0; }
+  #section-header .third-header .menu-topic {
+    padding: 0;
+    margin: 0; }
+    #section-header .third-header .menu-topic .menu-list {
+      padding-inline-start: 15px;
+      text-align: center; }
+      #section-header .third-header .menu-topic .menu-list .menu-list-item {
+        display: inline-block;
+        list-style: none;
+        text-transform: uppercase;
+        margin-right: 50px;
+        transition: 0.5s; }
+        #section-header .third-header .menu-topic .menu-list .menu-list-item:first-child {
+          margin-right: 20px; }
+        #section-header .third-header .menu-topic .menu-list .menu-list-item a {
+          color: black;
+          font-weight: 600;
+          text-decoration: none; }
+          #section-header .third-header .menu-topic .menu-list .menu-list-item a:hover {
+            text-decoration: none; }
+        #section-header .third-header .menu-topic .menu-list .menu-list-item:hover {
+          padding-right: 10px;
+          border-bottom: 2px solid #E91E63; }
+        #section-header .third-header .menu-topic .menu-list .menu-list-item .dropdown-menu li > a {
+          text-decoration: none;
+          outline: none;
+          color: inherit; }
+          #section-header .third-header .menu-topic .menu-list .menu-list-item .dropdown-menu li > a:hover {
+            text-decoration: none;
+            outline: none; }
+
+#section-body .top-body .hightlight-content .slick-image .item-hightlight {
+  width: 100%;
+  height: 350px; }
+  #section-body .top-body .hightlight-content .slick-image .item-hightlight .img-post {
+    position: absolute; }
+    #section-body .top-body .hightlight-content .slick-image .item-hightlight .img-post img {
+      width: 100%;
+      height: auto; }
+  #section-body .top-body .hightlight-content .slick-image .item-hightlight .img-content {
+    position: relative;
+    z-index: 999;
+    color: white;
+    margin-top: 200px;
+    margin-left: 30px; }
+#section-body .top-body .new-content {
+  width: 100%;
+  white-space: nowrap;
+  max-height: 300px; }
+  #section-body .top-body .new-content .new-post {
+    background-color: #F2F2F2;
+    white-space: nowrap;
+    padding-top: 20px;
+    padding-left: 20px; }
+    #section-body .top-body .new-content .new-post:hover {
+      background-image: url("../../../media/images/demo.png");
+      background-repeat: no-repeat;
+      background-size: cover; }
+    #section-body .top-body .new-content .new-post a {
+      color: black; }
