@@ -9,25 +9,25 @@ $(document).ready(function(){
     autoplaySpeed: 2500,
   });
 });
-$(document).ready(function(){
-  $('.slick-new-image').slick({
-    
-   vertical: true,
-   slidesToShow: 2,
-   slidesToScroll: 2,
-   verticalSwiping: true,
-   arrows:false,
-   infinite: false,
-   rtl:false,
-     // accessibility: false,
-  });
-});
-$('.slick-new-image').on('wheel', (function(e) {
-  e.preventDefault();
-
-  if (e.originalEvent.deltaY > 0) {
-    $(this).slick('slickNext');
-  } else {
-    $(this).slick('slickPrev');
-  }
-}));
+// $(document).ready(function(){
+//   $('.slick-new-image').slick({
+//
+//    vertical: true,
+//    slidesToShow: 2,
+//    slidesToScroll: 2,
+//    verticalSwiping: true,
+//    arrows:false,
+//    infinite: false,
+//    rtl:false,
+//      // accessibility: false,
+//   });
+// });
+// $('.slick-new-image').on('wheel', (function(e) {
+//   e.preventDefault();
+//
+//   if (e.originalEvent.deltaY > 0) {
+//     $(this).slick('slickNext');
+//   } else {
+//     $(this).slick('slickPrev');
+//   }
+// }));

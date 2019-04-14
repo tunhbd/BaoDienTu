@@ -13,11 +13,13 @@
   <!-- slick -->
   <link rel="stylesheet" type="text/css" href="src/assets/css/slick/slick.css" />
   <link rel="stylesheet" type="text/css" href="src/assets/css/slick/slick-theme.css" />
+  <!-- font  -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <!-- index css -->
   <link rel="stylesheet" href="src/assets/css/index.css">
 </head>
 
-<body data-spy="scroll" data-target=".new-content">
+<body data-spy="scroll" data-target=".new-content" data-offset="80">
   <!-- <div class="container"> -->
   <section id="section-header" class="mt-2">
     <!-- login - register -->
@@ -27,17 +29,16 @@
         <div class="logo">
           <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
         </div>
-        <div class="login">
-          <i class="far fa-user"><a href="#"><span> Đăng nhập | Đăng kí</span></a></i>
+        <div class="login-form">
+          <i class="far fa-user"><span><a href="#" class="login">Đăng nhập</a> | <a href="#" class="sign-up"> Đăng kí </a></span></i>
         </div>
       </div>
     </div>
     <div class="second-header mt-2">
       <!-- logo or Digital News -->
       <div class="content-search container d-flex justify-content-between">
-        <div class="digital-news"><a href="#">Digital News</a></div>
+        <div class="digital-news"><a href="#">TIN TỨC TTV</a></div>
         <form class="form-inline md-form form-sm mt-0">
-
           <input class="form-control form-control-sm ml-3" type="text" placeholder="Tìm kiếm" aria-label="Search">
           <i class="fas fa-search ml-2" aria-hidden="true"></i>
         </form>
@@ -49,72 +50,91 @@
         <div class="menu-topic">
           <ul class="menu-list mt-3">
             <li class="menu-list-item"><a href="#"><i class="fas fa-home"></i></a></li>
-            <li class="menu-list-item"><a href="#">Technology</a></li>
-            <li class="menu-list-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Information<b class="caret"></b></a>
+            <li class="menu-list-item"><a href="#">Xã hội</a></li>
+            <li class="menu-list-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinh tế<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-item"><a href="#">Artificial Intelligence</a></li>
-                <li class="dropdown-item"><a href="#">Internet of Things</a></li>
+                <li class="dropdown-item"><a href="#">Nông nghiệp</a></li>
+                <li class="dropdown-item"><a href="#">Công nghiệp</a></li>
               </ul>
             </li>
-            <li class="menu-list-item"><a href="#">Physic</a></li>
-            <li class="menu-list-item"><a href="#">Music</a></li>
-            <li class="menu-list-item"><a href="#">Food</a></li>
-            <li class="menu-list-item"><a href="#">Blog</a></li>
+            <li class="menu-list-item"><a href="#">Thế giới</a></li>
+            <li class="menu-list-item"><a href="#">Công nghệ</a></li>
+            <li class="menu-list-item"><a href="#">Giải trí</a></li>
+            <li class="menu-list-item"><a href="#">Văn hóa</a></li>
+            <li class="menu-list-item"><a href="#">Pháp luật</a></li>
+            <li class="menu-list-item"><a href="#">Xe</a></li>
+            <li class="menu-list-item"><a href="#">Giáo dục</a></li>
+            <li class="menu-list-item"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Thể thao<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item"><a href="#">trong nước</a></li>
+                <li class="dropdown-item"><a href="#">ngoài nước</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
     </div>
   </section>
   <section id="section-body" class="mt-2">
-    <section class="top-body container mt-3">
-      <div class="header d-flex justify-content-between mb-3">
-        <div>Tags:
-          <span>
-            <span class="tag">Việt đẹp trai</span>
-            <span class="tag">bla bla</span>
-          </span>
-        </div>
-        <div><span class="title-new">Tin mới nhất</span></div>
-      </div>
+    <section class="top-body container mt-1">
       <div class="row">
         <!-- tag nổi bật và tin mới -->
-
         <div class="hightlight-content col-lg-8 col-md-8">
+          <div class="tag-name">Tags:
+            <span>
+              <a href="#">
+
+                <span class="tag">Việt đẹp trai</span>
+              </a>
+              <a href="">
+
+                <span class="tag">bla bla</span>
+              </a>
+            </span>
+          </div>
           <!-- slick image -->
           <div class="slick-image">
             <div class="item-hightlight">
               <div class="img-post">
-                <img src="media/images/demo.png" alt="" />
+                <a href="#">
+                  <img src="media/images/demo.png" alt="" />
+                </a>
               </div>
               <div class="img-content">
                 <a href="#">
                   <div class="d-flex topic-post">
-                    <p class="topic mr-1">INFOMATION</p>
+                    <p class="topic">INFOMATION</p>
                     <p class="topic">PHYSIC</p>
                   </div>
                   <p class="title-post">A Trailblazing Korean</p>
-                  <p class="date-post">April 9</p>
+
                 </a>
+                <p class="date-post">Ngày đăng: <i>14 - 9 - 2019</i></p>
               </div>
             </div>
             <div class="item-hightlight">
               <div class="img-post">
-                <img src="media/images/demo.png" alt="" />
+                <a href="#">
+                  <img src="media/images/demo.png" alt="" />
+                </a>
               </div>
               <div class="img-content">
                 <a href="#">
                   <div class="d-flex topic-post">
-                    <p class="topic mr-1">INFOMATION</p>
+                    <p class="topic">INFOMATION</p>
                     <p class="topic">PHYSIC</p>
                   </div>
                   <p class="title-post">A Trailblazing Korean</p>
-                  <p class="date-post">April 9</p>
+
                 </a>
+                <p class="date-post">Ngày đăng: <i>14 - 9 - 2019</i></p>
               </div>
             </div>
             <div class="item-hightlight">
               <div class="img-post">
-                <img src="media/images/demo.png" alt="" />
+                <a href="#">
+                  <img src="media/images/demo.png" alt="" />
+                </a>
               </div>
               <div class="img-content">
                 <a href="#">
@@ -123,91 +143,577 @@
                     <p class="topic">PHYSIC</p>
                   </div>
                   <p class="title-post">A Trailblazing Korean</p>
-                  <p class="date-post">April 9</p>
+
                 </a>
+                <p><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
               </div>
             </div>
           </div>
         </div>
-        <div class="new-content col-lg-4 col-md-4">
+        <div class="new-content col-lg-4 col-md-4 ">
+          <div class="title-new"><span class="new-news">Tin mới nhất</span></div>
           <!-- new news  -->
-          <div class="slick-new-image">
-            <div class="new-post mt-1">
+          <div class="slick-new-image overflow-auto">
+            <div class="new-post">
               <a href="#">
                 <div class="d-flex topic-post">
-                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">INFOMATION</p>
                   <p class="topic">PHYSIC</p>
                 </div>
                 <p class="title-post">A Trailblazing Korean</p>
-                <p class="date-post">April 9</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
             </div>
             <div class="new-post mt-1">
               <a href="#">
                 <div class="d-flex topic-post">
-                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">INFOMATION</p>
                   <p class="topic">PHYSIC</p>
                 </div>
                 <p class="title-post">A Trailblazing Korean</p>
-                <p class="date-post">April 9</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
             </div>
             <div class="new-post mt-1">
               <a href="#">
                 <div class="d-flex topic-post">
-                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">INFOMATION</p>
                   <p class="topic">PHYSIC</p>
                 </div>
                 <p class="title-post">A Trailblazing Korean</p>
-                <p class="date-post">April 9</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
             </div>
             <div class="new-post mt-1">
               <a href="#">
                 <div class="d-flex topic-post">
-                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">INFOMATION</p>
                   <p class="topic">PHYSIC</p>
                 </div>
                 <p class="title-post">A Trailblazing Korean</p>
-                <p class="date-post">April 9</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
             </div>
             <div class="new-post mt-1">
               <a href="#">
                 <div class="d-flex topic-post">
-                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">INFOMATION</p>
                   <p class="topic">PHYSIC</p>
                 </div>
                 <p class="title-post">A Trailblazing Korean</p>
-                <p class="date-post">April 9</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
             </div>
             <div class="new-post mt-1">
               <a href="#">
                 <div class="d-flex topic-post">
-                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">INFOMATION</p>
                   <p class="topic">PHYSIC</p>
                 </div>
                 <p class="title-post">A Trailblazing Korean</p>
-                <p class="date-post">April 9</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
             </div>
             <div class="new-post mt-1">
               <a href="#">
                 <div class="d-flex topic-post">
-                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">INFOMATION</p>
                   <p class="topic">PHYSIC</p>
                 </div>
                 <p class="title-post">A Trailblazing Korean</p>
-                <p class="date-post">April 9</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
             </div>
             <div class="new-post mt-1">
               <a href="#">
                 <div class="d-flex topic-post">
-                  <p class="topic mr-1">INFOMATION</p>
+                  <p class="topic">INFOMATION</p>
                   <p class="topic">PHYSIC</p>
                 </div>
                 <p class="title-post">A Trailblazing Korean</p>
-                <p class="date-post">April 9</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
             </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
+            </div>
+            <div class="new-post mt-1">
+              <a href="#">
+                <div class="d-flex topic-post">
+                  <p class="topic">INFOMATION</p>
+                  <p class="topic">PHYSIC</p>
+                </div>
+                <p class="title-post">A Trailblazing Korean</p>
+                <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></p>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <section class="mid-body container mt-3">
+      <div class="row">
+        <div class="top-10-content col-md-4 col-lg-4">
+          <div class="top-10"><span>Top 10 chuyên mục</span></div>
+          <!--list item top 10  -->
+
+          <div class="item-top-10">
+            <div class=" row">
+              <div class="col-md-6">
+                <div class="image-item">
+                  <a href="#">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+
+                  <div class="item-topic">
+
+                    <span class="topic">PHYSIC</span>
+
+                  </div>
+                  <a href="#">
+                  <div class="item-title">
+                    <span class="title">A Trailblazing Korean</span>
+                  </div>
+                  </a>
+                  <div class="item-day">
+                    <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="item-top-10">
+            <div class=" row">
+              <div class="col-md-6">
+                <div class="image-item">
+                  <a href="#">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+
+                  <div class="item-topic">
+
+                    <span class="topic">PHYSIC</span>
+
+                  </div>
+                  <a href="#">
+                  <div class="item-title">
+                    <span class="title">A Trailblazing Korean</span>
+                  </div>
+                  </a>
+                  <div class="item-day">
+                    <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="item-top-10">
+            <div class=" row">
+              <div class="col-md-6">
+                <div class="image-item">
+                  <a href="#">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+
+                  <div class="item-topic">
+
+                    <span class="topic">PHYSIC</span>
+
+                  </div>
+                  <a href="#">
+                  <div class="item-title">
+                    <span class="title">A Trailblazing Korean</span>
+                  </div>
+                  </a>
+                  <div class="item-day">
+                    <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="item-top-10">
+            <div class=" row">
+              <div class="col-md-6">
+                <div class="image-item">
+                  <a href="#">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+
+                  <div class="item-topic">
+
+                    <span class="topic">PHYSIC</span>
+
+                  </div>
+                  <a href="#">
+                  <div class="item-title">
+                    <span class="title">A Trailblazing Korean</span>
+                  </div>
+                  </a>
+                  <div class="item-day">
+                    <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="item-top-10">
+            <div class=" row">
+              <div class="col-md-6">
+                <div class="image-item">
+                  <a href="#">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+
+                  <div class="item-topic">
+
+                    <span class="topic">PHYSIC</span>
+
+                  </div>
+                  <a href="#">
+                  <div class="item-title">
+                    <span class="title">A Trailblazing Korean</span>
+                  </div>
+                  </a>
+                  <div class="item-day">
+                    <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="item-top-10">
+            <div class=" row">
+              <div class="col-md-6">
+                <div class="image-item">
+                  <a href="#">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+
+                  <div class="item-topic">
+
+                    <span class="topic">PHYSIC</span>
+
+                  </div>
+                  <a href="#">
+                  <div class="item-title">
+                    <span class="title">A Trailblazing Korean</span>
+                  </div>
+                  </a>
+                  <div class="item-day">
+                    <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="most-view-content container col-md-8 col-lg-8">
+          <div class="most-view"><span>Xem nhiều nhất</span> </div>
+          <!-- list item most-view -->
+          <div class="row">
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="mv col-md-4">
+              <div class="item-most-view">
+                <div class="mv-image">
+                  <a href="">
+                    <img src="media/images/demo.png" alt="">
+                  </a>
+                </div>
+
+                <div class="mv-title">
+                  <a href="#">
+                    <span class="title">
+                      Bắt nguyên chủ tịch AVG Phạm Nhật Vũ tội đưa hối lộ
+                    </span>
+                  </a>
+
+                </div>
+                <div class="mv-topic float-right">
+                  <span class="topic">
+                    PHYSIC
+                  </span>
+                </div>
+                <div class="mv-day ">
+                  <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14 - 9 - 2019</i></span>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
-
     </section>
   </section>
   <footer id="section-footer"></footer>
