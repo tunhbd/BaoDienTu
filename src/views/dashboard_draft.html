@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"> -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link rel="stylesheet" href="../assets/css/dashboard_post_list.css">
@@ -62,7 +63,7 @@
       <div id="dashboard-main__left-sidebar" class=" pl-1 pr-1 border-right d-none d-sm-block">
         <div id="dashboard-main__left-sidebar__menu" class="w-100">
           <div class="menu-item-group pb-1 w-100">
-            <div class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+            <div class="menu-item-group__item rounded-pill">
               <i class="menu-item-group__item__icon menu-item-group__item__icon-home"></i>
               <span class="menu-item-group__item__title">General</span>
             </div>
@@ -70,7 +71,7 @@
               <i class="menu-item-group__item__icon menu-item-group__item__icon-edit"></i>
               <span class="menu-item-group__item__title">Create post</span>
             </div>
-            <div class="menu-item-group__item rounded-pill">
+            <div class="menu-item-group__item rounded-pill menu-item-group__item__activing">
               <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i>
               <span class="menu-item-group__item__title">Drafts</span>
@@ -121,90 +122,69 @@
       </div>
       <div id="dashboard-main__right-sidebar" class="pl-1 pr-1">
         <div class="draft-post-list-container">
-          <table class="table draft-post-list">
-            <thead>
-              <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Category</th>
-                <th scope="col">Author</th>
-                <th scope="col">Created Date</th>
+          <table class="draft-post-list">
+            <thead class="draft-post-list__header">
+              <tr class="draft-post-list__row">
+                <th class="draft-post-list__cell">Title</th>
+                <th class="draft-post-list__cell">Category</th>
+                <th class="draft-post-list__cell">Author</th>
+                <th class="draft-post-list__cell">Created Date</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
+            <tbody class="draft-post-list__content">
+              <tr class="draft-post-list__row">
+                <td class="draft-post-list__cell">Post 01</td>
+                <td class="draft-post-list__cell">Kinh te</td>
+                <td class="draft-post-list__cell">Nguyen Huu Tu</td>
+                <td class="draft-post-list__cell">12/05/2019</td>
               </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
+              <tr class="draft-post-list__row">
+                <td class="draft-post-list__cell">Post 01</td>
+                <td class="draft-post-list__cell">Kinh te</td>
+                <td class="draft-post-list__cell">Nguyen Huu Tu</td>
+                <td class="draft-post-list__cell">12/05/2019</td>
               </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
+              <tr class="draft-post-list__row">
+                <td class="draft-post-list__cell">Post 01</td>
+                <td class="draft-post-list__cell">Kinh te</td>
+                <td class="draft-post-list__cell">Nguyen Huu Tu</td>
+                <td class="draft-post-list__cell">12/05/2019</td>
               </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
+              <tr class="draft-post-list__row">
+                <td class="draft-post-list__cell">Post 01</td>
+                <td class="draft-post-list__cell">Kinh te</td>
+                <td class="draft-post-list__cell">Nguyen Huu Tu</td>
+                <td class="draft-post-list__cell">12/05/2019</td>
               </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
+              <tr class="draft-post-list__row">
+                <td class="draft-post-list__cell">Post 01</td>
+                <td class="draft-post-list__cell">Kinh te</td>
+                <td class="draft-post-list__cell">Nguyen Huu Tu</td>
+                <td class="draft-post-list__cell">12/05/2019</td>
               </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
-              </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
-              </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
-              </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
-              </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
-              </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
-              </tr>
-              <tr>
-                <td>Post 01</td>
-                <td>Kinh te</td>
-                <td>Nguyen Huu Tu</td>
-                <td>12/05/2019</td>
+              <tr class="draft-post-list__row">
+                <td class="draft-post-list__cell">Post 01</td>
+                <td class="draft-post-list__cell">Kinh te</td>
+                <td class="draft-post-list__cell">Nguyen Huu Tu</td>
+                <td class="draft-post-list__cell">12/05/2019</td>
               </tr>
             </tbody>
           </table>
+          <div class="pagination">
+            <ul class="">
+              <li class="pagination__item pagination__item-control pagination__item-previous-button">
+                <i class="pagination-icon pagination-icon-arrow-left"></i>
+              </li>
+              <li class="pagination__item pagination__item-active">1</li>
+              <li class="pagination__item">2</li>
+              <li class="pagination__item">3</li>
+              <li class="pagination__item">4</li>
+              <li class="pagination__item">5</li>
+              <li class="pagination__item pagination__item-control pagination__item-next-button">
+                <i class="pagination-icon pagination-icon-arrow-right"></i>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
