@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-  <script src="../assets/js/dashboard.js"></script>
+  
   <title>Dashboard</title>
 </head>
 
@@ -61,21 +61,21 @@
       <div id="dashboard-main__left-sidebar" class=" pl-1 pr-1 border-right d-none d-sm-block">
         <div id="dashboard-main__left-sidebar__menu" class="w-100">
           <div class="menu-item-group pb-1 w-100">
-            <div class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+            <div menu-id="0" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
               <i class="menu-item-group__item__icon menu-item-group__item__icon-home"></i>
               <span class="menu-item-group__item__title">General</span>
             </div>
-            <div class="menu-item-group__item rounded-pill">
+            <div menu-id="1" class="menu-item-group__item rounded-pill">
               <i class="menu-item-group__item__icon menu-item-group__item__icon-edit"></i>
               <span class="menu-item-group__item__title">Create post</span>
             </div>
-            <div class="menu-item-group__item rounded-pill">
+            <div menu-id="2" class="menu-item-group__item rounded-pill">
               <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i>
               <span class="menu-item-group__item__title">Drafts</span>
               <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
             </div>
-            <div class="menu-item-group__item rounded-pill">
+            <div menu-id="3" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_close.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-reject"></i>
               <span class="menu-item-group__item__title">Rejects</span>
@@ -83,13 +83,13 @@
             </div>
           </div>
           <div class="menu-item-group pb-1 w-100">
-            <div class="menu-item-group__item rounded-pill">
+            <div menu-id="4" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_waiting.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-waiting"></i>
               <span class="menu-item-group__item__title">Waiting</span>
               <!-- <div class="count-num rounded-pill count-num-waiting">3</div> -->
             </div>
-            <div class="menu-item-group__item rounded-pill">
+            <div menu-id="5" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_like.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-published"></i>
               <span class="menu-item-group__item__title">Published</span>
@@ -97,19 +97,19 @@
             </div>
           </div>
           <div class="menu-item-group pb-1 w-100">
-            <div class="menu-item-group__item rounded-pill">
+            <div menu-id="6" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_tag.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-tag"></i>
               <span class="menu-item-group__item__title">Tags</span>
               <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
             </div>
-            <div class="menu-item-group__item rounded-pill">
+            <div menu-id="7" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_category.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-category"></i>
               <span class="menu-item-group__item__title">Categories</span>
               <!-- <div class="count-num rounded-pill">3</div> -->
             </div>
-            <div class="menu-item-group__item rounded-pill">
+            <div menu-id="8" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_user.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-user"></i>
               <span class="menu-item-group__item__title">Users</span>
@@ -130,21 +130,21 @@
     <div id="mobile-menu" class="d-block d-sm-none">
       <!-- <div id="dashboard-main__left-sidebar__menu" class="w-100"> -->
       <div class="menu-item-group pb-1 w-100">
-        <div class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+        <div menu-id="0" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
           <i class="menu-item-group__item__icon menu-item-group__item__icon-home"></i>
           <span class="menu-item-group__item__title">General</span>
         </div>
-        <div class="menu-item-group__item rounded-pill">
+        <div menu-id="1" class="menu-item-group__item rounded-pill">
           <i class="menu-item-group__item__icon menu-item-group__item__icon-edit"></i>
           <span class="menu-item-group__item__title">Create post</span>
         </div>
-        <div class="menu-item-group__item rounded-pill">
+        <div menu-id="2" class="menu-item-group__item rounded-pill">
           <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
           <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i>
           <span class="menu-item-group__item__title">Drafts</span>
           <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
         </div>
-        <div class="menu-item-group__item rounded-pill">
+        <div menu-id="3" class="menu-item-group__item rounded-pill">
           <!-- <img src="../../media/statics/images/ic_close.png" alt=""> -->
           <i class="menu-item-group__item__icon menu-item-group__item__icon-reject"></i>
           <span class="menu-item-group__item__title">Rejects</span>
@@ -152,13 +152,13 @@
         </div>
       </div>
       <div class="menu-item-group pb-1 w-100">
-        <div class="menu-item-group__item rounded-pill">
+        <div menu-id="4" class="menu-item-group__item rounded-pill">
           <!-- <img src="../../media/statics/images/ic_waiting.png" alt=""> -->
           <i class="menu-item-group__item__icon menu-item-group__item__icon-waiting"></i>
           <span class="menu-item-group__item__title">Waiting</span>
           <!-- <div class="count-num rounded-pill count-num-waiting">3</div> -->
         </div>
-        <div class="menu-item-group__item rounded-pill">
+        <div menu-id="5" class="menu-item-group__item rounded-pill">
           <!-- <img src="../../media/statics/images/ic_like.png" alt=""> -->
           <i class="menu-item-group__item__icon menu-item-group__item__icon-published"></i>
           <span class="menu-item-group__item__title">Published</span>
@@ -166,19 +166,19 @@
         </div>
       </div>
       <div class="menu-item-group pb-1 w-100">
-        <div class="menu-item-group__item rounded-pill">
+        <div menu-id="6" class="menu-item-group__item rounded-pill">
           <!-- <img src="../../media/statics/images/ic_tag.png" alt=""> -->
           <i class="menu-item-group__item__icon menu-item-group__item__icon-tag"></i>
           <span class="menu-item-group__item__title">Tags</span>
           <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
         </div>
-        <div class="menu-item-group__item rounded-pill">
+        <div menu-id="7" class="menu-item-group__item rounded-pill">
           <!-- <img src="../../media/statics/images/ic_category.png" alt=""> -->
           <i class="menu-item-group__item__icon menu-item-group__item__icon-category"></i>
           <span class="menu-item-group__item__title">Categories</span>
           <!-- <div class="count-num rounded-pill">3</div> -->
         </div>
-        <div class="menu-item-group__item rounded-pill">
+        <div menu-id="8" class="menu-item-group__item rounded-pill">
           <!-- <img src="../../media/statics/images/ic_user.png" alt=""> -->
           <i class="menu-item-group__item__icon menu-item-group__item__icon-user"></i>
           <span class="menu-item-group__item__title">Users</span>
@@ -188,7 +188,8 @@
       <!-- </div> -->
     </div>
   </div>
-
+  <!-- Script References -->
+  <script src="../assets/js/dashboard.js"></script>
 </body>
 
 </html>
