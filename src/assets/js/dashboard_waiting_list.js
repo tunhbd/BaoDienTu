@@ -1,0 +1,2 @@
+loadPostList(true)
+setEventForPagination(true)

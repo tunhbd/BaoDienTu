@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../assets/css/pagination.css">
   <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
   
-  <title>Draft List</title>
+  <title>Waiting List</title>
 </head>
 
 <body class="col-12 ml-auto mr-auto pl-0 pr-0">
@@ -71,7 +71,7 @@
               <i class="menu-item-group__item__icon menu-item-group__item__icon-edit"></i>
               <span class="menu-item-group__item__title">Create post</span>
             </div>
-            <div menu-id="2" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+            <div menu-id="2" class="menu-item-group__item rounded-pill">
               <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i>
               <span class="menu-item-group__item__title">Drafts</span>
@@ -85,7 +85,7 @@
             </div>
           </div>
           <div class="menu-item-group pb-1 w-100">
-            <div menu-id="4" class="menu-item-group__item rounded-pill">
+            <div menu-id="4" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
               <!-- <img src="../../media/statics/images/ic_waiting.png" alt=""> -->
               <i class="menu-item-group__item__icon menu-item-group__item__icon-waiting"></i>
               <span class="menu-item-group__item__title">Waiting</span>
@@ -121,7 +121,7 @@
         </div>
       </div>
       <div id="dashboard-main__right-sidebar" class="pl-1 pr-1">
-        <div class="draft-post-list-container">
+        <div class="waiting-post-list-container">
           <table class="post-list">
             <thead class="post-list__header">
               <tr class="post-list__row">
@@ -129,6 +129,7 @@
                 <th class="post-list__cell">Category</th>
                 <th class="post-list__cell">Author</th>
                 <th class="post-list__cell">Created Date</th>
+                <th class="post-list__cell">Published Date</th>
               </tr>
             </thead>
             <tbody class="post-list__content">
@@ -160,7 +161,7 @@
             <i class="menu-item-group__item__icon menu-item-group__item__icon-edit"></i>
             <span class="menu-item-group__item__title">Create post</span>
           </div>
-          <div menu-id="2" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+          <div menu-id="2" class="menu-item-group__item rounded-pill">
             <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
             <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i>
             <span class="menu-item-group__item__title">Drafts</span>
@@ -174,7 +175,7 @@
           </div>
         </div>
         <div class="menu-item-group pb-1 w-100">
-          <div menu-id="4" class="menu-item-group__item rounded-pill">
+          <div menu-id="4" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
             <!-- <img src="../../media/statics/images/ic_waiting.png" alt=""> -->
             <i class="menu-item-group__item__icon menu-item-group__item__icon-waiting"></i>
             <span class="menu-item-group__item__title">Waiting</span>
@@ -213,7 +214,7 @@
   <!-- Script References -->
   <script src="../assets/js/dashboard.js"></script>
   <script src="../assets/js/dashboard_post_list.js"></script>
-  <script src="../assets/js/dashboard_draft_list.js"></script>
+  <script src="../assets/js/dashboard_waiting_list.js"></script>
 </body>
 
 </html>
