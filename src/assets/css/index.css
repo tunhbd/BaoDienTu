@@ -94,8 +94,6 @@ body {
     outline: none; }
     #section-body .top-body .hightlight-content .slick-image .item-hightlight:hover .title-post, #section-body .top-body .hightlight-content .slick-image .item-hightlight:focus .title-post, #section-body .top-body .hightlight-content .slick-image .item-hightlight:active .title-post {
       color: #E91E63; }
-    #section-body .top-body .hightlight-content .slick-image .item-hightlight:hover .img-link img, #section-body .top-body .hightlight-content .slick-image .item-hightlight:focus .img-link img, #section-body .top-body .hightlight-content .slick-image .item-hightlight:active .img-link img {
-      transform: scale(1.01); }
   #section-body .top-body .hightlight-content .slick-image .item-hightlight a {
     color: white;
     text-decoration: none;
@@ -200,15 +198,17 @@ body {
   font-weight: 900;
   border-left: 5px solid #E91E63;
   padding: 5px 0px 5px 10px;
-  margin-bottom: 8px;
-  font-size: 14px; }
+  margin-bottom: 17px;
+  font-size: 16px; }
 #section-body .mid-body .top-10-content {
   padding-right: 0 !important;
   max-height: 900px;
-  overflow-y: auto; }
+  overflow-y: scroll;
+  overflow-x: hidden; }
   #section-body .mid-body .top-10-content .item-top-10 {
     margin-bottom: 20px;
-    transition: 0.5s; }
+    transition: 0.15s;
+    padding: 5px; }
     #section-body .mid-body .top-10-content .item-top-10:hover {
       transform: scale(1.03); }
     #section-body .mid-body .top-10-content .item-top-10 .image-item img {
@@ -226,7 +226,7 @@ body {
         border-radius: 5px;
         font-weight: 550; }
     #section-body .mid-body .top-10-content .item-top-10 .item-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600; }
     #section-body .mid-body .top-10-content .item-top-10 .item-day {
       margin-top: 3px; }
@@ -250,17 +250,14 @@ body {
   padding-right: 0; }
 #section-body .mid-body .most-view-content .item-most-view {
   padding: 10px;
-  transition: 0.3s; }
+  transition: 0.1s; }
   #section-body .mid-body .most-view-content .item-most-view a {
     color: black; }
     #section-body .mid-body .most-view-content .item-most-view a:hover {
       text-decoration: none; }
   #section-body .mid-body .most-view-content .item-most-view:hover {
-    box-shadow: 2px 2px 5px #bab8ba;
-    border: 1px solid #bab8ba;
+    box-shadow: 5px 5px 8px #bab8ba;
     border-radius: 5px; }
-  #section-body .mid-body .most-view-content .item-most-view .col-md-8 {
-    padding-right: 0; }
   #section-body .mid-body .most-view-content .item-most-view .mv-title {
     font-size: 18px;
     font-weight: 600;
