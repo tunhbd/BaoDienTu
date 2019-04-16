@@ -9,36 +9,36 @@ var postCountPerPage = 10
 /**
  * FUNCTIONS
  */
-function setEventForPagination() {
+function setEventForPagination(showStatus = false) {
   $('.pagination__item:not(.pagination__item-control)').click(function () {
     if ($(this).attr('page') != currentPage) {
-      choosePage($(this).attr('page'))
+      choosePage($(this).attr('page'), showStatus)
     }
   })
   $('.pagination__item-previous-button').click(function() {
-    showPreviousPage()
+    showPreviousPage(showStatus)
   })
   $('.pagination__item-next-button').click(function() {
-    showNextPage()
+    showNextPage(showStatus)
   })
 }
 
-function choosePage(pageNum) {
+function choosePage(pageNum, showStatus = false) {
   currentPage = pageNum
   $('.pagination__item-active').removeClass('pagination__item-active');
   $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
-  showPostList(pageNum)
+  showPostList(pageNum, showStatus)
 }
 
-function showPreviousPage() {
+function showPreviousPage(showStatus = false) {
   if (currentPage > 1) {
-    choosePage(currentPage - 1)
+    choosePage(currentPage - 1, showStatus)
   }
 }
 
-function showNextPage() {
+function showNextPage(showStatus = false) {
   if (currentPage < pageCount) {
-    choosePage(currentPage + 1)
+    choosePage(currentPage + 1, showStatus)
   }
 }
 
@@ -57,9 +57,13 @@ function showPostList(pageNum, showStatus = false) {
       let postItem =
         `<tr class="post-list__row">
                     <td class="post-list__cell">${postList[index].title}</td>
-                    <td class="post-list__cell">${postList[index].category}</td>
+                    <td class="post-list__cell">${postList[index].category.category_name}</td>
                     <td class="post-list__cell">
-                        ${postList[index].author.pseudonym === undefined ? postList[index].author.name : postList[index].author.pseudonym}
+                        ${
+                          (postList[index].author.pseudonym === undefined
+                          || postList[index].author.pseudonym === '')
+                          ? postList[index].author.name
+                          : postList[index].author.pseudonym}
                     </td>
                     <td class="post-list__cell">${postList[index].created_date}</td>
                     <td class="post-list__cell">${postList[index].published_date}</td>
@@ -112,7 +116,7 @@ function generatePagination() {
     `)
 }
 
-function loadPostList() {
+function loadPostList(showStatus = false) {
   postList = [
     {
       title: 'Post 01',
@@ -124,7 +128,8 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 02',
@@ -136,7 +141,8 @@ function loadPostList() {
         category_id: 'categ01.1',
         category_name: 'Nông nghiệp',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 03',
@@ -148,7 +154,8 @@ function loadPostList() {
         category_id: 'categ01.2',
         category_name: 'Công nghiệp',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 04',
@@ -160,7 +167,8 @@ function loadPostList() {
         category_id: 'categ02',
         category_name: 'Xe',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 05',
@@ -172,7 +180,8 @@ function loadPostList() {
         category_id: 'categ03',
         category_name: 'Xã hội',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 06',
@@ -184,7 +193,8 @@ function loadPostList() {
         category_id: 'categ04',
         category_name: 'Pháp luật',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 07',
@@ -196,7 +206,8 @@ function loadPostList() {
         category_id: 'categ05',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 08',
@@ -208,7 +219,8 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 09',
@@ -220,7 +232,8 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 10',
@@ -232,7 +245,8 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 11',
@@ -244,7 +258,8 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 12',
@@ -256,7 +271,8 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 13',
@@ -268,7 +284,8 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 14',
@@ -280,7 +297,8 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
     {
       title: 'Post 15',
@@ -292,16 +310,16 @@ function loadPostList() {
         category_id: 'categ01',
         category_name: 'Kinh Tế',
       },
-      created_date: '2019/05/12'
+      created_date: '2019/05/12',
+      published_date: '2019/05/12'
     },
   ]
   generatePagination()
-  choosePage(1)
+  choosePage(1, showStatus)
 }
 
 /**
  * MAIN SCRIPT
  */
 
-  loadPostList()
-  setEventForPagination()
+  
