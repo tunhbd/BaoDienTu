@@ -1,20 +1,34 @@
+/**
+ * FUNCTIONS
+ */
 function setEventsForMenu() {
-  $('#dashboard-main__left-sidebar__menu .menu-item-group__item').click(function() {
-    console.log('ko')
+  $('#dashboard-main__left-sidebar__menu .menu-item-group__item').click(function () {
     $('#dashboard-main__left-sidebar__menu .menu-item-group__item__activing').removeClass('menu-item-group__item__activing')
     $(this).addClass('menu-item-group__item__activing')
   })
 }
 
 function setEventsForMobileMenu() {
-  $('#mobile-menu .menu-item-group__item').click(function() {
+  $('#mobile-menu .menu-item-group__item').click(function () {
     $('#mobile-menu .menu-item-group__item__activing').removeClass('menu-item-group__item__activing')
     $(this).addClass('menu-item-group__item__activing')
   })
 }
 
+function setEventsForCommonMenu() {
+  $('.menu-item-group__item').click(function () {
+    $('#dashboard-main__left-sidebar__menu .menu-item-group__item__activing').removeClass('menu-item-group__item__activing')
+    $('#mobile-menu .menu-item-group__item__activing').removeClass('menu-item-group__item__activing')
+
+    $(`#dashboard-main__left-sidebar__menu .menu-item-group__item[menu-id="${$(this).attr('menu-id')}"]`)
+      .addClass('menu-item-group__item__activing')
+    $(`#mobile-menu .menu-item-group__item[menu-id="${$(this).attr('menu-id')}"]`)
+      .addClass('menu-item-group__item__activing')
+  })
+}
+
 function setEventForAvatarUser() {
-  $('#avatar-user').click(function() {
+  $('#avatar-user').click(function () {
     if ($(this).hasClass('user-menu-is-collapse')) {
       $('.user-menu').slideDown(300)
       $(this).removeClass('user-menu-is-collapse')
@@ -26,14 +40,10 @@ function setEventForAvatarUser() {
   })
 }
 
-window.onload = function () {
+function setEventForToggleMenuIcon() {
   var toggleMenuIcon = $('.dashboard-header__toggle-menu')
   var leftSideBar = $('#dashboard-main__left-sidebar')
   var mobileMenu = $('#mobile-menu')
-
-  setEventsForMenu()
-  setEventsForMobileMenu()
-  setEventForAvatarUser()
 
   toggleMenuIcon.click(function () {
     if ($(this).hasClass('dashboard-header__toggle-menu-mobile')) {
@@ -65,3 +75,15 @@ window.onload = function () {
     }
   })
 }
+
+/**
+ * MAIN SCRIPT
+ */
+
+// setEventsForMenu()
+// setEventsForMobileMenu()
+setEventsForCommonMenu()
+setEventForAvatarUser()
+setEventForToggleMenuIcon()
+
+// }
