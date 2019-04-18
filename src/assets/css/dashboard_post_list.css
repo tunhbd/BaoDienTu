@@ -19,16 +19,28 @@
 .post-list__row {
     line-height: 40px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     user-select: none;
     -webkit-user-select: none;
 }
 .post-list__content .post-list__row:hover {
-    background-color: rgba(0,0,0,0.1);
-    transition: 0.3s;
+    background-color: rgba(0,0,0,0.05);
+    transition: 0.2s;
 }
 .post-list__cell {
     padding: 0px 10px;
+    vertical-align: middle;
+}
+.post-list__cell-control {
+    text-align: right;
+}
+.post-list__control-btn {
+    width: auto!important;
+    height: 30px!important;
+    line-height: 20px!important;
+    padding: 5px 10px!important;
+    margin: 0px 5px;
+    margin-bottom: 5px;
 }
 

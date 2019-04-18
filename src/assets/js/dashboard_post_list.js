@@ -11,8 +11,9 @@ var postCountPerPage = 10
  */
 function setEventForPagination() {
   $('.pagination__item:not(.pagination__item-control)').click(function () {
-    if ($(this).attr('page') != currentPage) {
-      choosePage($(this).attr('page'))
+    let chosenPage = parseInt($(this).attr('page'))
+    if (chosenPage != currentPage) {
+      choosePage(chosenPage)
     }
   })
   $('.pagination__item-previous-button').click(function() {
@@ -54,7 +55,7 @@ function showPostList(pageNum, showStatus = false) {
   console.log('pageCount', endPos)
   if (showStatus) {
     for (let index = startPos; index < endPos; index++) {
-      let postItem =
+      let postItem = $(
         `<tr class="post-list__row">
                     <td class="post-list__cell">${postList[index].title}</td>
                     <td class="post-list__cell">${postList[index].category}</td>
@@ -63,13 +64,20 @@ function showPostList(pageNum, showStatus = false) {
                     </td>
                     <td class="post-list__cell">${postList[index].created_date}</td>
                     <td class="post-list__cell">${postList[index].published_date}</td>
+                    <td class="post-list__cell"><button type="button" class="btn btn-secondary">Edit</button></td>
                 </tr>`
+      )
+      // let editControl = $('<td><button type="button" class="btn btn-secondary">Edit</button></td>')
+      // editControl.click(function() {
+
+      // })
+      // postItem.append(editControl)
       postListObj.append(postItem)
     }
   }
   else {
     for (let index = startPos; index < endPos; index++) {
-      let postItem =
+      let postItem = $(
         `<tr class="post-list__row">
                     <td class="post-list__cell">${postList[index].title}</td>
                     <td class="post-list__cell">${postList[index].category.category_name}</td>
@@ -82,7 +90,29 @@ function showPostList(pageNum, showStatus = false) {
                         }
                     </td>
                     <td class="post-list__cell">${postList[index].created_date}</td>
+                    
                 </tr>`
+      )
+      let control = document.createElement('td')
+      $(control).addClass('post-list__cell post-list__cell-control')
+      
+      let editControl = document.createElement('button')
+      $(editControl).addClass('btn btn-secondary post-list__control-btn')
+      $(editControl).text('Edit')
+      $(editControl).click(function() {
+
+      })
+
+      let deleteControl = document.createElement('button')
+      $(deleteControl).addClass('btn btn-secondary post-list__control-btn')
+      $(deleteControl).text('Delete')
+      $(deleteControl).click(function() {
+        
+      })
+
+      $(control).append(editControl)
+      $(control).append(deleteControl)
+      postItem.append(control)
       postListObj.append(postItem)
     }
   }
