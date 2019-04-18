@@ -19,26 +19,26 @@
     height: 100%;
     line-height: 24px;
     text-align: center;
-    background-color: #F4CACA;
-    margin: 0px 5px;
-    border-radius: 3px;
+    background-color: rgba(0,0,0,0.1);
+    margin: 0px 1px;
+    border-radius: 2px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.15s;
     user-select: none;
     -webkit-user-select: none;
     /* box-sizing: border-box; */
 }
 .pagination__item:hover, .pagination__item-active {
-    background-color: #8E5656;
+    background-color: rgba(0,0,0,0.4);
     color: #fff;
     font-weight: bold;
-    transition: 0.2s;
+    transition: 0.15s;
 }
 .pagination__item-control {
-    background-color: #D8D683;
+    background-color: rgba(0,0,0,0.1);
 }
 .pagination__item-control:hover {
-    background-color: #BAFF00;
+    background-color: rgba(0,0,0,0.4);
 }
 .pagination-icon {
     width: 16px;
