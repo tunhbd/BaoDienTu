@@ -26,7 +26,7 @@
     user-select: none;
     -webkit-user-select: none;
     font-size: 10pt;
-    position: relative;
+    position: relative!important;
 }
 .post-list__content .post-list__row:hover {
     background-color: #cce0ff;
@@ -35,6 +35,7 @@
 .post-list__cell {
     padding: 0px 10px;
     vertical-align: middle;
+    position: relative;
 }
 .control-icon {
     width: 16px;
@@ -45,11 +46,14 @@
     height: auto!important;
     background-color: #f2f2f2!important;
     opacity: 1!important;
-    top: 20px!important;
-    left: -20px!important;
+    position: absolute;
+    top: 80%!important;
+    right: 0px!important;
     border-radius: 2px;
     padding: 0!important;
     transition: 0.2s;
+    z-index: 100;
+    display: none;
     /* overflow: hidden; */
     /* box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.5); */
 }
@@ -61,13 +65,7 @@
     border-color: transparent transparent #f2f2f2 transparent;
     position: absolute;
     top:-20px;
-    right: 15px;
-}
-.control-tooltip-inner {
-    width: auto!important;
-    height: auto!important;
-    background-color: #f2f2f2!important;
-    padding: 0px!important;
+    right: 10px;
 }
 .control-buttons {
     width: 100px;
@@ -89,4 +87,57 @@
     /* font-weight: bold; */
     color: #fff;
     background-color: #3333ff;
+}
+.postDetailModal {
+    width: 90%!important;
+    height: 90%!important;
+    top: 5%;
+    left: 5%;
+    padding:0!important;
+    overflow: hidden;
+}
+.postDetailModal .postDetailModal-dialog {
+    width:100%!important;
+    height: 100%!important;
+    max-width: 100%!important;
+    margin: 0!important;
+    overflow: hidden;
+}
+.postDetailModal-dialog-content {
+    width: 100%!important;
+    height: 100%!important;
+}
+.postDetailModal-dialog-content-header {
+    height: 50px!important;
+    padding: 10px 10px!important;
+    align-content: center!important;
+}
+.postDetailModal-dialog-content-header button {
+    padding: 0!important;
+    margin: 0!important;
+    width: 30px;
+    height: 30px;
+}
+.postDetailModal-dialog-content-body {
+    height: calc(100% - 50px)!important;
+    overflow: auto!important;
+}
+.post-info {
+    width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding: 10px 0px;
+}
+.post-checking {
+    width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+#publishedDateInput {
+    padding: 0px 10px;
+    width: 300px!important;
+    margin: 10px!important;
+    display: none;
+}
+#whyRejectForm {
+    display: none;
+    padding: 10px!important;
 }

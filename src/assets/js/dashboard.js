@@ -48,6 +48,7 @@ const USERS = {
 
 var currentPage = null
 var userRule = USERS.ADMIN
+var currentPost = null
 
 /**
  * FUNCTIONS
