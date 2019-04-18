@@ -1,4 +1,55 @@
 /**
+ * GLOBAL VARIABLES
+ */
+const PAGES = {
+  GENERAL: {
+    id: 'GENERAL',
+    url: ''
+  },
+  CREATE_POST: {
+    id: 'CREATE_POST',
+    url: '',
+  },
+  DRAFT: {
+    id: 'DRAFT',
+    url: './dashboard_draft.html',
+  },
+  WAITING: {
+    id: 'WAITING',
+    url: './dashboard_waiting.html',
+  },
+  REJECT: {
+    id: 'REJECT',
+    url: '',
+  },
+  PUBLISHED: {
+    id: 'PUBLISHED',
+    url: '',
+  },
+  USER: {
+    id: 'USER',
+    url: '',
+  },
+  CATEGORY: {
+    id: 'CATEGORY',
+    url: '',
+  },
+  TAG: {
+    id: 'TAG',
+    url: '',
+  },
+}
+const USERS = {
+  ADMIN: 'ADMIN',
+  SUBSCRIBER: 'SUBSCRIBER',
+  WRITER: 'WRITER',
+  EDITOR: 'EDITOR'
+}
+
+var currentPage = null
+var userRule = USERS.ADMIN
+
+/**
  * FUNCTIONS
  */
 function setEventsForMenu() {
@@ -24,6 +75,10 @@ function setEventsForCommonMenu() {
       .addClass('menu-item-group__item__activing')
     $(`#mobile-menu .menu-item-group__item[menu-id="${$(this).attr('menu-id')}"]`)
       .addClass('menu-item-group__item__activing')
+
+    if ($(this).attr('menu-id') !== currentDashboardPage) {
+      window.location = PAGES[$(this).attr('menu-id')].url
+    }
   })
 }
 

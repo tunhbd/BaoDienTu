@@ -9,6 +9,9 @@
     --menu-item-color-hover: #fff;
     --menu-item-font-weight: bold;
 }
+* {
+    font-family: 'Spectral', serif;
+}
 html {
     height: 100%;
 }
@@ -385,15 +388,27 @@ body {
 
 .draft-post-list-container {
     width: 100%;
-    height: 100%;
+    height: auto;
     padding: 20px;
     overflow: hidden;
     position: relative;
 }
 .waiting-post-list-container {
     width: 100%;
-    height: 100%;
+    height: auto;
     padding: 20px;
     overflow: hidden;
     position: relative;
+}
+.bao-dien-tu-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+.bao-dien-tu-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(51, 153, 255, 0.5);
+}
+.bao-dien-tu-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(51, 153, 255, 0.7);
+}
+.bao-dien-tu-scrollbar::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,0.05);
 }
