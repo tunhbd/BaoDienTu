@@ -108,7 +108,7 @@
     height: 100%!important;
 }
 .postDetailModal-dialog-content-header {
-    height: 50px!important;
+    min-height: 50px!important;
     padding: 10px 10px!important;
     align-content: center!important;
 }
