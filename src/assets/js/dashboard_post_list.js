@@ -203,7 +203,7 @@ function showPostList(pageNum, showStatus = false) {
   let startPos = postCountPerPage * (pageNum - 1)
   let endPos = postCountPerPage * pageNum
   endPos = endPos > postList.length ? postList.length : endPos
-  console.log('pageCount', endPos)
+  
   if (showStatus) {
     for (let index = startPos; index < endPos; index++) {
       let postItem = $(
