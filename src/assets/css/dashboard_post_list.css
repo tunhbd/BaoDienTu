@@ -8,9 +8,11 @@
 .post-list__header {
     /* line-height: 40px; */
     border-bottom: 1px solid rgba(0,0,0,0.4);
+    background-color: #6699ff;
 }
-.post-list__header .draft-post-list__row {
+.post-list__header .post-list__row {
     border: none!important;
+    font-size: 12pt;
 }
 .post-list__content {
     /* height: calc(100% - 40px); */
@@ -19,16 +21,123 @@
 .post-list__row {
     line-height: 40px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     user-select: none;
     -webkit-user-select: none;
+    font-size: 10pt;
+    position: relative!important;
 }
 .post-list__content .post-list__row:hover {
-    background-color: rgba(0,0,0,0.1);
-    transition: 0.3s;
+    background-color: #cce0ff;
+    transition: 0.2s;
 }
 .post-list__cell {
     padding: 0px 10px;
+    vertical-align: middle;
+    position: relative;
 }
-
+.control-icon {
+    width: 16px;
+    height:16px;
+}
+.control-tooltip {
+    width: 100px!important;
+    height: auto!important;
+    background-color: #f2f2f2!important;
+    opacity: 1!important;
+    position: absolute;
+    top: 80%!important;
+    right: 0px!important;
+    border-radius: 2px;
+    padding: 0!important;
+    transition: 0.2s;
+    z-index: 100;
+    display: none;
+    /* overflow: hidden; */
+    /* box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.5); */
+}
+.control-tooltip:before {
+    content: "";
+    display: block;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent #f2f2f2 transparent;
+    position: absolute;
+    top:-20px;
+    right: 10px;
+}
+.control-buttons {
+    width: 100px;
+    height:auto;
+    display: flex;
+    flex-direction: column;
+}
+.control-buttons button {
+    width: 100%!important;
+    border-radius: 0!important;
+    box-shadow: none!important;
+    text-align: left;
+    padding: 10px 5px!important;
+    background-color: #f2f2f2;
+    border: none;
+    font-family: 'Spectral', serif;
+}
+.control-buttons button:hover {
+    /* font-weight: bold; */
+    color: #fff;
+    background-color: #3333ff;
+}
+.postDetailModal {
+    width: 90%!important;
+    height: 90%!important;
+    top: 5%;
+    left: 5%;
+    padding:0!important;
+    overflow: hidden;
+}
+.postDetailModal .postDetailModal-dialog {
+    width:100%!important;
+    height: 100%!important;
+    max-width: 100%!important;
+    margin: 0!important;
+    overflow: hidden;
+}
+.postDetailModal-dialog-content {
+    width: 100%!important;
+    height: 100%!important;
+}
+.postDetailModal-dialog-content-header {
+    min-height: 50px!important;
+    padding: 10px 10px!important;
+    align-content: center!important;
+}
+.postDetailModal-dialog-content-header button {
+    padding: 0!important;
+    margin: 0!important;
+    width: 30px;
+    height: 30px;
+}
+.postDetailModal-dialog-content-body {
+    height: calc(100% - 50px)!important;
+    overflow: auto!important;
+}
+.post-info {
+    width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding: 10px 0px;
+}
+.post-checking {
+    width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+#publishedDateInput {
+    padding: 0px 10px;
+    width: 300px!important;
+    margin: 10px!important;
+    display: none;
+}
+#whyRejectForm {
+    display: none;
+    padding: 10px!important;
+}

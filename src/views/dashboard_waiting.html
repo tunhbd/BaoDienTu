@@ -9,12 +9,17 @@
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link rel="stylesheet" href="../assets/css/dashboard_post_list.css">
   <link rel="stylesheet" href="../assets/css/pagination.css">
+  <link rel="stylesheet" href="../assets/js/jquery-ui-1.12.1/jquery-ui.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="../assets/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
   <title>Waiting List</title>
 </head>
 
-<body class="col-12 ml-auto mr-auto pl-0 pr-0">
+<body class="col-12 ml-auto mr-auto pl-0 pr-0 bao-dien-tu-scrollbar">
   <header id="dashboard-header" class="border-bottom clearfix m-0 p-0">
     <div class="col-12 col-sm-12 col-md-11 col-lg-11 col-xl-11 ml-auto mr-auto w-100 h-100">
       <div class="dashboard-header__toggle-menu float-left mt-auto mb-auto d-sm-block d-none">
@@ -60,67 +65,76 @@
   </header>
   <div id="dashboard-main" class="pt-2 pb-2">
     <div class="dashboard-main__content col-12 col-sm-12 col-md-11 col-lg-11 col-xl-11 ml-auto mr-auto d-flex">
-      <div id="dashboard-main__left-sidebar" class=" pl-1 pr-1 border-right d-none d-sm-block">
+      <div id="dashboard-main__left-sidebar" class="border-right d-none d-sm-block">
         <div id="dashboard-main__left-sidebar__menu" class="w-100">
           <div class="menu-item-group pb-1 w-100">
-            <div menu-id="0" class="menu-item-group__item rounded-pill">
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-home"></i>
+            <div menu-id="GENERAL" class="menu-item-group__item rounded-pill">
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-home"></i> -->
+              <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
               <span class="menu-item-group__item__title">General</span>
             </div>
-            <div menu-id="1" class="menu-item-group__item rounded-pill">
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-edit"></i>
+            <div menu-id="CREATE_POST" class="menu-item-group__item rounded-pill">
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-edit"></i> -->
+              <i class="menu-item-group__item__icon fas fa-plus-square"></i>
               <span class="menu-item-group__item__title">Create post</span>
             </div>
-            <div menu-id="2" class="menu-item-group__item rounded-pill">
+            <div menu-id="DRAFT" class="menu-item-group__item rounded-pill">
               <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i>
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i> -->
+              <i class="menu-item-group__item__icon fas fa-file-alt"></i>
               <span class="menu-item-group__item__title">Drafts</span>
               <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
             </div>
-            <div menu-id="3" class="menu-item-group__item rounded-pill">
+            <div menu-id="REJECT" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_close.png" alt=""> -->
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-reject"></i>
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-reject"></i> -->
+              <i class="menu-item-group__item__icon fas fa-file-excel"></i>
               <span class="menu-item-group__item__title">Rejects</span>
               <!-- <div class="count-num rounded-pill count-num-reject">3</div> -->
             </div>
           </div>
           <div class="menu-item-group pb-1 w-100">
-            <div menu-id="4" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+            <div menu-id="WAITING" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
               <!-- <img src="../../media/statics/images/ic_waiting.png" alt=""> -->
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-waiting"></i>
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-waiting"></i> -->
+              <i class="menu-item-group__item__icon fas fa-stopwatch"></i>
               <span class="menu-item-group__item__title">Waiting</span>
               <!-- <div class="count-num rounded-pill count-num-waiting">3</div> -->
             </div>
-            <div menu-id="5" class="menu-item-group__item rounded-pill">
+            <div menu-id="PUBLISHED" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_like.png" alt=""> -->
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-published"></i>
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-published"></i> -->
+              <i class="menu-item-group__item__icon fas fa-paper-plane"></i>
               <span class="menu-item-group__item__title">Published</span>
               <!-- <div class="count-num rounded-pill count-num-published">3</div> -->
             </div>
           </div>
           <div class="menu-item-group pb-1 w-100">
-            <div menu-id="6" class="menu-item-group__item rounded-pill">
+            <div menu-id="TAG" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_tag.png" alt=""> -->
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-tag"></i>
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-tag"></i> -->
+              <i class="menu-item-group__item__icon fas fa-tags"></i>
               <span class="menu-item-group__item__title">Tags</span>
               <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
             </div>
-            <div menu-id="7" class="menu-item-group__item rounded-pill">
+            <div menu-id="CATEGORY" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_category.png" alt=""> -->
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-category"></i>
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-category"></i> -->
+              <i class="menu-item-group__item__icon fas fa-list"></i>
               <span class="menu-item-group__item__title">Categories</span>
               <!-- <div class="count-num rounded-pill">3</div> -->
             </div>
-            <div menu-id="8" class="menu-item-group__item rounded-pill">
+            <div menu-id="USER" class="menu-item-group__item rounded-pill">
               <!-- <img src="../../media/statics/images/ic_user.png" alt=""> -->
-              <i class="menu-item-group__item__icon menu-item-group__item__icon-user"></i>
+              <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-user"></i> -->
+              <i class="menu-item-group__item__icon fas fa-users"></i>
               <span class="menu-item-group__item__title">Users</span>
               <!-- <div class="count-num rounded-pill">3</div> -->
             </div>
           </div>
         </div>
       </div>
-      <div id="dashboard-main__right-sidebar" class="pl-1 pr-1">
+      <div id="dashboard-main__right-sidebar" class="pl-1 pr-1 bao-dien-tu-scrollbar">
         <div class="waiting-post-list-container">
           <table class="post-list">
             <thead class="post-list__header">
@@ -130,10 +144,11 @@
                 <th class="post-list__cell">Author</th>
                 <th class="post-list__cell">Created Date</th>
                 <th class="post-list__cell">Published Date</th>
+                <th class="post-list__cell"></th>
               </tr>
             </thead>
             <tbody class="post-list__content">
-              
+
             </tbody>
           </table>
           <div class="pagination">
@@ -152,63 +167,84 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="d-block d-sm-none">
       <!-- <div id="dashboard-main__left-sidebar__menu" class="w-100"> -->
-        <div class="menu-item-group pb-1 w-100">
-          <div menu-id="0" class="menu-item-group__item rounded-pill">
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-home"></i>
-            <span class="menu-item-group__item__title">General</span>
-          </div>
-          <div menu-id="1" class="menu-item-group__item rounded-pill">
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-edit"></i>
-            <span class="menu-item-group__item__title">Create post</span>
-          </div>
-          <div menu-id="2" class="menu-item-group__item rounded-pill">
-            <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i>
-            <span class="menu-item-group__item__title">Drafts</span>
-            <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
-          </div>
-          <div menu-id="3" class="menu-item-group__item rounded-pill">
-            <!-- <img src="../../media/statics/images/ic_close.png" alt=""> -->
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-reject"></i>
-            <span class="menu-item-group__item__title">Rejects</span>
-            <!-- <div class="count-num rounded-pill count-num-reject">3</div> -->
-          </div>
+      <div class="menu-item-group pb-1 w-100">
+        <div menu-id="GENERAL" class="menu-item-group__item rounded-pill">
+          <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
+          <span class="menu-item-group__item__title">General</span>
         </div>
-        <div class="menu-item-group pb-1 w-100">
-          <div menu-id="4" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
-            <!-- <img src="../../media/statics/images/ic_waiting.png" alt=""> -->
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-waiting"></i>
-            <span class="menu-item-group__item__title">Waiting</span>
-            <!-- <div class="count-num rounded-pill count-num-waiting">3</div> -->
-          </div>
-          <div menu-id="5" class="menu-item-group__item rounded-pill">
-            <!-- <img src="../../media/statics/images/ic_like.png" alt=""> -->
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-published"></i>
-            <span class="menu-item-group__item__title">Published</span>
-            <!-- <div class="count-num rounded-pill count-num-published">3</div> -->
-          </div>
+        <div menu-id="CREATE_POST" class="menu-item-group__item rounded-pill">
+          <i class="menu-item-group__item__icon fas fa-plus-square"></i>
+          <span class="menu-item-group__item__title">Create post</span>
         </div>
-        <div class="menu-item-group pb-1 w-100">
-          <div menu-id="6" class="menu-item-group__item rounded-pill">
-            <!-- <img src="../../media/statics/images/ic_tag.png" alt=""> -->
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-tag"></i>
-            <span class="menu-item-group__item__title">Tags</span>
-            <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
-          </div>
-          <div menu-id="7" class="menu-item-group__item rounded-pill">
-            <!-- <img src="../../media/statics/images/ic_category.png" alt=""> -->
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-category"></i>
-            <span class="menu-item-group__item__title">Categories</span>
-            <!-- <div class="count-num rounded-pill">3</div> -->
-          </div>
-          <div menu-id="8" class="menu-item-group__item rounded-pill">
-            <!-- <img src="../../media/statics/images/ic_user.png" alt=""> -->
-            <i class="menu-item-group__item__icon menu-item-group__item__icon-user"></i>
-            <span class="menu-item-group__item__title">Users</span>
-            <!-- <div class="count-num rounded-pill">3</div> -->
-          </div>
+        <div menu-id="DRAFT" class="menu-item-group__item rounded-pill">
+          <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
+          <i class="menu-item-group__item__icon fas fa-file-alt"></i>
+          <span class="menu-item-group__item__title">Drafts</span>
+          <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
         </div>
+        <div menu-id="REJECT" class="menu-item-group__item rounded-pill">
+          <!-- <img src="../../media/statics/images/ic_close.png" alt=""> -->
+          <i class="menu-item-group__item__icon fas fa-file-excel"></i>
+          <span class="menu-item-group__item__title">Rejects</span>
+          <!-- <div class="count-num rounded-pill count-num-reject">3</div> -->
+        </div>
+      </div>
+      <div class="menu-item-group pb-1 w-100">
+        <div menu-id="WAITING" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+          <!-- <img src="../../media/statics/images/ic_waiting.png" alt=""> -->
+          <i class="menu-item-group__item__icon fas fa-stopwatch"></i>
+          <span class="menu-item-group__item__title">Waiting</span>
+          <!-- <div class="count-num rounded-pill count-num-waiting">3</div> -->
+        </div>
+        <div menu-id="PUBLISHED" class="menu-item-group__item rounded-pill">
+          <!-- <img src="../../media/statics/images/ic_like.png" alt=""> -->
+          <i class="menu-item-group__item__icon fas fa-paper-plane"></i>
+          <span class="menu-item-group__item__title">Published</span>
+          <!-- <div class="count-num rounded-pill count-num-published">3</div> -->
+        </div>
+      </div>
+      <div class="menu-item-group pb-1 w-100">
+        <div menu-id="TAG" class="menu-item-group__item rounded-pill">
+          <!-- <img src="../../media/statics/images/ic_tag.png" alt=""> -->
+          <i class="menu-item-group__item__icon fas fa-tags"></i>
+          <span class="menu-item-group__item__title">Tags</span>
+          <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
+        </div>
+        <div menu-id="CATEGORY" class="menu-item-group__item rounded-pill">
+          <!-- <img src="../../media/statics/images/ic_category.png" alt=""> -->
+          <i class="menu-item-group__item__icon fas fa-list"></i>
+          <span class="menu-item-group__item__title">Categories</span>
+          <!-- <div class="count-num rounded-pill">3</div> -->
+        </div>
+        <div menu-id="USER" class="menu-item-group__item rounded-pill">
+          <!-- <img src="../../media/statics/images/ic_user.png" alt=""> -->
+          <i class="menu-item-group__item__icon fas fa-users"></i>
+          <span class="menu-item-group__item__title">Users</span>
+          <!-- <div class="count-num rounded-pill">3</div> -->
+        </div>
+      </div>
       <!-- </div> -->
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade postDetailModal" id="postDetail" tabindex="-1" role="dialog" aria-labelledby="postDetailLabel"
+    aria-hidden="true">
+    <div class="modal-dialog postDetailModal-dialog" role="document">
+      <div class="modal-content postDetailModal-dialog-content">
+        <div class="modal-header postDetailModal-dialog-content-header">
+          <h5 class="modal-title" id="postDetailLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body postDetailModal-dialog-content-body bao-dien-tu-scrollbar">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary save-btn" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
   </div>
   <!-- Script References -->

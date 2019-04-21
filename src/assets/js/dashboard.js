@@ -1,4 +1,56 @@
 /**
+ * GLOBAL VARIABLES
+ */
+const PAGES = {
+  GENERAL: {
+    id: 'GENERAL',
+    url: ''
+  },
+  CREATE_POST: {
+    id: 'CREATE_POST',
+    url: '',
+  },
+  DRAFT: {
+    id: 'DRAFT',
+    url: './dashboard_draft.html',
+  },
+  WAITING: {
+    id: 'WAITING',
+    url: './dashboard_waiting.html',
+  },
+  REJECT: {
+    id: 'REJECT',
+    url: '',
+  },
+  PUBLISHED: {
+    id: 'PUBLISHED',
+    url: '',
+  },
+  USER: {
+    id: 'USER',
+    url: '',
+  },
+  CATEGORY: {
+    id: 'CATEGORY',
+    url: '',
+  },
+  TAG: {
+    id: 'TAG',
+    url: '',
+  },
+}
+const USERS = {
+  ADMIN: 'ADMIN',
+  SUBSCRIBER: 'SUBSCRIBER',
+  WRITER: 'WRITER',
+  EDITOR: 'EDITOR'
+}
+
+var currentDashboardPage = null
+var userRule = USERS.ADMIN
+var currentPost = null
+
+/**
  * FUNCTIONS
  */
 function setEventsForMenu() {
@@ -24,6 +76,10 @@ function setEventsForCommonMenu() {
       .addClass('menu-item-group__item__activing')
     $(`#mobile-menu .menu-item-group__item[menu-id="${$(this).attr('menu-id')}"]`)
       .addClass('menu-item-group__item__activing')
+
+    if ($(this).attr('menu-id') !== currentDashboardPage) {
+      window.location = PAGES[$(this).attr('menu-id')].url
+    }
   })
 }
 
@@ -44,8 +100,10 @@ function setEventForToggleMenuIcon() {
   var toggleMenuIcon = $('.dashboard-header__toggle-menu')
   var leftSideBar = $('#dashboard-main__left-sidebar')
   var mobileMenu = $('#mobile-menu')
+  var dashboardMainContent = $('.dashboard-main__content')
 
   toggleMenuIcon.click(function () {
+    // $(':root').css('--db-header-height', '100px')
     if ($(this).hasClass('dashboard-header__toggle-menu-mobile')) {
       if (mobileMenu.hasClass('show-menu')) {
         mobileMenu.removeClass('show-menu')
@@ -63,14 +121,23 @@ function setEventForToggleMenuIcon() {
 
         leftSideBar.removeClass('collapse-menu')
         leftSideBar.addClass('expand-menu')
-        setTimeout(function () {
-          $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').removeClass('is-collapse-menu')
-        }, 250)
+        
+        // setTimeout(function () {
+        //   $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').removeClass('is-collapse-menu')
+        // }, 200)
+        setTimeout(function() {
+          $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').fadeIn(200)
+          $(':root').css('--dashboard-main-content-left-sidebar-width', '200px')
+        }, 200)
       }
       else {
         leftSideBar.addClass('collapse-menu')
         leftSideBar.removeClass('expand-menu')
-        $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').addClass('is-collapse-menu')
+        $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').fadeOut(200)
+        // $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').addClass('is-collapse-menu')
+        setTimeout(function() {
+          $(':root').css('--dashboard-main-content-left-sidebar-width', '75px')
+        }, 200)
       }
     }
   })
