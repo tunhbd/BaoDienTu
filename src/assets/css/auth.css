@@ -32,21 +32,21 @@ a:focus {
 .btn-primary {
   background-color: rgb(233, 30, 99);
   background-image: linear-gradient(90deg, #e91e63, #9c27b0);
+  border-radius: 10px;
   border-radius: 100vmin;
   border-width: 0;
   font-size: 20px;
-  transition: all 0.3s ease-in-out;
-  padding: 16px;
+  transition: all 0.2s ease-in-out;
+  padding: 12px;
   min-width: 200px;
-  transition-delay: 0.05s;
 }
 .btn-primary:active,
 .btn-primary:focus,
 .btn-primary:hover {
   opacity: 0.9;
-  transform: scale(1.1);
+  transform: scale(1.005);
   -webkit-font-smoothing: antialiased;
-  box-shadow: 0 0 16px rgba(233, 30, 99, 0.5);
+  box-shadow: 0 0 8px rgb(255, 225, 235);
 }
 .brand-logo {
   margin: 35px auto;
@@ -55,7 +55,6 @@ a:focus {
   background-color: #fff;
   height: 515px;
   margin: 25px auto;
-  position: relative;
   top: 0;
   left: 0;
   overflow: hidden;
@@ -64,28 +63,14 @@ a:focus {
 }
 .w-login .w-panel {
   padding: 40px;
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  transition: all 0.5s ease;
   opacity: 0;
 }
 .w-button {
   font-size: 1rem;
-}
-.panel-login {
-  transform: translateX(100%);
-  -webkit-transform: translateX(100%);
-}
-.panel-forgot {
-  transform: translateY(-100%);
-  -webkit-transform: translateY(-100%);
-}
-.panel-signup {
-  transform: translateX(-100%);
-  -webkit-transform: translateX(-100%);
 }
 .w-panel .w-heading {
   margin-bottom: 30px;
@@ -151,6 +136,10 @@ a:focus {
   cursor: pointer;
   color: #666;
   padding-left: 24px;
+}
+.label-pick-role {
+  color: #666;
+  padding: 0;
 }
 .w-login .forgotPwd {
   text-align: right;
@@ -233,15 +222,20 @@ a:focus {
 .panel-signup .term-policy a {
   text-decoration: underline;
 }
-.checkbox input[type="checkbox"] {
+.checkbox input[type="checkbox"],
+.checkbox-role input[type="radio"] {
   position: absolute;
   right: 9000px;
   opacity: 0;
   z-index: 1;
   cursor: pointer;
 }
+.checkbox-role input[type="radio"] + span {
+  transition: border 0.3s ease-in-out, color 0.15s ease-in-out;
+}
 .checkbox input[type="checkbox"] + .label-text:after,
-.checkbox input[type="checkbox"] + .label-text:before {
+.checkbox input[type="checkbox"] + .label-text:before,
+.checkbox-role input[type="radio"] + span:before {
   font-size: 11px;
   display: inline-block;
   width: 17px;
@@ -250,7 +244,10 @@ a:focus {
   margin-left: 0;
   position: absolute;
   top: 2px;
+  color: #666;
   left: 0;
+  cursor: pointer;
+  transition: border 0.3s ease-in-out, color 0.15s ease-in-out;
 }
 .checkbox input[type="checkbox"] + .label-text:before {
   content: "";
@@ -274,9 +271,32 @@ a:focus {
   outline-color: #e91e63;
 }
 .checkbox input[type="checkbox"]:checked + .label-text:after {
+  font-weight: 900;
+  font-family: "Font Awesome 5 Free";
+  content: "\f00c";
+}
+.checkbox-role input[type="radio"]:checked + span:before,
+.checkbox-role input[type="radio"]:checked + span {
+  color: #e91e63;
+  font-weight: bold;
+}
+.checkbox-role span {
+  cursor: pointer;
+}
+.checkbox-role input[type="radio"] + .label-reader-text:before {
+  content: "\f5da";
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
-  content: "\f00c";
+}
+.checkbox-role input[type="radio"] + .label-writer-text:before {
+  content: "\f52d";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+.checkbox-role input[type="radio"] + .label-editor-text:before {
+  content: "\f4ff";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
 }
 @media (min-width: 320px) and (max-width: 375px) {
   .w-login .w-panel {
