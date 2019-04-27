@@ -45,7 +45,7 @@ body{
         a{
           color:white;
           font-weight: 600;
-          font-size: 24px;
+          font-size: calc(14px + 1.05vw);
           text-decoration: none;
         }
       }
@@ -449,14 +449,14 @@ body{
 }
 #section-footer{
   margin-top:10px;
-  height: 100px;
+  height: 120px;
   background-color:#f1f1f1;
   .left-content{
     padding-top:25px;
-
+    align-items: center;
   .name-web{
 
-    font-size:28px;
+    font-size:calc(16px + 0.5vw);
     font-weight: 700;
     color:#E91E63;
   }
@@ -466,7 +466,9 @@ body{
   }
   }
   .hotline{
-    padding-top:35px;
+    margin-top:10px;
+    padding-left:15px;
     font-weight: bold;
+    margin-bottom: 15px;
   }
 }

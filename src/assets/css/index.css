@@ -34,7 +34,7 @@ body {
       #section-header .second-header .content-search .digital-news a {
         color: white;
         font-weight: 600;
-        font-size: 24px;
+        font-size: calc(14px + 1.05vw);
         text-decoration: none; }
 #section-header .third-header {
   padding: 1px 0;
@@ -285,19 +285,23 @@ body {
 
 #section-footer {
   margin-top: 10px;
-  height: 100px;
+  height: 120px;
   background-color: #f1f1f1; }
   #section-footer .left-content {
-    padding-top: 25px; }
+    padding-top: 25px;
+    align-items: center; }
     #section-footer .left-content .name-web {
-      font-size: 28px;
+      font-size: calc(16px + 0.5vw);
       font-weight: 700;
       color: #E91E63; }
     #section-footer .left-content .copyright {
       padding-top: 10px;
       font-weight: bold; }
   #section-footer .hotline {
-    padding-top: 35px;
-    font-weight: bold; }
+    margin-top: 10px;
+    padding-left: 15px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px; }
 
 /*# sourceMappingURL=index.css.map */
