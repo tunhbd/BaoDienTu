@@ -19,17 +19,16 @@
       integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
       crossorigin="anonymous"
     />
-    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
     <title>Dashboard</title>
+
+    <!-- custom css -->
+    <link rel="stylesheet" href="../assets/css/dashboardCreate.css" />
   </head>
 
   <body class="col-12 ml-auto mr-auto pl-0 pr-0 bao-dien-tu-scrollbar">
     <header id="dashboard-header" class="border-bottom clearfix m-0 p-0">
-      <div
-        class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ml-auto mr-auto w-100 h-100"
-      >
+      <div class="col-12 col-sm-12 ml-auto mr-auto w-100 h-100">
         <div
           class="dashboard-header__toggle-menu float-left mt-auto mb-auto d-sm-block d-none"
         >
@@ -94,9 +93,7 @@
       </div>
     </header>
     <div id="dashboard-main" class="pt-2 pb-2">
-      <div
-        class="dashboard-main__content col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ml-auto mr-auto d-flex"
-      >
+      <div class="dashboard-main__content col-12 ml-auto mr-auto d-flex">
         <div
           id="dashboard-main__left-sidebar"
           class="border-right d-none d-sm-block"
@@ -187,13 +184,86 @@
           id="dashboard-main__right-sidebar"
           class="pl-1 pr-1 bao-dien-tu-scrollbar"
         >
-          <!-- 
-          ==================================
-          Code content here
-          
-          ==================================
-        -->
-          Dashboard content
+          <!-- ************************************ -->
+          <!-- Dashboard content -->
+          <div style="padding: 20px;">
+            <form>
+              <div class=" d-flex justify-content-between">
+                <div
+                  class="form-group position-relative wrap-input"
+                  style="margin-right: 32px"
+                >
+                  <input
+                    type="text"
+                    class="form-control title-input"
+                    placeholder="Tiêu đề..."
+                  />
+                  <span class="w-input"></span>
+                  <span class="title-harsh">Tiêu đề:</span>
+                </div>
+
+                <div class="dropdown w-category form-group wrap-input">
+                  <button
+                    class="btn dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Chuyên mục
+                  </button>
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a class="dropdown-item" href="#">
+                      <span class="border-gradient">
+                        <span class="bg-dropdown">Nông lâm</span>
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <span class="border-gradient">
+                        <span class="bg-dropdown">Hàm lâm</span>
+                      </span> </a
+                    ><a class="dropdown-item" href="#">
+                      <span class="border-gradient">
+                        <span class="bg-dropdown">Lâm Vĩ Dạ</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group position-relative wrap-input">
+                <input
+                  type="text"
+                  class="form-control tag-input"
+                  placeholder="TAGS"
+                />
+                <span class="w-input"></span>
+                <span class="tag-harsh">TAGS:</span>
+              </div>
+              <div class="form-group position-relative wrap-input">
+                <input
+                  type="text"
+                  class="form-control summary-input"
+                  placeholder="Tóm tắt"
+                />
+                <span class="w-input"></span>
+                <span class="summary-harsh">Tóm tắt:</span>
+              </div>
+              <div class="form-group">
+                <textarea name="editor1"></textarea>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-primary w-button" type="submit">
+                  Hoàn tất
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- /Dashboard content -->
+          <!-- ************************************ -->
         </div>
       </div>
       <!-- Mobile Menu -->
@@ -305,7 +375,18 @@
         </div>
       </div>
     </div>
+
     <!-- Script References -->
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
     <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/js/dashboardCreate.js"></script>
+
+    <!-- CKEditor -->
+    <script>
+      CKEDITOR.replace("editor1");
+    </script>
   </body>
 </html>
