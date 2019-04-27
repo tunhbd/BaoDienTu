@@ -4,7 +4,7 @@
     --avatar-size: 40px;
     --menu-item-height: 50px;
     --menu-item-bg: yellow;
-    --menu-item-bg-hover: red;
+    --menu-item-bg-hover: rgba(233, 30, 99, 0.5);
     --menu-item-color: rgba(0,0,0,0.7);
     --menu-item-color-hover: #fff;
     --menu-item-font-weight: bold;
@@ -195,7 +195,7 @@ body {
     transition: ease 0.2s;
     width: var(--dashboard-main-content-left-sidebar-width);
     overflow: auto;
-    padding: 0px 5px;
+    /* padding: 0px 5px; */
     box-sizing: border-box;
 }
 .collapse-menu {
@@ -222,7 +222,7 @@ body {
     display: flex;
     align-items: center;
     padding: 0px 20px;
-    margin: 1px 0px;
+    /* margin: 1px 0px; */
     cursor: pointer;
     overflow: hidden;
     user-select: none;
@@ -243,8 +243,8 @@ body {
     text-align: center;
     color: rgba(0,0,0,0.4);
 }
-.menu-item-group__item:hover {
-    background-color: #E91E63;
+.menu-item-group__item:not(.menu-item-group__item__activing):hover {
+    background-color: var(--menu-item-bg-hover);
     transition: ease 0.25s!important;
 }
 .menu-item-group__item__title {
@@ -362,6 +362,11 @@ body {
     height:100%;
     overflow: auto;
 }
+@media screen and (max-width: 576px) {
+    #dashboard-main__right-sidebar {
+        width: 100%;
+    }
+}
 
 #mobile-menu {
     width: 300px;
@@ -408,18 +413,11 @@ body {
     
 }
 
-.draft-post-list-container {
+.post-list-container {
     width: 100%;
     height: auto;
     padding: 20px;
-    overflow: hidden;
-    position: relative;
-}
-.waiting-post-list-container {
-    width: 100%;
-    height: auto;
-    padding: 20px;
-    overflow: hidden;
+    /* overflow: hidden; */
     position: relative;
 }
 .bao-dien-tu-scrollbar::-webkit-scrollbar {
