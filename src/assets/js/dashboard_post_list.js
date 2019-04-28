@@ -6,6 +6,15 @@
 // var pageCount = 5
 // var postCountPerPage = 10
 
+const FILTERS = {
+  FILTER_SORT: {
+    INCREASING_CREATED_DATE: 1,
+    DECREASING_CREATED_DATE: 2,
+    INCREASING_PUBLISHED_DATE: 3,
+    DECREASING_PUBLISHED_DATE: 4,
+  }
+}
+
 /**
  * FUNCTIONS
  */
@@ -24,6 +33,10 @@
 //   })
 // }
 
+function initPostListUI() {
+  $('.post-list__content').html('')
+}
+
 function choosePage(pageNum) {
   if (pageNum > 0 && pageNum <= pageCount) {
     currentPage = pageNum
@@ -31,6 +44,10 @@ function choosePage(pageNum) {
     $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
     showPostList(pageNum)
   }
+  else {
+    initPostListUI()
+  }
+  
 }
 
 function showPreviousPage() {
@@ -51,8 +68,8 @@ function renderControlTooltip(postId, postIndex, container) {
 
   // edit button and delete button
   if (
-    (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id)
-    &&
+    // (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id)
+    // &&
     (userRule === USERS.WRITER || userRule === USERS.ADMIN)
   ) {
     // buttons container
@@ -62,16 +79,18 @@ function renderControlTooltip(postId, postIndex, container) {
     let controlButtons = document.createElement('div')
     $(controlButtons).addClass('control-buttons')
 
-    // edit button
-    let editControl = $(
-      `<button type="button" class="btn btn-raised btn-info edit-btn">
+    if (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id) {
+      // edit button
+      let editControl = $(
+        `<button type="button" class="btn btn-raised btn-info edit-btn">
         <i class="fas fa-pen"></i>
       </button>`
-    )
-    editControl.click(function () {
+      )
+      editControl.click(function () {
 
-    })
-    $(controlButtons).append(editControl)
+      })
+      $(controlButtons).append(editControl)
+    }
 
     // delete button
     let deleteControl = $(
@@ -110,6 +129,60 @@ function renderControlTooltip(postId, postIndex, container) {
   }
 
   return control
+}
+
+function sort(sortId) {
+  switch (parseInt(sortId)) {
+    case FILTERS.FILTER_SORT.INCREASING_CREATED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.created_date)) - (new Date(postTwo.created_date)))
+      break;
+    case FILTERS.FILTER_SORT.DECREASING_CREATED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.created_date)) - (new Date(postOne.created_date)))
+      break;
+    case FILTERS.FILTER_SORT.INCREASING_PUBLISHED_DATE:
+    console.log('bo')
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.published_date)) - (new Date(postTwo.published_date)))
+      break;
+    case FILTERS.FILTER_SORT.DECREASING_PUBLISHED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.published_date)) - (new Date(postOne.published_date)))
+      break;
+  }
+}
+
+function filterFollowCategory(categoryId) {
+  if (categoryId === 'ALL') {
+    postsList = originPostsList
+  }
+  else {
+    postsList = originPostsList.filter(post => post.category.category_id === categoryId)
+  }
+}
+
+function setEventsForFilterCategory() {
+  $('#filterCategory').change(function() {
+    let categoryId = $(this).val()
+
+    filterFollowCategory(categoryId)
+    sort($('#filterSort').val())
+    generatePagination()
+    choosePage(1)
+  })
+}
+
+function setEventsForFilterSort() {
+  $('#filterSort').change(function() {
+    let sortId = $(this).val()
+
+    sort(sortId)
+    // generatePagination()
+    choosePage(currentPage)
+  })
+}
+
+function setEventsForFilters() {
+  setEventsForFilterCategory()
+  setEventsForFilterSort()
+  console.log('filter')
 }
 
 function showPostDetail(post) {

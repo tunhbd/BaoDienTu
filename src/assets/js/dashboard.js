@@ -55,6 +55,7 @@ var currentDashboardPage = null
 var userRule = USERS.ADMIN
 var currentPost = null
 var postsList = []
+var originPostsList = []
 var pageCount = 0
 var currentPage = 1
 var mainContent = $('#dashboard-main__right-sidebar')
@@ -83,6 +84,7 @@ function changePage(pageId) {
 // Load posts list from server
 function loadPostsList(pageId) {
   postsList = POSTS_LIST
+  originPostsList = POSTS_LIST
 }
 
 function loadPageContent(pageId) {
@@ -101,24 +103,28 @@ function loadPageContent(pageId) {
       mainContent.html(POSTS_LIST_NONE_STATUS_UI)
       generatePagination()
       choosePage(1)
+      setEventsForFilters()
       break;
     case PAGES.REJECT.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_NONE_STATUS_UI)
       generatePagination()
       choosePage(1)
+      setEventsForFilters()
       break;
     case PAGES.WAITING.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_STATUS_UI)
       generatePagination()
       choosePage(1)
+      setEventsForFilters()
       break;
     case PAGES.PUBLISHED.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_STATUS_UI)
       generatePagination()
       choosePage(1)
+      setEventsForFilters()
       break;
     case PAGES.CATEGORY.id:
       break;

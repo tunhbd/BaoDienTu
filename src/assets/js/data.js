@@ -53,6 +53,30 @@ const CREATE_POST_UI =
 
 const POSTS_LIST_NONE_STATUS_UI =
   `<div class="post-list-container">
+    <div class="filters-container">
+      <div class="input-group mb-3 filter-item filter-category">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="filterCategory">Category</label>
+        </div>
+        <select class="custom-select" id="filterCategory">
+          <option value="ALL" selected>All</option>
+          <option value="CATEG01">Kinh te</option>
+          <option value="CATEG02">Xe</option>
+          <option value="CATEG03">Cong nghe</option>
+        </select>
+      </div>
+
+      <div class="input-group mb-3 filter-item filter-sort">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="filterSort"><i class="fas fa-filter"></i></label>
+        </div>
+        <select class="custom-select" id="filterSort">
+          <option value="1">Increasing created date</option>
+          <option value="2" selected>Decreasing created date</option>
+        </select>
+      </div>
+    </div>
+    
     <table class="post-list">
       <thead class="post-list__header">
         <tr class="post-list__row">
@@ -77,8 +101,34 @@ const POSTS_LIST_NONE_STATUS_UI =
     </div>
   </div>`
 
-  const POSTS_LIST_STATUS_UI =
+const POSTS_LIST_STATUS_UI =
   `<div class="post-list-container">
+    <div class="filters-container">
+      <div class="input-group mb-3 filter-item filter-category">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="filterCategory">Category</label>
+        </div>
+        <select class="custom-select" id="filterCategory">
+          <option value="0" selected>All</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
+
+      <div class="input-group mb-3 filter-item filter-sort">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="filterSort"><i class="fas fa-filter"></i></label>
+        </div>
+        <select class="custom-select" id="filterSort">
+          <option value="1">Increasing created date</option>
+          <option value="2" selected>Decreasing created date</option>
+          <option value="3">Increasing published date</option>
+          <option value="4">Decreasing published date</option>
+        </select>
+      </div>
+    </div>
+
     <table class="post-list">
       <thead class="post-list__header">
         <tr class="post-list__row">
@@ -103,6 +153,29 @@ const POSTS_LIST_NONE_STATUS_UI =
       </ul>
     </div>
   </div>`
+
+const CATEGORIES = [
+  {
+    category_id: 'CATEG01',
+    category_name: 'Kinh te',
+  },
+  {
+    category_id: 'CATEG02',
+    category_name: 'Xe',
+  },
+  {
+    category_id: 'CATEG03',
+    category_name: 'Cong nghe',
+  },
+  {
+    category_id: 'CATEG04',
+    category_name: 'The gioi',
+  },
+  {
+    category_id: 'CATEG05',
+    category_name: 'Xa hoi',
+  }
+]
 
 const POSTS_LIST = [
   {
@@ -299,8 +372,8 @@ const POSTS_LIST = [
       category_name: 'Xe',
     },
     tags: ['trong trot', 'chan nuoi'],
-    created_date: '2019/05/12',
-    published_date: '2019/05/12',
+    created_date: '2019/04/12',
+    published_date: '2019/04/12',
     summary: '',
     content: '',
   },
