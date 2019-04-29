@@ -1,4 +1,4 @@
-!(function(a) {
+function showEditingSpace(a) {
   "use strict";
   let titleInput = a(".title-input");
   let textHarsh = a(".title-harsh");
@@ -55,4 +55,6 @@
       summaryInput.removeClass("summary-input-focus");
     }
   });
-})(jQuery);
+
+  CKEDITOR.replace("create-post-editor");
+}
