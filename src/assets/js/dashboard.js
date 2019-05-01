@@ -50,11 +50,13 @@ const USERS = {
   EDITOR: 'EDITOR'
 }
 const postCountPerPage = 10
+const userCountPerPage = 10
 
 var currentDashboardPage = null
 var userRule = USERS.ADMIN
 var currentPost = null
 var postsList = []
+var usersList = []
 var originPostsList = []
 var pageCount = 0
 var currentPage = 1
@@ -87,6 +89,11 @@ function loadPostsList(pageId) {
   originPostsList = POSTS_LIST
 }
 
+function loadUsersList() {
+  usersList = USERS_LIST
+  console.log('load user list: ', usersList)
+}
+
 function loadPageContent(pageId) {
   currentDashboardPage = pageId
 
@@ -101,36 +108,42 @@ function loadPageContent(pageId) {
     case PAGES.DRAFT.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_NONE_STATUS_UI)
-      generatePagination()
-      choosePage(1)
+      generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
+      choosePage(1, showPostList, initPostListUI)
       setEventsForFilters()
       break;
     case PAGES.REJECT.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_NONE_STATUS_UI)
-      generatePagination()
-      choosePage(1)
+      generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
+      choosePage(1, showPostList, initPostListUI)
       setEventsForFilters()
       break;
     case PAGES.WAITING.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_STATUS_UI)
-      generatePagination()
-      choosePage(1)
+      generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
+      choosePage(1, showPostList, initPostListUI)
       setEventsForFilters()
       break;
     case PAGES.PUBLISHED.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_STATUS_UI)
-      generatePagination()
-      choosePage(1)
+      generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
+      choosePage(1, showPostList, initPostListUI)
       setEventsForFilters()
       break;
     case PAGES.CATEGORY.id:
+      mainContent.html('')
       break;
     case PAGES.TAG.id:
+      mainContent.html('')
       break;
     case PAGES.USER.id:
+      loadUsersList()
+      mainContent.html(USER_LIST_UI)
+      generatePagination(initPageCountFromUserList, showUserList, initUserListUI)
+      choosePage(1, showUserList, initUserListUI)
       break;
   }
 }

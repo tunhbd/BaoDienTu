@@ -1,5 +1,5 @@
 :root {
-    --table-header-bg: #E91E63;
+    --table-header-bg: rgb(233, 30, 99);
     --table-row-bg-hover: rgba(233, 30, 99, 0.3)
 }
 .post-list {
@@ -114,7 +114,7 @@
 .control-buttons button:hover {
     /* font-weight: bold; */
     color: #fff;
-    background-color: #3333ff;
+    background-color: rgb(233, 30, 99);
     border: none!important;
     box-shadow: none!important;
 }

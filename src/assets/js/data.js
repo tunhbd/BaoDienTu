@@ -154,6 +154,34 @@ const POSTS_LIST_STATUS_UI =
     </div>
   </div>`
 
+const USER_LIST_UI = 
+  `<div class="user-list-container">
+    <table class="user-list">
+      <thead class="user-list__header">
+        <tr class="user-list__row">
+          <th class="user-list__cell">User</th>
+          <th class="user-list__cell">Account</th>
+          <th class="user-list__cell">Birthday</th>
+          <th class="user-list__cell">Rule</th>
+          <th class="user-list__cell">Status</th>
+          <th class="user-list__cell user-list__control-icon"></th>
+        </tr>
+      </thead>
+      <tbody class="user-list__content">
+      </tbody>
+    </table>
+    <div class="pagination">
+      <ul class="">
+        <li class="pagination__item pagination__item-control pagination__item-previous-button">
+          <i class="pagination-icon pagination-icon-arrow-left"></i>
+        </li>
+        <li class="pagination__item pagination__item-control pagination__item-next-button">
+          <i class="pagination-icon pagination-icon-arrow-right"></i>
+        </li>
+      </ul>
+    </div>
+  </div>`
+
 const CATEGORIES = [
   {
     category_id: 'CATEG01',
@@ -175,6 +203,129 @@ const CATEGORIES = [
     category_id: 'CATEG05',
     category_name: 'Xa hoi',
   }
+]
+
+const USERS_LIST = [
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
+  {
+    fullname: 'Nguyen Huu Tu',
+    avatar: '../../media/statics/images/avatar_sample.png',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    rule: 'Admin',
+    status: 'Activing',
+  },
 ]
 
 const POSTS_LIST = [

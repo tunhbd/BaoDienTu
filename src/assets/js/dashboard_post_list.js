@@ -37,28 +37,27 @@ function initPostListUI() {
   $('.post-list__content').html('')
 }
 
-function choosePage(pageNum) {
+function choosePage(pageNum, choosePageAction, initForPageCountZero) {
   if (pageNum > 0 && pageNum <= pageCount) {
     currentPage = pageNum
     $('.pagination__item-active').removeClass('pagination__item-active');
     $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
-    showPostList(pageNum)
+    choosePageAction(pageNum)
   }
   else {
-    initPostListUI()
+    initForPageCountZero()
   }
-  
 }
 
-function showPreviousPage() {
+function showPreviousPage(choosePageAction, initForPageCountZero) {
   if (currentPage > 1) {
-    choosePage(currentPage - 1)
+    choosePage(currentPage - 1, choosePageAction, initForPageCountZero)
   }
 }
 
-function showNextPage() {
+function showNextPage(choosePageAction, initForPageCountZero) {
   if (currentPage < pageCount) {
-    choosePage(currentPage + 1)
+    choosePage(currentPage + 1, choosePageAction, initForPageCountZero)
   }
 }
 
@@ -315,12 +314,17 @@ function showPostList(pageNum) {
       postsListObj.append(postItem)
     }
   }
-
 }
 
-function generatePagination() {
-  let pagination = $('.pagination ul')
+function initPageCountFromPostList() {
   pageCount = Math.ceil(postsList.length / postCountPerPage)
+}
+
+
+function generatePagination(initPageCountFunc, choosePageAction, initForPageCountZero) {
+  let pagination = $('.pagination ul')
+  
+  initPageCountFunc()
 
   // init
   pagination.html('')
@@ -329,13 +333,13 @@ function generatePagination() {
       <i class="fas fa-chevron-left"></i>
     </li>`
   )
-  previousBtn.click(() => { showPreviousPage() })
+  previousBtn.click(() => { showPreviousPage(choosePageAction, initForPageCountZero) })
   pagination.append(previousBtn)
 
   for (let index = 1; index <= pageCount; index++) {
     let page = $(`<li page="${index}" class="pagination__item">${index}</li>`)
 
-    page.click(() => { choosePage(index) })
+    page.click(() => { choosePage(index, choosePageAction, initForPageCountZero) })
     pagination.append(page)
   }
 
@@ -344,7 +348,7 @@ function generatePagination() {
       <i class="fas fa-chevron-right"></i>
       </li>`
   )
-  nextBtn.click(() => { showNextPage() })
+  nextBtn.click(() => { showNextPage(choosePageAction, initForPageCountZero) })
   pagination.append(nextBtn)
 }
 
