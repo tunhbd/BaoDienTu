@@ -2,26 +2,24 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <link rel="stylesheet" href="../assets/css/dashboard_post_list.css">
-  <link rel="stylesheet" href="../assets/css/pagination.css">
-  <link rel="stylesheet" href="../assets/js/jquery-ui-1.12.1/jquery-ui.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script src="../assets/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link href="https://fonts.googleapis.com/css?family=Spectral:400,500,600" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
 
-  <title>Draft List</title>
+  <title>Dashboard</title>
+
+  <!-- custom css -->
+  <link rel="stylesheet" href="../assets/css/dashboardCreate.css" />
 </head>
 
 <body class="col-12 ml-auto mr-auto pl-0 pr-0 bao-dien-tu-scrollbar">
   <header id="dashboard-header" class="border-bottom clearfix m-0 p-0">
-    <div class="col-12 col-sm-12 col-md-11 col-lg-11 col-xl-11 ml-auto mr-auto w-100 h-100">
+    <div class="col-12 col-sm-12 ml-auto mr-auto w-100 h-100">
       <div class="dashboard-header__toggle-menu float-left mt-auto mb-auto d-sm-block d-none">
         <img src="../../media/statics/images/ic_toggle_menu.png" alt="" />
       </div>
@@ -31,12 +29,16 @@
       </div>
       <div id="dashboard-header__right-sidebar"
         class="float-right d-flex justify-content-between align-items-center h-100">
-        <div class="image-small-container dashboard-header__right-sidebar__icon"><img
-            src="../../media/statics/images/ic_search.png" alt=""></div>
-        <div class="image-small-container dashboard-header__right-sidebar__icon"><img
-            src="../../media/statics/images/ic_dashboard.png" alt=""></div>
+        <div class="image-small-container dashboard-header__right-sidebar__icon">
+          <img src="../../media/statics/images/ic_search.png" alt="" />
+        </div>
+
+        <div class="image-small-container dashboard-header__right-sidebar__icon">
+          <img src="../../media/statics/images/ic_dashboard.png" alt="" />
+        </div>
+
         <div id="avatar-user" class="rounded-circle overflow-hidden user-menu-is-collapse">
-          <img src="../../media/statics/images/avatar_sample.png" alt="">
+          <img src="../../media/statics/images/avatar_sample.png" alt="" />
         </div>
         <div class="user-menu">
           <ul>
@@ -64,11 +66,11 @@
     </div>
   </header>
   <div id="dashboard-main" class="pt-2 pb-2">
-    <div class="dashboard-main__content col-12 col-sm-12 col-md-11 col-lg-11 col-xl-11 ml-auto mr-auto d-flex">
+    <div class="dashboard-main__content col-12 ml-auto mr-auto d-flex">
       <div id="dashboard-main__left-sidebar" class="border-right d-none d-sm-block">
         <div id="dashboard-main__left-sidebar__menu" class="w-100">
           <div class="menu-item-group pb-1 w-100">
-            <div menu-id="GENERAL" class="menu-item-group__item rounded-pill">
+            <div menu-id="GENERAL" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
               <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-home"></i> -->
               <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
               <span class="menu-item-group__item__title">General</span>
@@ -78,7 +80,7 @@
               <i class="menu-item-group__item__icon fas fa-plus-square"></i>
               <span class="menu-item-group__item__title">Create post</span>
             </div>
-            <div menu-id="DRAFT" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+            <div menu-id="DRAFT" class="menu-item-group__item rounded-pill">
               <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
               <!-- <i class="menu-item-group__item__icon menu-item-group__item__icon-draft"></i> -->
               <i class="menu-item-group__item__icon fas fa-file-alt"></i>
@@ -135,39 +137,68 @@
         </div>
       </div>
       <div id="dashboard-main__right-sidebar" class="pl-1 pr-1 bao-dien-tu-scrollbar">
-        <div class="draft-post-list-container">
-          <table class="post-list">
-            <thead class="post-list__header">
-              <tr class="post-list__row">
-                <th class="post-list__cell">Title</th>
-                <th class="post-list__cell">Category</th>
-                <th class="post-list__cell">Author</th>
-                <th class="post-list__cell">Created Date</th>
-                <th class="post-list__cell"></th>
-              </tr>
-            </thead>
-            <tbody class="post-list__content">
+        <!-- ************************************ -->
+        <!-- Dashboard content -->
+        <div style="padding: 20px;">
+          <form>
+            <div class=" d-flex justify-content-between">
+              <div class="form-group position-relative wrap-input" style="margin-right: 32px">
+                <input type="text" class="form-control title-input" placeholder="Tiêu đề..." />
+                <span class="w-input"></span>
+                <span class="title-harsh">Tiêu đề:</span>
+              </div>
 
-            </tbody>
-          </table>
-          <div class="pagination">
-            <ul class="">
-              <li class="pagination__item pagination__item-control pagination__item-previous-button">
-                <i class="pagination-icon pagination-icon-arrow-left"></i>
-              </li>
-              <li class="pagination__item pagination__item-control pagination__item-next-button">
-                <i class="pagination-icon pagination-icon-arrow-right"></i>
-              </li>
-            </ul>
-          </div>
+              <div class="dropdown w-category form-group wrap-input">
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  Chuyên mục
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">
+                    <span class="border-gradient">
+                      <span class="bg-dropdown">Nông lâm</span>
+                    </span>
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    <span class="border-gradient">
+                      <span class="bg-dropdown">Hàm lâm</span>
+                    </span> </a><a class="dropdown-item" href="#">
+                    <span class="border-gradient">
+                      <span class="bg-dropdown">Lâm Vĩ Dạ</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="form-group position-relative wrap-input">
+              <input type="text" class="form-control tag-input" placeholder="TAGS" />
+              <span class="w-input"></span>
+              <span class="tag-harsh">TAGS:</span>
+            </div>
+            <div class="form-group position-relative wrap-input">
+              <input type="text" class="form-control summary-input" placeholder="Tóm tắt" />
+              <span class="w-input"></span>
+              <span class="summary-harsh">Tóm tắt:</span>
+            </div>
+            <div class="form-group">
+              <textarea name="editor1"></textarea>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary w-button" type="submit">
+                Hoàn tất
+              </button>
+            </div>
+          </form>
         </div>
+        <!-- /Dashboard content -->
+        <!-- ************************************ -->
       </div>
     </div>
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="d-block d-sm-none">
       <!-- <div id="dashboard-main__left-sidebar__menu" class="w-100"> -->
       <div class="menu-item-group pb-1 w-100">
-        <div menu-id="GENERAL" class="menu-item-group__item rounded-pill">
+        <div menu-id="GENERAL" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
           <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
           <span class="menu-item-group__item__title">General</span>
         </div>
@@ -175,7 +206,7 @@
           <i class="menu-item-group__item__icon fas fa-plus-square"></i>
           <span class="menu-item-group__item__title">Create post</span>
         </div>
-        <div menu-id="DRAFT" class="menu-item-group__item rounded-pill menu-item-group__item__activing">
+        <div menu-id="DRAFT" class="menu-item-group__item rounded-pill">
           <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
           <i class="menu-item-group__item__icon fas fa-file-alt"></i>
           <span class="menu-item-group__item__title">Drafts</span>
@@ -236,20 +267,31 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body postDetailModal-dialog-content-body bao-dien-tu-scrollbar">
-
-        </div>
+        <div class="modal-body postDetailModal-dialog-content-body bao-dien-tu-scrollbar"></div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary save-btn" data-dismiss="modal">Save</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary save-btn" data-dismiss="modal">
+            Save
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
         </div>
       </div>
     </div>
   </div>
+
   <!-- Script References -->
+  <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
   <script src="../assets/js/dashboard.js"></script>
-  <script src="../assets/js/dashboard_post_list.js"></script>
-  <script src="../assets/js/dashboard_draft_list.js"></script>
+  <script src="../assets/js/dashboardCreate.js"></script>
+
+  <!-- CKEditor -->
+  <script>
+    CKEDITOR.replace("editor1");
+  </script>
 </body>
 
 </html>

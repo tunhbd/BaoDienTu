@@ -1,56 +1,82 @@
 /**
  * GLOBAL VARIABLES
  */
-var postList = []
-var currentPage = 1
-var pageCount = 5
-var postCountPerPage = 10
+// var postList = []
+// var currentPage = 1
+// var pageCount = 5
+// var postCountPerPage = 10
+
+const FILTERS = {
+  FILTER_SORT: {
+    INCREASING_CREATED_DATE: 1,
+    DECREASING_CREATED_DATE: 2,
+    INCREASING_PUBLISHED_DATE: 3,
+    DECREASING_PUBLISHED_DATE: 4,
+  }
+}
 
 /**
  * FUNCTIONS
  */
-function setEventForPagination(showStatus = false) {
-  $('.pagination__item:not(.pagination__item-control)').click(function () {
-    let chosenPage = parseInt($(this).attr('page'))
-    if (chosenPage != currentPage) {
-      choosePage(chosenPage, showStatus)
-    }
-  })
-  $('.pagination__item-previous-button').click(function () {
-    showPreviousPage(showStatus)
-  })
-  $('.pagination__item-next-button').click(function () {
-    showNextPage(showStatus)
-  })
+// function setEventForPagination(showStatus = false) {
+//   $('.pagination__item:not(.pagination__item-control)').click(function () {
+//     let chosenPage = parseInt($(this).attr('page'))
+//     if (chosenPage != currentPage) {
+//       choosePage(chosenPage, showStatus)
+//     }
+//   })
+//   $('.pagination__item-previous-button').click(function () {
+//     showPreviousPage(showStatus)
+//   })
+//   $('.pagination__item-next-button').click(function () {
+//     showNextPage(showStatus)
+//   })
+// }
+
+function initPostListUI() {
+  $('.post-list__content').html('')
 }
 
-function choosePage(pageNum, showStatus = false) {
-  currentPage = pageNum
-  $('.pagination__item-active').removeClass('pagination__item-active');
-  $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
-  showPostList(pageNum, showStatus)
+function choosePage(pageNum, choosePageAction, initForPageCountZero) {
+  if (pageNum > 0 && pageNum <= pageCount) {
+    currentPage = pageNum
+    $('.pagination__item-active').removeClass('pagination__item-active');
+    $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
+    choosePageAction(pageNum)
+  }
+  else {
+    initForPageCountZero()
+  }
 }
 
-function showPreviousPage(showStatus = false) {
+function showPreviousPage(choosePageAction, initForPageCountZero) {
   if (currentPage > 1) {
-    choosePage(currentPage - 1, showStatus)
+    choosePage(currentPage - 1, choosePageAction, initForPageCountZero)
   }
 }
 
-function showNextPage(showStatus = false) {
+function showNextPage(choosePageAction, initForPageCountZero) {
   if (currentPage < pageCount) {
-    choosePage(currentPage + 1, showStatus)
+    choosePage(currentPage + 1, choosePageAction, initForPageCountZero)
   }
 }
 
-function renderControlTooltip(postId, postIndex, container) {
+function showExistsPostDataToForm(post) {
+  $('input[name="titlePost"]').val(post.title)
+  $('select#categorySelection').val(post.category.category_id)
+  $('input[name="tags"]').val(post.tags.join(','))
+  $('input[name="summary"]').val(post.summary)
+  $('textarea[name="edit-post-editor"]').val(post.content)
+}
+
+function renderControlTooltip(postId, post, container) {
   let control = document.createElement('td')
-  $(control).addClass('post-list__cell')
+  $(control).addClass('post-list__cell control-icon-container')
 
   // edit button and delete button
   if (
-    (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id)
-    &&
+    // (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id)
+    // &&
     (userRule === USERS.WRITER || userRule === USERS.ADMIN)
   ) {
     // buttons container
@@ -60,21 +86,60 @@ function renderControlTooltip(postId, postIndex, container) {
     let controlButtons = document.createElement('div')
     $(controlButtons).addClass('control-buttons')
 
-    // edit button
-    let editControl = document.createElement('button')
-    $(editControl).addClass('btn btn-light')
-    $(editControl).text('Edit')
-    $(editControl).click(function () {
-
-    })
-    $(controlButtons).append(editControl)
+    if (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id) {
+      // edit button
+      let editControl = $(
+        `<button type="button" class="btn btn-raised btn-info edit-btn">
+        <i class="fas fa-pen"></i>
+      </button>`
+      )
+      editControl.click(function (e) {
+        e.stopPropagation()
+        showBaoDienTuDialog(
+          $('body'),
+          'big',
+          'Edit Post',
+          EDIT_POST_UI,
+          [
+            {
+              title: 'Save',
+              callback: () => {
+                // showEditingSpace($, 'edit-post-editor')
+              }
+            }
+          ],
+          () => {
+            showEditingSpace($, 'edit-post-editor')
+            showExistsPostDataToForm(post)
+          }
+        )
+      })
+      $(controlButtons).append(editControl)
+    }
 
     // delete button
-    let deleteControl = document.createElement('button')
-    $(deleteControl).addClass('btn btn-light')
-    $(deleteControl).text('Delete')
-    $(deleteControl).click(function () {
+    let deleteControl = $(
+      `<button type="button" class="btn btn-raised btn-danger delete-btn">
+        <i class="fas fa-times"></i>
+      </button>`
+    )
+    deleteControl.click(function (e) {
+      //delete post
+      e.stopPropagation()
+      showBaoDienTuDialog($('body'), 'small', 'Deleting post confirmation', 'Do you want to delete this post?', [
+        {
+          title: 'Yes, I want',
+          callback: () => {
+            postsList = postsList.filter(post => post.id !== postId)
 
+            originPostsList = originPostsList.filter(post => post.id !== postId)
+            let selectedPageNum = paginationObj.pagination('getSelectedPageNum')
+            showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+            selectedPageNum = selectedPageNum > Math.ceil(postsList.length / postCountPerPage) ? selectedPageNum - 1 : selectedPageNum
+            paginationObj.pagination('go', selectedPageNum)
+          }
+        }
+      ])
     })
     $(controlButtons).append(deleteControl)
 
@@ -85,44 +150,110 @@ function renderControlTooltip(postId, postIndex, container) {
     let controlIcon = document.createElement('img')
     $(controlIcon).addClass('control-icon')
     controlIcon.src = '../../media/statics/images/ic_more.png'
-    
-    $(controlIcon).mouseenter(function() {
-      $(controlTooltip).show()
 
-      $(controlTooltip).mouseenter(function() {
-        $(controlTooltip).show()
+    $(controlIcon).mouseenter(function () {
+      $(controlTooltip).fadeIn(100)
+
+      $(controlTooltip).mouseenter(function () {
+        $(controlTooltip).fadeIn(100)
       })
-      $(controlTooltip).mouseleave(function() {
-        $(controlTooltip).hide()
+      $(controlTooltip).mouseleave(function () {
+        $(controlTooltip).fadeOut(0)
       })
     })
-    $(controlIcon).mouseleave(function() {
-      $(controlTooltip).hide()
+    $(controlIcon).mouseleave(function () {
+      $(controlTooltip).fadeOut(0)
     })
-    // $(controlIcon).tooltip({
-    //   html: true,
-    //   animation: true,
-    //   container,
-    //   trigger: 'hover focus',
-    //   title: controlButtons,
-    //   placement: 'bottom',
-    //   template:
-    //     `<div class="tooltip control-tooltip" role="tooltip">
-            
-    //         <div class="tooltip-inner control-tooltip-inner">
-    //         </div>
-    //       </div>`
-    // })
 
     $(control).append(controlIcon)
-    // $(control).click(function(e) {
-    //   console.log('ko')
-    //   // e.stopPropagation()
-      
-    // })
   }
 
   return control
+}
+
+function sort(sortId) {
+  switch (parseInt(sortId)) {
+    case FILTERS.FILTER_SORT.INCREASING_CREATED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.created_date)) - (new Date(postTwo.created_date)))
+      break;
+    case FILTERS.FILTER_SORT.DECREASING_CREATED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.created_date)) - (new Date(postOne.created_date)))
+      break;
+    case FILTERS.FILTER_SORT.INCREASING_PUBLISHED_DATE:
+      console.log('bo')
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.published_date)) - (new Date(postTwo.published_date)))
+      break;
+    case FILTERS.FILTER_SORT.DECREASING_PUBLISHED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.published_date)) - (new Date(postOne.published_date)))
+      break;
+  }
+}
+
+function filterFollowCategory(categoryId) {
+  if (categoryId === 'ALL') {
+    postsList = originPostsList
+  }
+  else {
+    postsList = originPostsList.filter(post => post.category.category_id === categoryId)
+  }
+}
+
+function setEventsForFilterCategory() {
+  $('#filterCategory').change(function () {
+    let categoryId = $(this).val()
+
+    filterFollowCategory(categoryId)
+    sort($('#filterSort').val())
+    // generatePagination()
+    // choosePage(1)
+    showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+  })
+}
+
+function setEventsForFilterSort() {
+  $('#filterSort').change(function () {
+    let sortId = $(this).val()
+
+    sort(sortId)
+    // generatePagination()
+    paginationObj.pagination('go', paginationObj.pagination('getSelectedPageNum'))
+    // choosePage(currentPage)
+  })
+}
+
+function setEventsForFilters() {
+  setEventsForFilterCategory()
+  setEventsForFilterSort()
+}
+
+function setEventForDeleteRowsButton() {
+  if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
+    $('button.delete-rows').click(() => {
+      let selectedPostObjs = $('.bao-dien-tu-checkbox:checked')
+
+      showBaoDienTuDialog(
+        $('body'),
+        'small',
+        'Deleting post list confirmation',
+        'Do you want to delete these posts?',
+        [
+          {
+            title: 'Yes, I want',
+            callback: () => {
+              selectedPostObjs.each(function () {
+                postsList = postsList.filter(post => post.id !== $(this).attr('post-id'))
+              })
+
+              let selectedPage = paginationObj.pagination('getSelectedPageNum')
+              showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+              selectedPage = selectedPage > Math.ceil(postsList.length / postCountPerPage) ? Math.ceil(postsList.length / postCountPerPage) : selectedPage
+              paginationObj.pagination('go', selectedPage)
+            }
+          }
+        ],
+      )
+    })
+  }
 }
 
 function showPostDetail(post) {
@@ -132,13 +263,14 @@ function showPostDetail(post) {
   $('.postDetailModal-dialog-content-body').html(post.content)
 
   $('.postDetailModal-dialog-content-body').append('<div class="post-info"></div>')
-  $('.post-info').append(`<div><b>Category:</b> ${post.category.category_name}</div>`)
-  $('.post-info').append(`<div><b>Tags:</b> ${post.tags.join(', ')}</div>`)
+  $('.post-info').append(`<div><b>Category:</b> <span class="badge badge-danger">${post.category.category_name}</span></div>`)
+  $('.post-info').append(`<div><b>Tags:</b> ${post.tags.map(tag => `<span class="badge badge-secondary">${tag}</span>`).join(' ')}</div>`)
 
   if (currentDashboardPage !== PAGES.DRAFT.id || (userRule !== USERS.ADMIN && userRule !== USERS.EDITOR)) {
-    $('.save-btn').remove()
+    $('.save-btn').hide()
   }
   else {
+    $('.save-btn').show()
     // Set event for save button
     $('.save-btn').click(function () {
       // do something
@@ -180,9 +312,11 @@ function showCheckingFunction() {
       if ($(this).val() == 1) {
         $('#whyRejectForm').css('display', 'none')
         $('#publishedDateInput').css('display', 'block')
+        $('#publishedDateInput').scroll()
       }
       else {
         $('#whyRejectForm').css('display', 'block')
+        $('#whyRejectForm').scroll()
         $('#publishedDateInput').css('display', 'none')
       }
     })
@@ -195,490 +329,220 @@ function showCheckingFunction() {
   // </div>
 }
 
-function showPostList(pageNum, showStatus = false) {
-  var postListObj = $('.post-list__content')
+function showPostList(pageNum) {
+  var postsListObj = $('.post-list__content')
 
-  postListObj.html('')
+  postsListObj.html('')
 
   let startPos = postCountPerPage * (pageNum - 1)
   let endPos = postCountPerPage * pageNum
-  endPos = endPos > postList.length ? postList.length : endPos
-  
-  if (showStatus) {
+  endPos = endPos > postsList.length ? postsList.length : endPos
+
+  if (PAGES[currentDashboardPage].status) {
     for (let index = startPos; index < endPos; index++) {
       let postItem = $(
         `<tr class="post-list__row" data-toggle="modal" data-target="#postDetail">
-        <td class="post-list__cell">${postList[index].title}</td>
-        <td class="post-list__cell">${postList[index].category.category_name}</td>
-        <td class="post-list__cell">
-          ${
-        (postList[index].author.pseudonym === undefined
-          || postList[index].author.pseudonym === '')
-          ? postList[index].author.name
-          : postList[index].author.pseudonym
+          <td class="post-list__cell">${postsList[index].title}</td>
+          <td class="post-list__cell">${postsList[index].category.category_name}</td>
+          <td class="post-list__cell">
+            ${
+        (postsList[index].author.pseudonym === undefined || postsList[index].author.pseudonym === '')
+          ? postsList[index].author.name
+          : postsList[index].author.pseudonym
         }
-        </td>
-        <td class="post-list__cell">${postList[index].created_date}</td>
-        <td class="post-list__cell">${postList[index].published_date}</td>
-      </tr>`
+          </td>
+          <td class="post-list__cell">${formatVietnameseDate(postsList[index].created_date)}</td>
+          <td class="post-list__cell">${formatVietnameseDate(postsList[index].published_date)}</td>
+        </tr>`
       )
 
-      postItem.append(renderControlTooltip(postList[index].id, index, postItem))
-      postItem.click(function () {
-        showPostDetail(postList[index])
+      postItem.append(renderControlTooltip(postsList[index].id, index, postItem))
+      postItem.click(() => {
+        showPostDetail(postsList[index])
         showCheckingFunction()
       })
-      postListObj.append(postItem)
+      postsListObj.append(postItem)
     }
   }
   else {
     for (let index = startPos; index < endPos; index++) {
       let postItem = $(
         `<tr class="post-list__row" data-toggle="modal" data-target="#postDetail">
-        <td class="post-list__cell">${postList[index].title}</td>
-        <td class="post-list__cell">${postList[index].category.category_name}</td>
-        <td class="post-list__cell">
-          ${
-        (postList[index].author.pseudonym === undefined
-          || postList[index].author.pseudonym === '')
-          ? postList[index].author.name
-          : postList[index].author.pseudonym
+          <td class="post-list__cell">${postsList[index].title}</td>
+          <td class="post-list__cell">${postsList[index].category.category_name}</td>
+          <td class="post-list__cell">
+            ${
+        (postsList[index].author.pseudonym === undefined || postsList[index].author.pseudonym === '')
+          ? postsList[index].author.name
+          : postsList[index].author.pseudonym
         }
-        </td>
-        <td class="post-list__cell">${postList[index].created_date}</td>
-
-      </tr>`
+          </td>
+          <td class="post-list__cell">${formatVietnameseDate(postsList[index].created_date)}</td>
+        </tr>`
       )
 
-      postItem.append(renderControlTooltip(postList[index].id, index, postItem))
+      postItem.append(renderControlTooltip(postsList[index].id, index, postItem))
       postItem.click(function () {
-        showPostDetail(postList[index])
+        showPostDetail(postsList[index])
         showCheckingFunction()
       })
-      postListObj.append(postItem)
+      postsListObj.append(postItem)
     }
   }
-
 }
 
-function generatePagination() {
+function initPageCountFromPostList() {
+  pageCount = Math.ceil(postsList.length / postCountPerPage)
+}
+
+
+function generatePagination(initPageCountFunc, choosePageAction, initForPageCountZero) {
   let pagination = $('.pagination ul')
-  pageCount = Math.ceil(postList.length / postCountPerPage)
+
+  initPageCountFunc()
 
   // init
   pagination.html('')
-  pagination.append(`
-        <li class="pagination__item pagination__item-control pagination__item-previous-button">
-        <i class="pagination-icon pagination-icon-arrow-left"></i>
-      </li>
-      `)
+  let previousBtn = $(
+    `<li class="pagination__item pagination__item-control pagination__item-previous-button">
+      <i class="fas fa-chevron-left"></i>
+    </li>`
+  )
+  previousBtn.click(() => { showPreviousPage(choosePageAction, initForPageCountZero) })
+  pagination.append(previousBtn)
+
   for (let index = 1; index <= pageCount; index++) {
-    pagination.append(`
-            <li page="${index}" class="pagination__item">${index}</li>
-        `)
+    let page = $(`<li page="${index}" class="pagination__item">${index}</li>`)
+
+    page.click(() => { choosePage(index, choosePageAction, initForPageCountZero) })
+    pagination.append(page)
   }
-  pagination.append(`
-        <li class="pagination__item pagination__item-control pagination__item-next-button">
-        <i class="pagination-icon pagination-icon-arrow-right"></i>
-      </li>
-      `)
+
+  let nextBtn = $(
+    `<li class="pagination__item pagination__item-control pagination__item-next-button">
+      <i class="fas fa-chevron-right"></i>
+      </li>`
+  )
+  nextBtn.click(() => { showNextPage(choosePageAction, initForPageCountZero) })
+  pagination.append(nextBtn)
 }
 
-function loadPostList(showStatus = false) {
-  postList = [
-    {
-      id: '0',
-      title: 'Post 01 post 01 post 01 post 01 post 01 post 01 post 01 post 01 post 01 post 01 post 01',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: `<div class="nn-text-post">
-      <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tbody>
-          <tr>
-            <td>
-              <img alt="1123101533" border="0" id="234821"
-                src="https://image.nongnghiep.vn/upload/2019/4/17/1123101533.JPG" title="1123101533"></td>
-          </tr>
-          <tr>
-            <td class="nn-tt-img">
-              Hậu đang say sưa hát bài “Nếu tôi chết hãy chôn tôi với cây đàn guitar”</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        Anh không chỉ đang hát, mà đang chìm vào âm nhạc, “cái phao” đã giúp đứa bé bị mù hẳn lúc mới 12 tuổi bởi
-        căn bệnh “teo thần kinh thị giác” không bị chìm trong tuyệt vọng.</p>
-      <p>
-        Anh là Võ Minh Hậu (46 tuổi) ở phường Bình Định, TX An Nhơn ,Bình Định.
-        &nbsp;</p>
-      <h3>
-        Tuổi thơ đen tối</h3>
-      <p>
-        Là con thứ 5 trong gia đình có 7 anh chị em ở phường Bình Định (TX An Nhơn, Bình Định). Từ thơ ấu, Hậu đã
-        có cơ hội tiếp cận với âm nhạc mỗi ngày. Bởi 2 người anh của Hậu đều là nhạc công nức tiếng tài hoa ở địa
-        phương.</p>
-      <p>
-        Anh Võ Minh Tuấn, cây guitar chủ đạo và anh Võ Minh Việt, tay trống không thể thay thế của phong trào văn
-        nghệ quần chúng lúc bấy giờ.</p>
-      <p>
-        Mỗi ngày, những lúc 2 người anh luyện nhạc, Hậu cứ “đeo” theo 1 bên. Tiếng đàn, tiếng trống dần “ngấm” vào
-        Hậu. Chẳng biết từ lúc nào, âm nhạc đã trở thành cuộc sống của đứa bé mới chỉ 7 – 8 tuổi.</p>
-      <p>
-        Cha mẹ, anh chị của Hậu thấy cậu bé “quấn quýt” với âm nhạc, ai cũng mong sau này Hậu sẽ trở thành 1 thành
-        viên trong ban nhạc gia đình.</p>
-      <p>
-        Thế nhưng “đời không như là mơ”, anh trai của Hậu, tay trống Võ Minh Việt, bất ngờ phải vĩnh viễn giã từ
-        niềm đam mê âm nhạc sau 1 tai nạn giao thông trong 1 lần đi chơi nhạc về ở cái tuổi 40.</p>
-      <p>
-        Từ khi căn nhà vắng tiếng trống của anh trai, Hậu buồn! Nhưng còn buồn hơn khi vừa lên 9 tuổi, đôi mắt của
-        Hậu bỗng dưng không còn nhìn rõ sự vật, cha mẹ đưa Hậu đi khám thì mới biết cậu bé bị căn bệnh “teo thần
-        kinh thị giác”. Hậu được gia đình đưa đi chữa trị khắp nơi, cả Đông Tây y, nhưng không có kết quả. Đến năm
-        12 tuổi thì đôi mắt của Hậu mất ánh sáng hoàn toàn.</p>
-      <p>
-        “Đang bình thường bỗng trở thành trở thành đứa trẻ mù lòa, vô dụng, mọi đi đứng sinh hoạt đều phải nhờ đến
-        cha mẹ, anh chị chăm sóc. Tuyệt vọng, đã nhiều lần tôi muốn tìm đến cái chết để được giải thoát, nhưng cha
-        mẹ anh chị em luôn ở bên cạnh động viên. Khi ấy tôi lại nghĩ đến âm nhạc, dấn thân vào âm nhạc và chính âm
-        nhạc đã vực dậy cuộc đời tôi”, Hậu tâm sự.</p>
-      <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tbody>
-          <tr>
-            <td>
-              <img alt="2123101751" border="0" id="234822"
-                src="https://image.nongnghiep.vn/upload/2019/4/17/2123101751.JPG" title="2123101751"></td>
-          </tr>
-          <tr>
-            <td class="nn-tt-img">
-              Hậu sẽ đàn hát phục vụ khách du lịch khi có yêu cầu</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        “Lúc chưa mù, tôi đã được anh Việt và anh Tuấn tập đánh trống và tập chơi đàn guitar. Sau khi mắt bị mù
-        hẳn, vị trí chức năng từng cái trống trong giàn trống và vị trí những dây đàn trên cần đàn guitar vẫn còn
-        in trong đầu, nhờ đó việc tập của tôi đỡ vất vả hơn những người bị mù bẩm sinh. Tuy nhiên, thời gian đầu
-        tôi cũng gặp rất nhiều khó khăn, cặp dùi thi thoảng cứ gõ trật trống. Cầm đến cây guitar còn vất vả hơn
-        nữa, vì 6 dây đàn đã nhỏ mà khoảng cách lại rất gần nhau, nên khi bấm dây này cứ lẫn dây kia, muốn bấm hợp
-        âm này nhưng tay bấm nhầm nên tiếng đàn lạc điệu. Hơn nữa, vì không nhìn thấy được bài nhạc nên tôi phải
-        “đọc” giai điệu, tiết tấu từng bài hát bằng trí nhớ và mày mò luyện tập cho đến khi thuộc”, Hậu kể.
-        &nbsp;</p>
-      <h3>
-        Có công mài sắt…</h3>
-      <p>
-        Từ khi đôi mắt mất ánh sáng, Hậu rất ngại ra ngoài, cả ngày anh thui thủi ở nhà, phần nhiều thời gian dành
-        cho âm nhạc, cho những loại nhạc cụ. Vậy nhưng, nếu đôi tay chỉ miệt mài mà trong người không có tố chất
-        âm nhạc thì dẫu luyện tập chuyên cần đến mấy cũng khó thành công. Ngoài khổ luyện, năng khiếu âm nhạc
-        chính là tố chất khiến chẳng bao lâu sau Hậu đạt được ước nguyện.</p>
-      <p>
-        Sau nhiều năm tháng miệt mài, nhạc cụ thành thạo đầu tiên của Hậu là trống. Về sau, 6 dây đàn guitar cũng
-        không còn làm khó anh, ngón đàn của anh có thể “nhả” ra những giai điệu ngọt ngào chẳng thua người anh Võ
-        Minh Tuấn.</p>
-      <p>
-        Tiếp đến, Hậu thử sức mình với cây đàn organ và anh cũng đã nhanh chóng làm chủ bàn phím. Đàn “chay” thôi
-        cũng chán, Hậu bắt đầu luyện giọng hát. Chất giọng trầm ấm của anh được nội tâm tiếp sức, nên Hậu sở hữu
-        được giọng hát rất truyền cảm, nhất là khi chuyển tải những tâm trạng buồn, những day dứt trong cuộc đời.
-      </p>
-      <p>
-        Năm 18 tuổi, Hậu mong có 1 ngày được ôm đàn hát trên sân khấu. Giấc mơ ấy rồi cũng trở thành hiện thực.
-        Trong 1 hội diễn văn nghệ quần chúng được tổ chức tại TP Quy Nhơn (Bình Định), Hậu được mời biểu diễn. Lần
-        đầu lên sân khấu ấy đã tiếp thêm động lực cho Hậu bằng sự cổ vũ nhiệt thành của khán giả. Hậu đã chiếm
-        được tình yêu của người yêu nghệ thuật.</p>
-      <p>
-        Năm 2006, Hậu trở thành “đứa con” trong “mái ấm” Trung tâm người khuyết tật Nguyễn Nga đóng trên địa bàn
-        TP Quy Nhơn, trực thuộc Hội bảo trợ người khuyết tật và Bảo vệ quyền trẻ em tỉnh Bình Định. Tại đây, Hậu
-        đã “truyền lửa” âm nhạc cho những đứa trẻ khuyết tật khác.</p>
-      <p>
-        Noi gương Hậu, những trẻ em khuyết tật tìm thấy được niềm vui và bước qua mặc cảm để hòa mình vào cuộc
-        sống.</p>
-      <p>
-        Từ đó, Hậu tự tin góp mặt với nhiều chương trình văn nghệ. Những kỷ niệm đáng nhớ nhất với Hậu là vào năm
-        2007, anh được vinh dự mời tham gia biểu diễn văn nghệ khắp cả nước trong gần 2 năm trời do Trung ương Hội
-        bảo trợ Người tàn tật và Trẻ mồ côi tổ chức; tham gia cuộc thi Tiếng hát Karaoke năm 2009 do Liên đoàn lao
-        động tỉnh Bình Định tổ chức và lọt vào Top 10; giải nhất đơn ca trong Hội trại Lý Công Uẩn do Câu lạc bộ
-        Hoành Pháp Trẻ tổ chức tại khu du lịch Đại Nam (Bình Dương) năm 2010…</p>
-      <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tbody>
-          <tr>
-            <td>
-              <img alt="3123101877" border="0" id="234823"
-                src="https://image.nongnghiep.vn/upload/2019/4/17/3123101877.jpg" title="3123101877"></td>
-          </tr>
-          <tr>
-            <td class="nn-tt-img">
-              2 tay Hậu “múa” trên bộ trống cổ truyền</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        Hậu còn tích cực tham gia các hoạt động từ thiện, các hoạt động văn nghệ từ thiện ở chùa, các trung tâm
-        trẻ mồ côi. Hậu không những là nhạc công, là giọng ca chính, mà anh còn phụ trách luôn phần tập những ca
-        khúc cho cả nhóm. Thời gian gần đây, Hậu còn được nhiều quán cà phê nhạc sống mời về chơi guitar cho
-        chương trình mỗi đêm, cả chơi nhạc đám cưới và phục vụ khách du lịch khi có yêu cầu.</p>
-      <p>
-        “Mỗi ngày được ôm đàn, được hát là hạnh phúc lắm rồi. Hơn nữa, những show chơi nhạc vừa được thỏa lòng đam
-        mê, vừa cho tôi tiền để có thể tự chủ được phần nào cuộc sống của mình, không còn hoàn toàn lệ thuộc vào
-        gia đình như trước đây”, Hậu bộc bạch.</p>
 
-      <div class="nn-user-post">
-        VŨ ĐÌNH THUNG
-        <span></span>
-      </div>
-    </div>`
-    },
-    {
-      id: '1',
-      title: 'Post 02',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01.1',
-        category_name: 'Nông nghiệp',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: 'Post 02',
-    },
-    {
-      id: '2',
-      title: 'Post 03',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01.2',
-        category_name: 'Công nghiệp',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: 'Post 03'
-    },
-    {
-      id: '3',
-      title: 'Post 04',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ02',
-        category_name: 'Xe',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: '',
-    },
-    {
-      id: '4',
-      title: 'Post 05',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ03',
-        category_name: 'Xã hội',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '5',
-      title: 'Post 06',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ04',
-        category_name: 'Pháp luật',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '6',
-      title: 'Post 07',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ05',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '7',
-      title: 'Post 08',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '8',
-      title: 'Post 09',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '9',
-      title: 'Post 10',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '10',
-      title: 'Post 11',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '11',
-      title: 'Post 12',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '12',
-      title: 'Post 13',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '13',
-      title: 'Post 14',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-    {
-      id: '14',
-      title: 'Post 15',
-      author: {
-        name: 'Nguyen Huu Tu',
-        pseudonym: '',
-      },
-      category: {
-        category_id: 'categ01',
-        category_name: 'Kinh Tế',
-      },
-      tags: ['trong trot', 'chan nuoi'],
-      created_date: '2019/05/12',
-      published_date: '2019/05/12',
-      summary: '',
-      content: ''
-    },
-  ]
-  generatePagination()
-  choosePage(1, showStatus)
+// new functions
+
+function generatePostList(dataList) {
+  var postsListObj = $('<div></div>')
+
+  postsListObj.html('')
+
+  // let startPos = postCountPerPage * (pageNum - 1)
+  // let endPos = postCountPerPage * pageNum
+  // endPos = endPos > postsList.length ? postsList.length : endPos
+
+  if (PAGES[currentDashboardPage].status) {
+    dataList.forEach(data => {
+      let postItem = $(
+        `<tr class="post-list__row" data-toggle="modal" data-target="#postDetail">
+          <td class="post-list__cell post-list__cell-choose">
+            <div class="custom-control custom-checkbox d-flex align-content-center">
+              <input type="checkbox" class="custom-control-input bao-dien-tu-checkbox" post-id="${data.id}" id="checkbox-post-${data.id}">
+              <label class="custom-control-label bao-dien-tu-checkbox-mark" for="checkbox-post-${data.id}"></label>
+            </div>
+          </td>
+          <td class="post-list__cell">${data.title}</td>
+          <td class="post-list__cell">${data.category.category_name}</td>
+          <td class="post-list__cell">
+            ${
+        (data.author.pseudonym === undefined || data.author.pseudonym === '')
+          ? data.author.name
+          : data.author.pseudonym
+        }
+          </td>
+          <td class="post-list__cell">${formatVietnameseDate(data.created_date)}</td>
+          <td class="post-list__cell">${formatVietnameseDate(data.published_date)}</td>
+        </tr>`
+      )
+
+      postItem.append(renderControlTooltip(data.id, data, postItem))
+      postItem.click(() => {
+        showPostDetail(data)
+        showCheckingFunction()
+      })
+      if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
+        postItem.children(`.post-list__cell-choose`).click((e) => {
+          e.stopPropagation()
+  
+          if ($('.post-list__cell-choose input:checked').length > 0) {
+            $('button.delete-rows').removeAttr('disabled')
+          }
+          else {
+            $('button.delete-rows').attr('disabled', true)
+          }
+        })
+      }
+      postsListObj.append(postItem)
+    })
+  }
+  else {
+    dataList.forEach(data => {
+      let postItem = $(
+        `<tr class="post-list__row" data-toggle="modal" data-target="#postDetail">
+          <td class="post-list__cell post-list__cell-choose">
+            <div class="custom-control custom-checkbox d-flex align-content-center">
+              <input type="checkbox" class="custom-control-input bao-dien-tu-checkbox" post-id="${data.id}" id="checkbox-post-${data.id}">
+              <label class="custom-control-label bao-dien-tu-checkbox-mark" for="checkbox-post-${data.id}"></label>
+            </div>
+          </td>
+          <td class="post-list__cell">${data.title}</td>
+          <td class="post-list__cell">${data.category.category_name}</td>
+          <td class="post-list__cell">
+            ${
+        (data.author.pseudonym === undefined || data.author.pseudonym === '')
+          ? data.author.name
+          : data.author.pseudonym
+        }
+          </td>
+          <td class="post-list__cell">${formatVietnameseDate(data.created_date)}</td>
+        </tr>`
+      )
+
+      postItem.append(renderControlTooltip(data.id, data, postItem))
+      postItem.click(function () {
+        showPostDetail(data)
+        showCheckingFunction()
+      })
+      if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
+        postItem.children(`.post-list__cell-choose`).click((e) => {
+          e.stopPropagation()
+  
+          if ($('.post-list__cell-choose input:checked').length > 0) {
+            $('button.delete-rows').removeAttr('disabled')
+          }
+          else {
+            $('button.delete-rows').attr('disabled', true)
+          }
+        })
+      }
+      postsListObj.append(postItem)
+    })
+  }
+
+  return postsListObj.children()
 }
 
-/**
- * MAIN SCRIPT
- */
-
+function showDataListWithPagination(countPerPage, paginationContainer, dataSource, dataContainer, generateDataListFunc) {
+  paginationObj = paginationContainer
+  paginationObj.pagination({
+    dataSource: dataSource,
+    pageSize: countPerPage,
+    showGoInput: true,
+    showGoButton: true,
+    className: 'paginationjs-theme-bao-dien-tu paginationjs-big',
+    callback: function (data, pagination) {
+      var dataList = generateDataListFunc(data);
+      $(dataContainer).html('')
+      $(dataContainer).append(dataList)
+    }
+  });
+}
 
