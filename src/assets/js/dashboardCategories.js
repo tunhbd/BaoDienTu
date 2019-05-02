@@ -1,17 +1,18 @@
-function showTagsList(a, dataSource) {
+const CATEGORY_COUNT_PER_PAGE = 10
+function showCategoriesList(a, dataSource) {
   "use strict";
 
-  let tags = dataSource
+  let categories = dataSource
 
   // pagination
   $("#pagination-container").pagination({
-    dataSource: tags,
-    pageSize: 10,
+    dataSource: categories,
+    pageSize: CATEGORY_COUNT_PER_PAGE,
     showGoInput: true,
     showGoButton: true,
     className: 'paginationjs-theme-bao-dien-tu paginationjs-big',
-    callback: function(data, pagination) {
-      var html = listTags(data);
+    callback: function (data, pagination) {
+      var html = listCategories(data);
       $("#data-container").html(html);
 
       // reset countCheck
@@ -21,7 +22,7 @@ function showTagsList(a, dataSource) {
         .attr("disabled", true);
 
       // click table
-      a("tr td:not(:first-child)").click(function(event) {
+      a("tr td:not(:first-child)").click(function (event) {
         let checkbox = a(this)
           .closest("tr")
           .find("input[type='checkbox']");
@@ -32,7 +33,7 @@ function showTagsList(a, dataSource) {
       });
 
       // change checkbox
-      a('.checkbox input[type="checkbox"]').change(function(event) {
+      a('.checkbox input[type="checkbox"]').change(function (event) {
         a(this)
           .closest("tr")
           .toggleClass("selected");
@@ -40,24 +41,24 @@ function showTagsList(a, dataSource) {
         let check = a('.checkbox input[type="checkbox"]');
         //if check, open remove all checked
         let countCheck = 0;
-        check.each(function() {
+        check.each(function () {
           if (a(this).attr("checked")) {
             countCheck++;
           }
         });
         countCheck !== 0
           ? a("#delete-all")
-              .removeClass("btn-outline-secondary")
-              .addClass("btn-outline-danger")
-              .attr("disabled", false)
+            .removeClass("btn-outline-secondary")
+            .addClass("btn-outline-danger")
+            .attr("disabled", false)
           : a("#delete-all")
-              .addClass("btn-outline-secondary")
-              .removeClass("btn-outline-danger")
-              .attr("disabled", true);
+            .addClass("btn-outline-secondary")
+            .removeClass("btn-outline-danger")
+            .attr("disabled", true);
       });
 
       // delete
-      a(".delete-btn").click(function(event) {
+      a(".delete-btn").click(function (event) {
         event.preventDefault();
         a(this)
           .closest("tr")
@@ -65,7 +66,7 @@ function showTagsList(a, dataSource) {
       });
 
       // edit
-      a(".update-btn").click(function(event) {
+      a(".update-btn").click(function (event) {
         event.preventDefault();
         event.stopPropagation();
         $("#submit-modal-btn").text("Cập nhật");
@@ -76,14 +77,14 @@ function showTagsList(a, dataSource) {
   });
 
   // add new
-  a("#add-new").click(function(event) {
+  a("#add-new").click(function (event) {
     $("#submit-modal-btn").text("Thêm");
     $("#tag-modal-label").text("Thêm mới");
     $("#tag-modal").modal("show");
   });
 }
 
-function listTags(data) {
+function listCategories(data) {
   return data
     .map(item => {
       return `
@@ -96,7 +97,12 @@ function listTags(data) {
           </td>
           <td scope="row">
             <span
-              >${item.tag_name}</span
+              >${item.category_name}</span
+            >
+          </td>
+          <td scope="row">
+            <span
+              >${item.parent_category !== null ? item.parent_category.category_name : 'Null'}</span
             >
           </td>
           <td  class="text-center" scope="row">

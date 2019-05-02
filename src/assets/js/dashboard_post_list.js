@@ -61,7 +61,15 @@ function showNextPage(choosePageAction, initForPageCountZero) {
   }
 }
 
-function renderControlTooltip(postId, postIndex, container) {
+function showExistsPostDataToForm(post) {
+  $('input[name="titlePost"]').val(post.title)
+  $('select#categorySelection').val(post.category.category_id)
+  $('input[name="tags"]').val(post.tags.join(','))
+  $('input[name="summary"]').val(post.summary)
+  $('textarea[name="edit-post-editor"]').val(post.content)
+}
+
+function renderControlTooltip(postId, post, container) {
   let control = document.createElement('td')
   $(control).addClass('post-list__cell control-icon-container')
 
@@ -85,8 +93,26 @@ function renderControlTooltip(postId, postIndex, container) {
         <i class="fas fa-pen"></i>
       </button>`
       )
-      editControl.click(function () {
-
+      editControl.click(function (e) {
+        e.stopPropagation()
+        showBaoDienTuDialog(
+          $('body'),
+          'big',
+          'Edit Post',
+          EDIT_POST_UI,
+          [
+            {
+              title: 'Save',
+              callback: () => {
+                // showEditingSpace($, 'edit-post-editor')
+              }
+            }
+          ],
+          () => {
+            showEditingSpace($, 'edit-post-editor')
+            showExistsPostDataToForm(post)
+          }
+        )
       })
       $(controlButtons).append(editControl)
     }
@@ -97,8 +123,23 @@ function renderControlTooltip(postId, postIndex, container) {
         <i class="fas fa-times"></i>
       </button>`
     )
-    deleteControl.click(function () {
+    deleteControl.click(function (e) {
+      //delete post
+      e.stopPropagation()
+      showBaoDienTuDialog($('body'), 'small', 'Deleting post confirmation', 'Do you want to delete this post?', [
+        {
+          title: 'Yes, I want',
+          callback: () => {
+            postsList = postsList.filter(post => post.id !== postId)
 
+            originPostsList = originPostsList.filter(post => post.id !== postId)
+            let selectedPageNum = paginationObj.pagination('getSelectedPageNum')
+            showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+            selectedPageNum = selectedPageNum > Math.ceil(postsList.length / postCountPerPage) ? selectedPageNum - 1 : selectedPageNum
+            paginationObj.pagination('go', selectedPageNum)
+          }
+        }
+      ])
     })
     $(controlButtons).append(deleteControl)
 
@@ -139,7 +180,7 @@ function sort(sortId) {
       postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.created_date)) - (new Date(postOne.created_date)))
       break;
     case FILTERS.FILTER_SORT.INCREASING_PUBLISHED_DATE:
-    console.log('bo')
+      console.log('bo')
       postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.published_date)) - (new Date(postTwo.published_date)))
       break;
     case FILTERS.FILTER_SORT.DECREASING_PUBLISHED_DATE:
@@ -158,30 +199,61 @@ function filterFollowCategory(categoryId) {
 }
 
 function setEventsForFilterCategory() {
-  $('#filterCategory').change(function() {
+  $('#filterCategory').change(function () {
     let categoryId = $(this).val()
 
     filterFollowCategory(categoryId)
     sort($('#filterSort').val())
-    generatePagination()
-    choosePage(1)
+    // generatePagination()
+    // choosePage(1)
+    showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
   })
 }
 
 function setEventsForFilterSort() {
-  $('#filterSort').change(function() {
+  $('#filterSort').change(function () {
     let sortId = $(this).val()
 
     sort(sortId)
     // generatePagination()
-    choosePage(currentPage)
+    paginationObj.pagination('go', paginationObj.pagination('getSelectedPageNum'))
+    // choosePage(currentPage)
   })
 }
 
 function setEventsForFilters() {
   setEventsForFilterCategory()
   setEventsForFilterSort()
-  console.log('filter')
+}
+
+function setEventForDeleteRowsButton() {
+  if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
+    $('button.delete-rows').click(() => {
+      let selectedPostObjs = $('.bao-dien-tu-checkbox:checked')
+
+      showBaoDienTuDialog(
+        $('body'),
+        'small',
+        'Deleting post list confirmation',
+        'Do you want to delete these posts?',
+        [
+          {
+            title: 'Yes, I want',
+            callback: () => {
+              selectedPostObjs.each(function () {
+                postsList = postsList.filter(post => post.id !== $(this).attr('post-id'))
+              })
+
+              let selectedPage = paginationObj.pagination('getSelectedPageNum')
+              showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+              selectedPage = selectedPage > Math.ceil(postsList.length / postCountPerPage) ? Math.ceil(postsList.length / postCountPerPage) : selectedPage
+              paginationObj.pagination('go', selectedPage)
+            }
+          }
+        ],
+      )
+    })
+  }
 }
 
 function showPostDetail(post) {
@@ -191,13 +263,14 @@ function showPostDetail(post) {
   $('.postDetailModal-dialog-content-body').html(post.content)
 
   $('.postDetailModal-dialog-content-body').append('<div class="post-info"></div>')
-  $('.post-info').append(`<div><b>Category:</b> ${post.category.category_name}</div>`)
-  $('.post-info').append(`<div><b>Tags:</b> ${post.tags.join(', ')}</div>`)
+  $('.post-info').append(`<div><b>Category:</b> <span class="badge badge-danger">${post.category.category_name}</span></div>`)
+  $('.post-info').append(`<div><b>Tags:</b> ${post.tags.map(tag => `<span class="badge badge-secondary">${tag}</span>`).join(' ')}</div>`)
 
   if (currentDashboardPage !== PAGES.DRAFT.id || (userRule !== USERS.ADMIN && userRule !== USERS.EDITOR)) {
-    $('.save-btn').remove()
+    $('.save-btn').hide()
   }
   else {
+    $('.save-btn').show()
     // Set event for save button
     $('.save-btn').click(function () {
       // do something
@@ -239,9 +312,11 @@ function showCheckingFunction() {
       if ($(this).val() == 1) {
         $('#whyRejectForm').css('display', 'none')
         $('#publishedDateInput').css('display', 'block')
+        $('#publishedDateInput').scroll()
       }
       else {
         $('#whyRejectForm').css('display', 'block')
+        $('#whyRejectForm').scroll()
         $('#publishedDateInput').css('display', 'none')
       }
     })
@@ -323,7 +398,7 @@ function initPageCountFromPostList() {
 
 function generatePagination(initPageCountFunc, choosePageAction, initForPageCountZero) {
   let pagination = $('.pagination ul')
-  
+
   initPageCountFunc()
 
   // init
@@ -350,5 +425,124 @@ function generatePagination(initPageCountFunc, choosePageAction, initForPageCoun
   )
   nextBtn.click(() => { showNextPage(choosePageAction, initForPageCountZero) })
   pagination.append(nextBtn)
+}
+
+
+// new functions
+
+function generatePostList(dataList) {
+  var postsListObj = $('<div></div>')
+
+  postsListObj.html('')
+
+  // let startPos = postCountPerPage * (pageNum - 1)
+  // let endPos = postCountPerPage * pageNum
+  // endPos = endPos > postsList.length ? postsList.length : endPos
+
+  if (PAGES[currentDashboardPage].status) {
+    dataList.forEach(data => {
+      let postItem = $(
+        `<tr class="post-list__row" data-toggle="modal" data-target="#postDetail">
+          <td class="post-list__cell post-list__cell-choose">
+            <div class="custom-control custom-checkbox d-flex align-content-center">
+              <input type="checkbox" class="custom-control-input bao-dien-tu-checkbox" post-id="${data.id}" id="checkbox-post-${data.id}">
+              <label class="custom-control-label bao-dien-tu-checkbox-mark" for="checkbox-post-${data.id}"></label>
+            </div>
+          </td>
+          <td class="post-list__cell">${data.title}</td>
+          <td class="post-list__cell">${data.category.category_name}</td>
+          <td class="post-list__cell">
+            ${
+        (data.author.pseudonym === undefined || data.author.pseudonym === '')
+          ? data.author.name
+          : data.author.pseudonym
+        }
+          </td>
+          <td class="post-list__cell">${formatVietnameseDate(data.created_date)}</td>
+          <td class="post-list__cell">${formatVietnameseDate(data.published_date)}</td>
+        </tr>`
+      )
+
+      postItem.append(renderControlTooltip(data.id, data, postItem))
+      postItem.click(() => {
+        showPostDetail(data)
+        showCheckingFunction()
+      })
+      if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
+        postItem.children(`.post-list__cell-choose`).click((e) => {
+          e.stopPropagation()
+  
+          if ($('.post-list__cell-choose input:checked').length > 0) {
+            $('button.delete-rows').removeAttr('disabled')
+          }
+          else {
+            $('button.delete-rows').attr('disabled', true)
+          }
+        })
+      }
+      postsListObj.append(postItem)
+    })
+  }
+  else {
+    dataList.forEach(data => {
+      let postItem = $(
+        `<tr class="post-list__row" data-toggle="modal" data-target="#postDetail">
+          <td class="post-list__cell post-list__cell-choose">
+            <div class="custom-control custom-checkbox d-flex align-content-center">
+              <input type="checkbox" class="custom-control-input bao-dien-tu-checkbox" post-id="${data.id}" id="checkbox-post-${data.id}">
+              <label class="custom-control-label bao-dien-tu-checkbox-mark" for="checkbox-post-${data.id}"></label>
+            </div>
+          </td>
+          <td class="post-list__cell">${data.title}</td>
+          <td class="post-list__cell">${data.category.category_name}</td>
+          <td class="post-list__cell">
+            ${
+        (data.author.pseudonym === undefined || data.author.pseudonym === '')
+          ? data.author.name
+          : data.author.pseudonym
+        }
+          </td>
+          <td class="post-list__cell">${formatVietnameseDate(data.created_date)}</td>
+        </tr>`
+      )
+
+      postItem.append(renderControlTooltip(data.id, data, postItem))
+      postItem.click(function () {
+        showPostDetail(data)
+        showCheckingFunction()
+      })
+      if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
+        postItem.children(`.post-list__cell-choose`).click((e) => {
+          e.stopPropagation()
+  
+          if ($('.post-list__cell-choose input:checked').length > 0) {
+            $('button.delete-rows').removeAttr('disabled')
+          }
+          else {
+            $('button.delete-rows').attr('disabled', true)
+          }
+        })
+      }
+      postsListObj.append(postItem)
+    })
+  }
+
+  return postsListObj.children()
+}
+
+function showDataListWithPagination(countPerPage, paginationContainer, dataSource, dataContainer, generateDataListFunc) {
+  paginationObj = paginationContainer
+  paginationObj.pagination({
+    dataSource: dataSource,
+    pageSize: countPerPage,
+    showGoInput: true,
+    showGoButton: true,
+    className: 'paginationjs-theme-bao-dien-tu paginationjs-big',
+    callback: function (data, pagination) {
+      var dataList = generateDataListFunc(data);
+      $(dataContainer).html('')
+      $(dataContainer).append(dataList)
+    }
+  });
 }
 

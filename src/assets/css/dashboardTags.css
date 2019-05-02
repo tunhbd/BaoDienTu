@@ -60,24 +60,25 @@ td {
 }
 
 .thead-dark {
-  background: #aaa;
+  background: #e91e63;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   color: white;
+  font-weight: bold;
 }
 
-tbody tr {
+tbody#data-container tr {
   height: 68px;
   cursor: pointer;
 }
 
-tr .w-table-actions {
+#data-container tr .w-table-actions {
   transition: all 0.25s ease-in-out;
   opacity: 0;
   transform: translateY(50%);
 }
 
-tr:hover .w-table-actions {
+#data-container tr:hover .w-table-actions {
   opacity: 1;
   transform: translateY(0);
 }

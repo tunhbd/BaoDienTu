@@ -186,3 +186,22 @@
 .filter-sort {
     width: 300px!important;
 }
+
+.paginationjs.paginationjs-theme-bao-dien-tu .paginationjs-go-input > input[type="text"], 
+.paginationjs.paginationjs-theme-bao-dien-tu .paginationjs-pages li {
+    border-color: #E91E63;
+}
+.paginationjs.paginationjs-theme-bao-dien-tu .paginationjs-pages li.active > a {
+    background-color: #E91E63;
+    color: #fff;
+}
+.paginationjs.paginationjs-theme-bao-dien-tu .paginationjs-go-button > input[type="button"] {
+    background: #E91E63;
+    border-color: #E91E63;
+    color: #fff;
+}
+
+.bao-dien-tu-checkbox:checked ~ .bao-dien-tu-checkbox-mark:before {
+    background-color: #E91E63;
+    border-color: #E91E63;
+}

@@ -74,7 +74,7 @@
 }
 .summary-input-focus,
 .summary-input:focus {
-  padding-left: 60px !important;
+  padding-left: 70px !important;
 }
 
 #dropdownMenuButton {
@@ -136,4 +136,13 @@
   transform: scale(1.005);
   -webkit-font-smoothing: antialiased;
   box-shadow: 0 0 8px rgb(255, 225, 235);
+}
+
+.select-category-container {
+  width: 300px;
+  height: 100%;
+}
+.select-category-container select{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }

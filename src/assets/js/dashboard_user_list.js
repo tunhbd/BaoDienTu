@@ -1,9 +1,8 @@
 function initPageCountFromUserList() {
   pageCount = Math.ceil(usersList.length / userCountPerPage)
-  console.log('page count', pageCount)
 }
 
-function generateUserItemControlTooltip() {
+function generateUserItemControlTooltip(account) {
   let controlObj = $('<td class="user-list__cell user-list__control"></td>')
 
   let controlIconObj = $('<i class="fas fa-ellipsis-v user-list__control-icon"></i>')
@@ -22,7 +21,19 @@ function generateUserItemControlTooltip() {
   let deleteBtn = $('<button type="button" class="btn btn-secondary user-list__control-menu__buttons__button user-list__control-menu__buttons__button-delete"><i class="fas fa-times"></i></button>')
   controlMenuButtonsObj.append(deleteBtn)
   deleteBtn.click(() => {
+    showBaoDienTuDialog($('body'), 'small', 'Deleting user confirmation', 'Do you want to delete this user?', [
+      {
+        title: 'Yes, I want',
+        callback: () => {
+          usersList = usersList.filter(user => user.account !== account)
+          let selectedPageNum = paginationObj.pagination('getSelectedPageNum')
+          selectedPageNum = selectedPageNum > Math.ceil(usersList.length / userCountPerPage) ? selectedPageNum - 1 : selectedPageNum
 
+          showDataListWithPagination(userCountPerPage, $('.pagination'), usersList, $('.user-list__content'), generateUserList)
+          paginationObj.pagination('go', selectedPageNum)
+        }
+      }
+    ])
   })
 
   controlObj.mouseenter(() => {
@@ -66,10 +77,10 @@ function generateUserItem(user) {
   let userRuleObj = $(`<td class="user-list__cell">${user.rule}</td>`)
   userObj.append(userRuleObj)
 
-  let userStatusObj = $(`<td class="user-list__cell">${user.status}</td>`)
+  let userStatusObj = $(`<td class="user-list__cell"><span class="badge badge-success p-2">${user.status}</span></td>`)
   userObj.append(userStatusObj)
 
-  userObj.append(generateUserItemControlTooltip())
+  userObj.append(generateUserItemControlTooltip(user.account))
 
   return userObj
 }
@@ -78,14 +89,17 @@ function initUserListUI() {
   $('.user-list__content').html('')
 }
 
-function showUserList(pageNum) {
-  let usersListContainer = $('.user-list__content')
-  let startPos = (pageNum - 1) * userCountPerPage
-  let endPos = pageNum * userCountPerPage
-  endPos = endPos > usersList.length ? usersList.length : endPos
+function generateUserList(dataList) {
+  let usersListContainer = $('<div></div>')
+  // let startPos = (pageNum - 1) * userCountPerPage
+  // let endPos = pageNum * userCountPerPage
+  // endPos = endPos > usersList.length ? usersList.length : endPos
 
   usersListContainer.html('')
-  for (let index = startPos; index < endPos; index++) {
-    usersListContainer.append(generateUserItem(usersList[index]))
-  }
+
+  dataList.forEach(data => {
+    usersListContainer.append(generateUserItem(data))
+  })
+
+  return usersListContainer.children()
 }

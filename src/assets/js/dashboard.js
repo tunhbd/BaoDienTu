@@ -57,10 +57,13 @@ var userRule = USERS.ADMIN
 var currentPost = null
 var postsList = []
 var usersList = []
+var tagsList = []
+var categoriesList = []
 var originPostsList = []
 var pageCount = 0
 var currentPage = 1
 var mainContent = $('#dashboard-main__right-sidebar')
+var paginationObj = null
 
 /**
  * FUNCTIONS
@@ -91,7 +94,14 @@ function loadPostsList(pageId) {
 
 function loadUsersList() {
   usersList = USERS_LIST
-  console.log('load user list: ', usersList)
+}
+
+function loadTagsList() {
+  tagsList = TAGS_LIST
+}
+
+function loadCategoriesList() {
+  categoriesList = CATEGORIES
 }
 
 function loadPageContent(pageId) {
@@ -103,47 +113,60 @@ function loadPageContent(pageId) {
       break;
     case PAGES.CREATE_POST.id:
       mainContent.html(CREATE_POST_UI)
-      !showEditingSpace($)
+      showEditingSpace($, 'create-post-editor')
       break;
     case PAGES.DRAFT.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_NONE_STATUS_UI)
-      generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
-      choosePage(1, showPostList, initPostListUI)
+      showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+      // generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
+      // choosePage(1, showPostList, initPostListUI)
+      setEventForDeleteRowsButton()
       setEventsForFilters()
       break;
     case PAGES.REJECT.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_NONE_STATUS_UI)
-      generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
-      choosePage(1, showPostList, initPostListUI)
+      // generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
+      // choosePage(1, showPostList, initPostListUI)
+      showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+      setEventForDeleteRowsButton()
       setEventsForFilters()
       break;
     case PAGES.WAITING.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_STATUS_UI)
-      generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
-      choosePage(1, showPostList, initPostListUI)
+      // generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
+      // choosePage(1, showPostList, initPostListUI)
+      showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+      setEventForDeleteRowsButton()
       setEventsForFilters()
       break;
     case PAGES.PUBLISHED.id:
       loadPostsList(pageId)
       mainContent.html(POSTS_LIST_STATUS_UI)
-      generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
-      choosePage(1, showPostList, initPostListUI)
+      // generatePagination(initPageCountFromPostList, showPostList, initPostListUI)
+      // choosePage(1, showPostList, initPostListUI)
+      showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+      setEventForDeleteRowsButton()
       setEventsForFilters()
       break;
     case PAGES.CATEGORY.id:
-      mainContent.html('')
+      loadCategoriesList()
+      mainContent.html(CATEGORIES_LIST_UI)
+      showCategoriesList($, categoriesList)
       break;
     case PAGES.TAG.id:
-      mainContent.html('')
+      loadTagsList()
+      mainContent.html(TAGS_LIST_UI)
+      showTagsList($, tagsList)
       break;
     case PAGES.USER.id:
       loadUsersList()
       mainContent.html(USER_LIST_UI)
-      generatePagination(initPageCountFromUserList, showUserList, initUserListUI)
-      choosePage(1, showUserList, initUserListUI)
+      // generatePagination(initPageCountFromUserList, showUserList, initUserListUI)
+      // choosePage(1, showUserList, initUserListUI)
+      showDataListWithPagination(userCountPerPage, $('.pagination'), usersList, $('.user-list__content'), generateUserList)
       break;
   }
 }
@@ -163,6 +186,7 @@ function setEventsForCommonMenu() {
       let pageId = $(this).attr('menu-id')
       changePage(pageId)
       loadPageContent(pageId)
+      console.log(currentDashboardPage)
     }
   })
 }
