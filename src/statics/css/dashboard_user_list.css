@@ -118,4 +118,19 @@
     display: flex;
     transition: 0.3s;
     z-index: 12; */
+/* } */
+
+.edit-user-group__title {
+    width: 100%;
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 20pt;
+    line-height: 20pt;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+.edit-user-group__content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }

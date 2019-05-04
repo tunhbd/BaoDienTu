@@ -2,7 +2,7 @@
 
 function showBaoDienTuDialog(container, dialogType = 'small', dialogTitle, dialogContent, dialogActions, dialogInitedCallback = null) {
   const DIALOG_UI =
-    `<div class="modal fade bao-dien-tu-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+    `<div class="modal fade bao-dien-tu-dialog bao-dien-tu-scrollbar" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog bao-dien-tu-dialog-${dialogType}" role="document">
         <div class="modal-content">
           <div class="modal-header">

@@ -2,7 +2,7 @@ function initPageCountFromUserList() {
   pageCount = Math.ceil(usersList.length / userCountPerPage)
 }
 
-function generateUserItemControlTooltip(account) {
+function generateUserItemControlTooltip(user) {
   let controlObj = $('<td class="user-list__cell user-list__control"></td>')
 
   let controlIconObj = $('<i class="fas fa-ellipsis-v user-list__control-icon"></i>')
@@ -16,7 +16,30 @@ function generateUserItemControlTooltip(account) {
   let editBtn = $('<button type="button" class="btn btn-secondary user-list__control-menu__buttons__button user-list__control-menu__buttons__button-edit"><i class="fas fa-pen"></i></button>')
   controlMenuButtonsObj.append(editBtn)
   editBtn.click(() => {
+    $.get({
+      url: `/dashboard-ui/edit-user/${user.rule}`,
+      data: {},
+      success: function(data) {
+        showBaoDienTuDialog(
+          $('body'),
+          'small',
+          'Edit User',
+          data,
+          [
+            {
+              title: 'Save',
+              callback: function() {
 
+              }
+            }
+          ],
+          function() {
+            showExistsUserData(user)
+          }
+        )
+      },
+      dataType: 'html'
+    })
   })
   let deleteBtn = $('<button type="button" class="btn btn-secondary user-list__control-menu__buttons__button user-list__control-menu__buttons__button-delete"><i class="fas fa-times"></i></button>')
   controlMenuButtonsObj.append(deleteBtn)
@@ -25,7 +48,7 @@ function generateUserItemControlTooltip(account) {
       {
         title: 'Yes, I want',
         callback: () => {
-          usersList = usersList.filter(user => user.account !== account)
+          usersList = usersList.filter(userData => userData.account !== user.account)
           let selectedPageNum = paginationObj.pagination('getSelectedPageNum')
           selectedPageNum = selectedPageNum > Math.ceil(usersList.length / userCountPerPage) ? selectedPageNum - 1 : selectedPageNum
 
@@ -55,6 +78,24 @@ function generateUserItemControlTooltip(account) {
   return controlObj
 }
 
+function showExistsUserData(user) {
+  if (user.rule === USERS.EDITOR) {
+    user.assigned_categories.forEach(categoryId => {
+      $(`#category-${categoryId}`).attr('checked', true)
+    });
+  }
+  else if (user.rule === USERS.SUBSCRIBER) {
+    setEventForEdituser()
+    $('#expirationDateInput').val(user.expiration_usage)
+  }
+}
+
+function setEventForEdituser() {
+  $('#expirationDateInput').datepicker({
+    minDate: new Date(),
+  })
+}
+
 function generateUserItem(user) {
   let userObj = $('<tr class="user-list__row"></tr>')
 
@@ -74,13 +115,23 @@ function generateUserItem(user) {
   let userBirthdayObj = $(`<td class="user-list__cell">${formatVietnameseDate(user.birthday)}</td>`)
   userObj.append(userBirthdayObj)
 
-  let userRuleObj = $(`<td class="user-list__cell">${user.rule}</td>`)
+  let userRuleObj = $(`<td class="user-list__cell">
+    ${
+    user.rule === USERS.ADMIN
+      ? 'Admin'
+      : user.rule === USERS.WRITER
+        ? 'Writer'
+        : user.rule === USERS.EDITOR
+          ? 'Editor'
+          : 'Subscriber'
+    }
+  </td>`)
   userObj.append(userRuleObj)
 
   let userStatusObj = $(`<td class="user-list__cell"><span class="badge badge-success p-2">${user.status}</span></td>`)
   userObj.append(userStatusObj)
 
-  userObj.append(generateUserItemControlTooltip(user.account))
+  userObj.append(generateUserItemControlTooltip(user))
 
   return userObj
 }

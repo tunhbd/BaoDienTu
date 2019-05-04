@@ -62,9 +62,13 @@ function showNextPage(choosePageAction, initForPageCountZero) {
 }
 
 function showExistsPostDataToForm(post) {
+  postData = post
+
   $('input[name="titlePost"]').val(post.title)
   $('select#categorySelection').val(post.category.category_id)
   $('input[name="tags"]').val(post.tags.join(','))
+  $('input[name="youtubeUrl"]').val(post.youtube_url)
+  showAvatarImagePreview(postData.avatar_image, true)
   $('input[name="summary"]').val(post.summary)
   $('textarea[name="edit-post-editor"]').val(post.content)
 }
@@ -95,24 +99,32 @@ function renderControlTooltip(postId, post, container) {
       )
       editControl.click(function (e) {
         e.stopPropagation()
-        showBaoDienTuDialog(
-          $('body'),
-          'big',
-          'Edit Post',
-          EDIT_POST_UI,
-          [
-            {
-              title: 'Save',
-              callback: () => {
-                // showEditingSpace($, 'edit-post-editor')
+        $.get({
+          url: '/dashboard-ui/edit-post',
+          data: {},
+          success: function (data) {
+            showBaoDienTuDialog(
+              $('body'),
+              'big',
+              'Edit Post',
+              data,
+              [
+                {
+                  title: 'Save',
+                  callback: () => {
+                    // showEditingSpace($, 'edit-post-editor')
+                  }
+                }
+              ],
+              () => {
+                showEditingSpace($, 'edit-post-editor')
+                showExistsPostDataToForm(post)
               }
-            }
-          ],
-          () => {
-            showEditingSpace($, 'edit-post-editor')
-            showExistsPostDataToForm(post)
-          }
-        )
+            )
+          },
+          dataType: 'html'
+        })
+
       })
       $(controlButtons).append(editControl)
     }
@@ -471,7 +483,7 @@ function generatePostList(dataList) {
       if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
         postItem.children(`.post-list__cell-choose`).click((e) => {
           e.stopPropagation()
-  
+
           if ($('.post-list__cell-choose input:checked').length > 0) {
             $('button.delete-rows').removeAttr('disabled')
           }
@@ -514,7 +526,7 @@ function generatePostList(dataList) {
       if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
         postItem.children(`.post-list__cell-choose`).click((e) => {
           e.stopPropagation()
-  
+
           if ($('.post-list__cell-choose input:checked').length > 0) {
             $('button.delete-rows').removeAttr('disabled')
           }
@@ -532,7 +544,7 @@ function generatePostList(dataList) {
 
 function showDataListWithPagination(countPerPage, paginationContainer, dataSource, dataContainer, generateDataListFunc, moreActionFunc = null) {
   paginationObj = paginationContainer
-  
+
   paginationObj.pagination({
     dataSource: dataSource,
     pageSize: countPerPage,

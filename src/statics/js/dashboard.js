@@ -131,7 +131,7 @@ function loadPageContent(pageId) {
         url: PAGES.CREATE_POST.urlUI,
         data: {},
         success: function (data) {
-          mainContent.html(CREATE_POST_UI)
+          mainContent.html(data)
           showEditingSpace($, 'create-post-editor')
         },
         dateType: 'html'

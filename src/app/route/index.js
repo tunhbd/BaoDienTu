@@ -42,22 +42,28 @@ const routesObj = {
       // console.log(req.cookies)
       res.render('dashboard', { userRule: 'ADMIN', layout: false })
     },
+    '/dashboard-ui/edit-post': (req, res) => {
+      res.render('templates/dashboard-uis/editPostUI', { categories: mockData.CATEGORIES_LIST, layout: false })
+    },
+    '/dashboard-ui/edit-user/:userRule': (req, res) => {
+      res.render('templates/dashboard-uis/editUserUI', { userRule: req.params.userRule, categories: mockData.CATEGORIES_LIST, layout: false })
+    },
     '/dashboard-ui/:pageId': (req, res) => {
       switch (req.params.pageId) {
         case config.PAGES.CREATE_POST:
-          res.render('templates/dashboard-uis/createPostUI', { layout: false })
+          res.render('templates/dashboard-uis/createPostUI', { categories: mockData.CATEGORIES_LIST, layout: false })
           break;
         case config.PAGES.DRAFT:
-          res.render('templates/dashboard-uis/postsListUI', { status: false, layout: false })
+          res.render('templates/dashboard-uis/postsListUI', { categories: mockData.CATEGORIES_LIST, status: false, layout: false })
           break;
         case config.PAGES.REJECT:
-          res.render('templates/dashboard-uis/postsListUI', { status: false, layout: false })
+          res.render('templates/dashboard-uis/postsListUI', { categories: mockData.CATEGORIES_LIST, status: false, layout: false })
           break;
         case config.PAGES.WAITING:
-          res.render('templates/dashboard-uis/postsListUI', { status: true, layout: false })
+          res.render('templates/dashboard-uis/postsListUI', { categories: mockData.CATEGORIES_LIST, status: true, layout: false })
           break;
         case config.PAGES.PUBLISHED:
-          res.render('templates/dashboard-uis/postsListUI', { status: true, layout: false })
+          res.render('templates/dashboard-uis/postsListUI', { categories: mockData.CATEGORIES_LIST, status: true, layout: false })
           break;
         case config.PAGES.USER:
           res.render('templates/dashboard-uis/usersListUI', { layout: false })
@@ -83,6 +89,9 @@ const routesObj = {
     },
     '/users-list': (req, res) => {
       res.send(mockData.USERS_LIST)
+    },
+    '/search/result': (req, res) => {
+      res.render('searchPageContent', { results: [], searchInput: req.query.searchInput, layout: 'indexLayout' })
     }
   },
   'post': {},

@@ -20,8 +20,10 @@
       <select class="custom-select" id="filterSort">
         <option value="1">Increasing created date</option>
         <option value="2" selected>Decreasing created date</option>
+        {{#if (opt status '===' true opt)}}
         <option value="3">Increasing published date</option>
         <option value="4">Decreasing published date</option>
+        {{/if}}
       </select>
     </div>
   </div>
