@@ -68,6 +68,6 @@ server.use(cookieParser())
 
 server.use('/', app.route)
 
-server.listen(app.config.SERVER.PORT, () => {
+server.listen(process.env.PORT || app.config.SERVER.PORT, () => {
   console.log('server is running on port ', app.config.SERVER.PORT)
 })

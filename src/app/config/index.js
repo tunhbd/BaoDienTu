@@ -1,6 +1,6 @@
 module.exports = {
   SERVER: {
-    PORT: 8080,
+    PORT: 3000,
   },
   PAGES: {
     GENERAL: 'GENERAL',
