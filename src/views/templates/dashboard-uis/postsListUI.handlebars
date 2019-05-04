@@ -1,0 +1,47 @@
+<div class="post-list-container">
+  <div class="filters-container mb-2">
+    <button type="button" class="btn btn-danger delete-rows font-weight-bold" disabled>Delete selected rows</button>
+    <div class="input-group filter-item filter-category">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="filterCategory">Category</label>
+      </div>
+      <select class="custom-select" id="filterCategory">
+        <option value="ALL" selected>All</option>
+        {{#each categories}}
+        <option value="{{this.category_id}}">{{this.category_name}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div class="input-group filter-item filter-sort">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="filterSort"><i class="fas fa-filter"></i></label>
+      </div>
+      <select class="custom-select" id="filterSort">
+        <option value="1">Increasing created date</option>
+        <option value="2" selected>Decreasing created date</option>
+        <option value="3">Increasing published date</option>
+        <option value="4">Decreasing published date</option>
+      </select>
+    </div>
+  </div>
+  <table class="post-list">
+    <thead class="post-list__header">
+      <tr class="post-list__row">
+        <th class="post-list__cell"></th>
+        <th class="post-list__cell">Title</th>
+        <th class="post-list__cell">Category</th>
+        <th class="post-list__cell">Author</th>
+        <th class="post-list__cell">Created Date</th>
+        {{#if (opt status '===' true opt)}}
+        <th class="post-list__cell">Published Date</th>
+        {{/if}}
+        <th class="post-list__cell"></th>
+      </tr>
+    </thead>
+    <tbody class="post-list__content"></tbody>
+  </table>
+  <div class="pagination">
+
+  </div>
+</div>

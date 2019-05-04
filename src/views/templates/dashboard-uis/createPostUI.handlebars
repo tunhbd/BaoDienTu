@@ -1,0 +1,53 @@
+<div style="padding: 20px;">
+    <form>
+        <div class=" d-flex justify-content-between">
+            <div class="form-group position-relative wrap-input">
+                <input type="text" class="form-control title-input" name="titlePost" placeholder="Title..." />
+                <span class="w-input"></span>
+                <span class="title-harsh">Title:</span>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Category</span>
+            </div>
+            <div class="input-group select-category-container">
+                <select class="custom-select h-100" id="categorySelection">
+                    <option selected value="none">Choose one category</option>
+                    <option value="CATEG01">Kinh te</option>
+                    <option value="CATEG02">Nong nghiep</option>
+                    <option value="CATEG03">Cong nghiep</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Tags</span>
+            </div>
+            <div class="form-control tags h-auto" id="tags">
+                <input type="text" class="labelinput">
+                <input type="hidden" value="" name="tags">
+            </div>
+        </div>
+
+        <!--<div class="form-group position-relative wrap-input">
+          <input type="text" class="form-control tag-input" name="tags" placeholder="TAGS" />
+          <span class="w-input"></span>
+          <span class="tag-harsh">TAGS:</span>
+      </div>-->
+        <div class="form-group position-relative wrap-input">
+            <input type="text" class="form-control summary-input" name="summary" placeholder="Summary" />
+            <span class="w-input"></span>
+            <span class="summary-harsh">Summary:</span>
+        </div>
+        <div class="form-group">
+            <textarea name="create-post-editor"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary w-button" type="submit">
+                Done
+            </button>
+        </div>
+    </form>
+</div>

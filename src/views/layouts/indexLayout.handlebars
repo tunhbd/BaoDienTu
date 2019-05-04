@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <title>Digital News</title>
+  {{!-- logo --}}
+  <link rel="shortcut icon" href="/media/images/logo/logo.png" />
+  <!-- bootstrap 4.3 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
+  <!-- slick -->
+  <link rel="stylesheet" type="text/css" href="/css/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="/css/slick/slick-theme.css" />
+  <!-- font  -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <!-- custom css -->
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/list-post.css">
+  <link rel="stylesheet" href="/css/post-detail.css">
+  <link rel="stylesheet" href="/css/responsive/index.css">
+  <link rel="stylesheet" href="/css/responsive/slideout.css">
+  <link rel="stylesheet" href="/css/bao_dien_tu_scrollbar.css">
+</head>
+
+<body data-spy="scroll" data-target=".new-content" data-offset="10" class="bao-dien-tu-scrollbar">
+  <nav id="menu" class="menu bao-dien-tu-scrollbar">
+    <ul class="menu-list mt-5">
+      <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
+      <li class="menu-list-item"><a href="/category/category_sample">Xã hội</a></li>
+      <li class="menu-list-item dropdown"><a href="/category/category_sample" class="dropdown-toggle"
+          data-toggle="dropdown">Kinh tế<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class="dropdown-item"><a href="/category/category_sample">Nông nghiệp</a></li>
+          <li class="dropdown-item"><a href="/category/category_sample">Công nghiệp</a></li>
+        </ul>
+      </li>
+      <li class="menu-list-item"><a href="/category/category_sample">Thế giới</a></li>
+      <li class="menu-list-item"><a href="/category/category_sample">Công nghệ</a></li>
+      <li class="menu-list-item"><a href="/category/category_sample">Giải trí</a></li>
+      <li class="menu-list-item"><a href="/category/category_sample">Văn hóa</a></li>
+      <li class="menu-list-item"><a href="/category/category_sample">Pháp luật</a></li>
+      <li class="menu-list-item"><a href="/category/category_sample">Xe</a></li>
+      <li class="menu-list-item"><a href="/category/category_sample">Giáo dục</a></li>
+      <li class="menu-list-item">
+        <a href="/category/category_sample" class="dropdown-toggle" data-toggle="dropdown">Thể thao<b
+            class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class="dropdown-item"><a href="/category/category_sample">trong nước</a></li>
+          <li class="dropdown-item"><a href="/category/category_sample">ngoài nước</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  <!-- <div class="container"> -->
+  <div id="wrapper" class="panel">
+    <section id="section-header" class="mt-2">
+      <!-- login - register -->
+      <div class="container">
+        <div class="first-content d-flex justify-content-between">
+          <div class="logo">
+            <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
+          </div>
+          <div class="login-form">
+            <i class="far fa-user">
+              <span>
+                <a href="/sign-in" class="login">Đăng nhập</a> | <a href="/sign-up" class="sign-up"> Đăng kí</a>
+              </span>
+            </i>
+          </div>
+        </div>
+      </div>
+      <div class="second-header mt-2">
+        <!-- logo or Digital News -->
+        <div class="content-search container d-flex justify-content-between">
+          <div class="digital-news"><a href="/">TIN TỨC TTV</a></div>
+          <form class="form-inline md-form form-sm mt-0">
+            <input class="form-control form-control-sm ml-3" type="text" placeholder="Tìm kiếm" aria-label="Search">
+          </form>
+        </div>
+      </div>
+      <!-- topic content -->
+      <div class="third-header mt-2">
+        <div class="container">
+          <a href="#" class="btn-menu js-slideout-toggle"><i class="fas fa-bars"></i></a>
+          <div class="menu-topic">
+            <ul class="menu-list mt-3">
+              <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
+              <li class="menu-list-item"><a href="/category/category_sample">Xã hội</a></li>
+              <li class="menu-list-item dropdown"><a href="/category/category_sample" class="dropdown-toggle"
+                  data-toggle="dropdown">Kinh tế<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li class="dropdown-item"><a href="/category/category_sample">Nông nghiệp</a></li>
+                  <li class="dropdown-item"><a href="/category/category_sample">Công nghiệp</a></li>
+                </ul>
+              </li>
+              <li class="menu-list-item"><a href="/category/category_sample">Thế giới</a></li>
+              <li class="menu-list-item"><a href="/category/category_sample">Công nghệ</a></li>
+              <li class="menu-list-item"><a href="/category/category_sample">Giải trí</a></li>
+              <li class="menu-list-item"><a href="/category/category_sample">Văn hóa</a></li>
+              <li class="menu-list-item"><a href="/category/category_sample">Pháp luật</a></li>
+              <li class="menu-list-item"><a href="/category/category_sample">Xe</a></li>
+              <li class="menu-list-item"><a href="/category/category_sample">Giáo dục</a></li>
+              <li class="menu-list-item">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Thể thao<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li class="dropdown-item"><a href="/category/category_sample">trong nước</a></li>
+                  <li class="dropdown-item"><a href="/category/category_sample">ngoài nước</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="section-body" class="mt-2">
+      {{{ body }}}
+    </section>
+    <footer id="section-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="left-content row">
+              <div class="name-web col-md-3"><span class="name">Tin Tức TTV</span></div>
+              <div class="copyright col-md-6">
+                <span class="content">
+                  ® Tin Tức TTV giữ bản quyền nội dung trên website này
+                </span>
+              </div>
+              <div class=" hotline col-md-3">
+                <span class="">Hotline: 088 888 8888</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <!-- </div> -->
+  {{!-- Js file references --}}
+  <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="/css/slick/slick.min.js"> </script>
+  <script src="/js/slideout.min.js"> </script>
+  {{!-- Custom js --}}
+  <script src="/js/index.js"></script>
+</body>
+
+</html>

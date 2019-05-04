@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Our App - Login</title>
+  <!-- Bootstrap 4 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+  <!-- custom css -->
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+
+<body>
+  <div class="mx-auto mt-5 col-lg-4 col-md-6 col-sm-8">
+    <!-- w-login start -->
+    <div class="w-login">
+      <!-- panel-login start -->
+      <div class="w-panel panel-login text-center active">
+        <div class="w-heading">
+          <h3 class="panel-title">Đăng Nhập</h3>
+          <p>
+            Chưa có tài khoản ?
+            <a class="lnk-toggler" data-panel=".panel-signup" href="/sign-up">Tạo ngay!</a>
+          </p>
+        </div>
+        <!-- social login buttons start -->
+        <div class="row social-buttons">
+          <div class="col-xs-4 col-sm-4">
+            <a href="#" class="btn btn-lg btn-block btn-facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          </div>
+          <div class="col-xs-4 col-sm-4">
+            <a href="#" class="btn btn-lg btn-block btn-twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+          <div class="col-xs-4 col-sm-4">
+            <a href="#" class="btn btn-lg btn-block btn-google">
+              <i class="fab fa-google-plus-g"></i>
+            </a>
+          </div>
+        </div>
+        <!-- end social-buttons -->
+        <div class="row loginOr">
+          <div class="col-xs-12 col-sm-12">
+            <hr class="hrOr" />
+            <span class="spanOr">hoặc</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            <form name="loginForm" class="loginForm" action="#" method="POST">
+              <div class="form-group wrap-input">
+                <input type="text" class="form-control" name="username" placeholder="Tên đăng nhập..." />
+                <span class="w-input"></span>
+              </div>
+
+              <div class="form-group wrap-input">
+                <div class="pwd-mask">
+                  <input type="password" class="form-control password" name="password" placeholder="Mật khẩu..." />
+                  <span class="w-input"></span>
+                  <span class="fa fa-eye-slash pwd-toggle"></span>
+                </div>
+              </div>
+              <div class="row remember-row">
+                <div class="col-xs-6 col-sm-6  d-flex justify-content-start">
+                  <label class="checkbox text-left">
+                    <input type="checkbox" value="remember-me" /><span class="label-text">Nhớ mật khẩu</span>
+                  </label>
+                </div>
+                <div class="col-xs-6 col-sm-6">
+                  <p class="forgotPwd">
+                    <a class="lnk-toggler" data-panel=".panel-forgot" href="/forgot-password">Quên tài khoản?</a>
+                  </p>
+                </div>
+              </div>
+              <!-- end remember-row -->
+              <div class="form-group">
+                <button class="btn btn-primary w-button" type="submit">
+                  Đăng nhập
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- end panel-login -->
+    </div>
+    <!-- end w-login -->
+  </div>
+  <!-- Bootstrap 4 -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <script src="/js/auth.js"></script>
+</body>
+
+</html>
