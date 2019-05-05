@@ -1,0 +1,423 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+body,
+html {
+  overflow-x: hidden;
+  font-size: 16px;
+  background-color: #f0f2f5;
+}
+body {
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+}
+a,
+a:focus {
+  text-decoration: none;
+}
+a,
+a:focus,
+a:hover {
+  color: #9c27b0;
+}
+a:focus {
+  outline: 0;
+}
+.avatar {
+  border-radius: 50%;
+}
+.big-avatar {
+  width: 80px;
+  height: 80px;
+}
+.medium-avatar {
+  width: 40px;
+  height: 40px;
+}
+.btn-primary {
+  background-color: rgb(233, 30, 99);
+  background-image: linear-gradient(90deg, #e91e63, #9c27b0);
+  border-radius: 10px;
+  border-radius: 100vmin;
+  border-width: 0;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+  padding: 12px 32px;
+  min-width: 160px;
+}
+.w-btn-outline-danger {
+  background: white;
+  color: rgb(233, 30, 99);
+
+  border-radius: 10px;
+  border-radius: 100vmin;
+  border-width: 0;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+  padding: 12px 32px;
+  min-width: 160px;
+}
+.w-btn-outline-danger:hover {
+  opacity: 0.9;
+  color: rgb(233, 30, 99);
+}
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: scale(1.005);
+  -webkit-font-smoothing: antialiased;
+  box-shadow: 0 0 8px rgb(255, 225, 235);
+}
+.brand-logo {
+  margin: 35px auto;
+}
+.w-login {
+  background-color: #fff;
+  /* height: 515px; */
+  margin: 25px auto;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+.w-login .w-panel {
+  padding: 40px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transform: translate(0);
+  -webkit-transform: translate(0);
+}
+.w-button {
+  font-size: 1rem;
+}
+.w-panel .w-heading {
+  margin-bottom: 20px;
+}
+.w-login .panel-title {
+  font-weight: 700;
+  margin-top: 0;
+  color: #e91e63;
+}
+.w-login .w-panel.active {
+  opacity: 1;
+  transform: translate(0);
+  -webkit-transform: translate(0);
+}
+.w-login .social-buttons a {
+  color: #fff;
+  border-radius: 100vmin;
+}
+.w-login .social-buttons a:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+.w-login .social-buttons .btn-facebook {
+  background: #3b5998;
+}
+.w-login .social-buttons .btn-twitter {
+  background: #00aced;
+}
+.w-login .social-buttons .btn-google {
+  background: #c32f10;
+}
+.w-login .loginOr {
+  position: relative;
+  font-size: 1rem;
+  color: #aaa;
+  margin-top: 1em;
+  margin-bottom: 0.3em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+.w-login .loginOr .hrOr {
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 0.5px;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.w-login .loginOr .spanOr {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: -0.75em;
+  margin-left: -3em;
+  background-color: #fff;
+  width: 6em;
+  text-align: center;
+}
+.panel-login .remember-row {
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+.direction-text {
+  color: #666;
+}
+.btn-change-avatar {
+  background-color: #666;
+  opacity: 0.25;
+  top: 0;
+  left: calc(50% - 40px);
+}
+.panel-login .remember-row label {
+  font-weight: 400;
+  position: relative;
+  cursor: pointer;
+  color: #666;
+  padding-left: 24px;
+}
+.label-pick-role {
+  color: #666;
+  padding: 0;
+}
+.w-login .forgotPwd {
+  text-align: right;
+}
+.wrap-input .form-control {
+  color: #333;
+  font-size: 1rem;
+  height: 50px;
+  padding: 12px 0;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.wrap-input .form-control:focus + .w-input:before {
+  width: 100%;
+  outline: 0;
+}
+.wrap-input {
+  /* width: 100%; */
+  margin:0;
+  border-radius: 0;
+  position: relative;
+  border-bottom: 2px solid #d9d9d9;
+}
+.w-input,
+.w-input:before {
+  display: block;
+  position: absolute;
+  left: 0;
+}
+.w-input {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  pointer-events: none;
+}
+.w-input:before {
+  background-color: #e91e63;
+  background-image: linear-gradient(90deg, #e91e63, #9c27b0);
+  content: "";
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+.w-panel.panel-forgot {
+  padding-top: 85px;
+}
+.pwd-mask {
+  position: relative;
+}
+.pwd-mask .pwd-toggle {
+  color: #ccc;
+  position: absolute;
+  z-index: 2;
+}
+.pwd-mask .pwd-toggle {
+  top: 12px;
+  right: 15px;
+}
+.panel-signup .pwd-mask .pwd-toggle {
+  top: 15px;
+  right: 15px;
+}
+
+.pwd-mask .pwd-toggle:focus,
+.pwd-mask .pwd-toggle:hover {
+  cursor: pointer;
+}
+.pwd-mask .pwd-toggle.fa-eye,
+.pwd-mask .pwd-toggle:focus,
+.pwd-mask .pwd-toggle:hover {
+  color: #e91e63;
+}
+.panel-signup .term-policy a {
+  text-decoration: underline;
+}
+.checkbox input[type="checkbox"],
+.checkbox-role input[type="radio"] {
+  position: absolute;
+  right: 9000px;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+.checkbox-role input[type="radio"] + span {
+  transition: border 0.3s ease-in-out, color 0.15s ease-in-out;
+}
+.checkbox input[type="checkbox"] + .label-text:after,
+.checkbox input[type="checkbox"] + .label-text:before,
+.checkbox-role input[type="radio"] + span:before {
+  font-size: 11px;
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  padding: 2px;
+  margin-left: 0;
+  position: absolute;
+  top: 2px;
+  color: #666;
+  left: 0;
+  cursor: pointer;
+  transition: border 0.3s ease-in-out, color 0.15s ease-in-out;
+}
+.checkbox input[type="checkbox"] + .label-text:before {
+  content: "";
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+.checkbox input[type="checkbox"] + .label-text:after {
+  background-color: #e91e63;
+  color: #fff;
+  border-radius: 2px;
+  border-color: #e91e63;
+  line-height: 1.4;
+}
+.checkbox input[type="checkbox"]:focus + .label-text:before {
+  outline: dotted thin;
+  outline: -webkit-focus-ring-color auto 5px;
+  outline-offset: -2px;
+  outline-color: #e91e63;
+}
+.checkbox input[type="checkbox"]:checked + .label-text:after {
+  font-weight: 900;
+  font-family: "Font Awesome 5 Free";
+  content: "\f00c";
+}
+.checkbox-role input[type="radio"]:checked + span:before,
+.checkbox-role input[type="radio"]:checked + span {
+  color: #e91e63;
+  font-weight: bold;
+}
+.checkbox-role span {
+  cursor: pointer;
+}
+.checkbox-role input[type="radio"] + .label-reader-text:before {
+  content: "\f5da";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+.checkbox-role input[type="radio"] + .label-writer-text:before {
+  content: "\f52d";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+.checkbox-role input[type="radio"] + .label-editor-text:before {
+  content: "\f4ff";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+@media (min-width: 320px) and (max-width: 375px) {
+  .w-login .w-panel {
+    padding: 32px;
+  }
+  .panel-login .remember-row {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 320px) {
+  .w-heading p {
+    font-size: 14px;
+  }
+  .remember-row .col-sm-6 {
+    width: 100%;
+  }
+  .w-login .forgotPwd {
+    text-align: left;
+    margin-top: 0;
+  }
+}
+.profile-container {
+  width: auto;
+  width: 40%;
+}
+
+.profile-item-title span {
+
+  width: 100px;
+}
+.profile-item-content {
+  width: calc(100% - 101px);
+}
+.profile-item-input {
+  /* box-sizing: border-box; */
+  text-indent: 5px;
+  border-radius: 0;
+  margin-left: 1px;
+}
+.profile-item-input:disabled {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.go-home {
+  width: 50px;
+  height: 50px;
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  line-height: 50px;
+  border-radius: 100%;
+  background-color: #fff;
+  color: #e91e63;
+  font-size: 25pt;
+  cursor: pointer;
+  text-align: center;
+}
+.go-home:before {
+  width: 0px;
+  height: 0px;
+  display: block;
+  content: '';
+  border-radius: 100%;
+  background-color: #e91e63;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transition: 0.3s;
+}
+.go-home i {
+  position: relative;
+  z-index: 1;
+}
+.go-home:hover {
+  color: #fff;
+}
+.go-home:hover:before {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: 0.3s;
+}

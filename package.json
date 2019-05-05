@@ -1,0 +1,28 @@
+{
+  "name": "baodientu",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "nodemon app_server.js",
+    "start": "node app_server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tunhbd/BaoDienTu.git"
+  },
+  "author": "Nguyen Huu Tu (1612772) - Le Van Tu (1612770) - Pham Huu Hoang Viet (1612810)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tunhbd/BaoDienTu/issues"
+  },
+  "homepage": "https://github.com/tunhbd/BaoDienTu#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
+  }
+}
