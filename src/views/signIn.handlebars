@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Our App - Login</title>
+  <title>Sign In</title>
+  <link rel="shortcut icon" href="/media/images/logo/logo.png" />
   <!-- Bootstrap 4 -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
@@ -14,12 +15,13 @@
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
   <!-- custom css -->
   <link rel="stylesheet" href="/css/auth.css" />
+  <link rel="stylesheet" href="/css/bao_dien_tu_scrollbar.css">
 </head>
 
 <body>
   <div class="mx-auto mt-5 col-lg-4 col-md-6 col-sm-8">
     <!-- w-login start -->
-    <div class="w-login">
+    <div class="w-login bao-dien-tu-scrollbar">
       <!-- panel-login start -->
       <div class="w-panel panel-login text-center active">
         <div class="w-heading">
@@ -56,15 +58,17 @@
         </div>
         <div class="row">
           <div class="col-xs-12 col-sm-12">
-            <form name="loginForm" class="loginForm" action="#" method="POST">
+            <form name="loginForm" class="loginForm" action="/sign-in" method="POST">
               <div class="form-group wrap-input">
-                <input type="text" class="form-control" name="username" placeholder="Tên đăng nhập..." />
+                <input value="{{oldInfo.username}}" type="text" class="form-control" name="username"
+                  placeholder="Tên đăng nhập..." />
                 <span class="w-input"></span>
               </div>
 
               <div class="form-group wrap-input">
                 <div class="pwd-mask">
-                  <input type="password" class="form-control password" name="password" placeholder="Mật khẩu..." />
+                  <input value="{{oldInfo.password}}" type="password" class="form-control password" name="password"
+                    placeholder="Mật khẩu..." />
                   <span class="w-input"></span>
                   <span class="fa fa-eye-slash pwd-toggle"></span>
                 </div>
@@ -81,6 +85,11 @@
                   </p>
                 </div>
               </div>
+              {{#if (opt oldInfo.username '!==' '' opt)}}
+              <div class="alert alert-danger" role="alert">
+                Tên tài khoản hoặc mật khẩu chưa đúng.
+              </div>
+              {{/if}}
               <!-- end remember-row -->
               <div class="form-group">
                 <button class="btn btn-primary w-button" type="submit">

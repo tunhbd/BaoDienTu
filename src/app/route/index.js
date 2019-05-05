@@ -7,6 +7,10 @@ const config = require('../config')
 
 var Router = require('express').Router()
 
+const getSigninedUser = (json) => {
+  return json === undefined ? undefined : JSON.parse(json)
+}
+
 const routesObj = {
   'get': {
     '/': (req, res) => {
@@ -24,23 +28,62 @@ const routesObj = {
     },
 
     '/sign-in': (req, res) => {
-      res.render('signIn', { layout: false })
+      let signinedUser = getSigninedUser(req.cookies.signined_user)
+      if (signinedUser !== undefined) {
+        if (signinedUser.rule === 'SUBSCRIBER') {
+          res.redirect('/')
+        }
+        else {
+          res.redirect('/dashboard?page_id=GENERAL')
+        }
+      }
+      else {
+        res.render('signIn', { oldInfo: { username: '', password: '' }, layout: false })
+      }
+    },
+    '/sign-out': (req, res) => {
+      res.clearCookie('signined_user')
+      res.redirect('/')
     },
     '/sign-up': (req, res) => {
       res.render('signUp', { layout: false })
     },
     '/change-password': (req, res) => {
-      res.render('changePassword', { layout: false })
+      let signinedUser = getSigninedUser(req.cookies.signined_user)
+
+      if (signinedUser === undefined) {
+        res.redirect('/sign-in')
+      }
+      else {
+        res.render('changePassword', { user: signinedUser, layout: false })
+      }
     },
     '/forgot-password': (req, res) => {
       res.render('forgotPassword', { layout: false })
+    },
+    '/profile': (req, res) => {
+      let signinedUser = getSigninedUser(req.cookies.signined_user)
+
+      if (signinedUser === undefined) {
+        res.redirect('/sign-in')
+      }
+      else {
+        res.render('profile', { user: signinedUser, layout: false })
+      }
     },
 
     '/dashboard': (req, res) => {
       // res.cookie('initCookie', 'initCookie', {expire: 400000 + Date.now()});
       // res.send(JSON.stringify(req.cookies))
       // console.log(req.cookies)
-      res.render('dashboard', { userRule: 'ADMIN', layout: false })
+      let signinedUser = getSigninedUser(req.cookies.signined_user)
+
+      if (signinedUser === undefined) {
+        res.redirect('/sign-in')
+      }
+      else {
+        res.render('dashboard', { user: signinedUser, layout: false })
+      }
     },
     '/dashboard-ui/edit-post': (req, res) => {
       res.render('templates/dashboard-uis/editPostUI', { categories: mockData.CATEGORIES_LIST, layout: false })
@@ -94,7 +137,62 @@ const routesObj = {
       res.render('searchPageContent', { results: [], searchInput: req.query.searchInput, layout: 'indexLayout' })
     }
   },
-  'post': {},
+  'post': {
+    '/sign-in': (req, res) => {
+      let info = req.body
+      let exists = false
+      let infoForSave = null
+
+      switch (info.username) {
+        case mockData.USERS_FOR_TEST.ADMIN.account:
+          infoForSave = { ...mockData.USERS_FOR_TEST.ADMIN }
+          exists = true
+          break
+        case mockData.USERS_FOR_TEST.SUBSCRIBER.account:
+          infoForSave = { ...mockData.USERS_FOR_TEST.SUBSCRIBER }
+          exists = true
+          break
+        case mockData.USERS_FOR_TEST.WRITER.account:
+          infoForSave = { ...mockData.USERS_FOR_TEST.WRITER }
+          exists = true
+          break
+        case mockData.USERS_FOR_TEST.EDITOR.account:
+          infoForSave = { ...mockData.USERS_FOR_TEST.EDITOR }
+          exists = true
+          break
+      }
+
+      if (exists && info.password === infoForSave.password) {
+        delete infoForSave.password
+        console.log('delete')
+        res.cookie('signined_user', JSON.stringify(infoForSave), { httpOnly: true, expire: Date.now() + 360000 })
+
+        if (infoForSave.rule === 'SUBSCRIBER') {
+          res.redirect('/')
+        }
+        else {
+          res.redirect('/dashboard?pageId=GENERAL')
+        }
+      }
+      else {
+        console.log(info)
+        console.log(infoForSave)
+        res.render('signIn', { oldInfo: info, layout: false })
+      }
+    },
+    '/sign-up': (req, res) => {
+      res.render('signUp', { layout: false })
+    },
+    '/change-password': (req, res) => {
+      res.render('changePassword', { layout: false })
+    },
+    '/profile': (req, res) => {
+      res.render('profile', { layout: false })
+    },
+    '/forgot-password': (req, res) => {
+      res.render('forgotPassword', { layout: false })
+    },
+  },
   'put': {},
   'delete': {}
 }

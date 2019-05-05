@@ -688,9 +688,56 @@ const TAGS_LIST = [
   },
 ]
 
+const USERS_FOR_TEST = {
+  ADMIN: {
+    fullname: 'Nguyễn Hữu Tứ',
+    avatar: 'avatar_sample.png',
+    email: 'nguyenhuutu@gmail.com',
+    birthday: '11/12/2012',
+    account: 'nguyenhuutu',
+    password: 'nguyenhuutu',
+    rule: 'ADMIN',
+    status: 'Activing',
+  },
+  EDITOR: {
+    fullname: 'Lê Văn Tư',
+    avatar: 'avatar_sample.png',
+    email: 'levantu@gmail.com',
+    birthday: '11/12/2012',
+    account: 'levantu',
+    password: 'levantu',
+    rule: 'EDITOR',
+    asigned_categories: ['CATEG01', 'CATEG02', 'CATEG03'],
+    status: 'Activing',
+  },
+  SUBSCRIBER: {
+    fullname: 'Phạm Hữu Hoàng Việt',
+    avatar: 'avatar_sample.png',
+    email: 'hoangviet@gmail.com',
+    birthday: '11/12/2012',
+    account: 'hoangviet',
+    password: 'hoangviet',
+    rule: 'SUBSCRIBER',
+    expiration_date: '2019/05/10',
+    status: 'Activing',
+  },
+  WRITER: {
+    fullname: 'Nguyễn Văn A',
+    avatar: 'avatar_sample.png',
+    email: 'nguyenvana@gmail.com',
+    birthday: '11/12/2012',
+    account: 'nguyenvana',
+    password: 'nguyenvana',
+    rule: 'WRITER',
+    pseudonym: 'Cây bút vàng',
+    status: 'Activing',
+  }
+}
+
 module.exports = {
   POSTS_LIST,
   CATEGORIES_LIST,
   TAGS_LIST,
   USERS_LIST,
+  USERS_FOR_TEST,
 }

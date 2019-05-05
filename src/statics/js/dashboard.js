@@ -61,7 +61,7 @@ const postCountPerPage = 10
 const userCountPerPage = 10
 
 var currentDashboardPage = null
-var userRule = USERS.ADMIN
+var userRule = null
 var currentPost = null
 var postsList = []
 var usersList = []
@@ -381,6 +381,7 @@ setEventForToggleMenuIcon()
 $(document).ready(() => {
   let params = new URLSearchParams(window.location.search)
   let pageId = params.get('page_id')
+  console.log('pageId', pageId)
 
   if (pageId === null) {
     pageId = PAGES.GENERAL.id
