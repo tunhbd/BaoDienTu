@@ -1,19 +1,33 @@
-$(document).ready(function () {
-  var slideout = new Slideout({
-    'panel': document.getElementById('wrapper'),
-    'menu': document.getElementById('menu'),
-    'padding': 200,
-    'tolerance': 50
-  });
-  document.querySelector('.js-slideout-toggle').addEventListener('click', function () {
-    slideout.toggle();
-  });
+var menuIsShow = false
 
-  document.querySelector('.menu').addEventListener('click', function (eve) {
-    if (eve.target.nodeName === 'A') {
-      slideout.close();
-    }
-  });
+$(document).ready(function () {
+  // var slideout = new Slideout({
+  //   'panel': document.getElementById('wrapper'),
+  //   'menu': document.getElementById('menu'),
+  //   'padding': 200,
+  //   'tolerance': 50
+  // });
+  // document.querySelector('.btn-menu.js-slideout-toggle').addEventListener('click', function () {
+  //   slideout.toggle();
+  // });
+
+  $('.btn-menu').click(function() {
+    $('#menu').show()
+    $('#menu').removeClass('collapsed-main-menu')
+    $('#menu').addClass('expanded-main-menu')
+  })
+
+  $('.close-menu-button').click(function() {
+    $('#menu').removeClass('expanded-main-menu')
+    $('#menu').addClass('collapsed-main-menu')
+    setTimeout(function() {$('#menu').hide()}, 500)
+  })
+
+  $('.expand-sub-menu-button').click(function(e) {
+    e.stopPropagation()
+    e.preventDefault()
+    $(this).parent().next('.menu-list-item-dropdown__menu').slideToggle(300)
+  })
 
   $('.slick-image').slick({
     slidesToShow: 1,

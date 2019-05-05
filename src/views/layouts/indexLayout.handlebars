@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  
+
   <title>Digital News</title>
   {{!-- logo --}}
   <link rel="shortcut icon" href="/media/images/logo/logo.png" />
@@ -28,15 +28,24 @@
 </head>
 
 <body data-spy="scroll" data-target=".new-content" data-offset="10" class="bao-dien-tu-scrollbar">
-  <nav id="menu" class="menu bao-dien-tu-scrollbar">
-    <ul class="menu-list mt-5">
+  <nav id="menu" class="menu">
+    <div class="close-menu-button">
+      <i class="fas fa-times"></i>
+    </div>
+    <ul class="menu-list bao-dien-tu-scrollbar">
       <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
       <li class="menu-list-item"><a href="/category/category_sample">Xã hội</a></li>
-      <li class="menu-list-item dropdown"><a href="/category/category_sample" class="dropdown-toggle"
-          data-toggle="dropdown">Kinh tế<b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li class="dropdown-item"><a href="/category/category_sample">Nông nghiệp</a></li>
-          <li class="dropdown-item"><a href="/category/category_sample">Công nghiệp</a></li>
+      <li class="menu-list-item menu-list-item-dropdown">
+        <a href="/category/category_sample" class="menu-list-item-dropdown__content">
+          Kinh tế <i class="fas fa-caret-down expand-sub-menu-button"></i>
+        </a>
+        <ul class="menu-list-item-dropdown__menu">
+          <li class="menu-list-item-dropdown__menu__item">
+            <a href="/category/category_sample">Nông nghiệp</a>
+          </li>
+          <li class="menu-list-item-dropdown__menu__item">
+            <a href="/category/category_sample">Công nghiệp</a>
+          </li>
         </ul>
       </li>
       <li class="menu-list-item"><a href="/category/category_sample">Thế giới</a></li>
@@ -46,12 +55,13 @@
       <li class="menu-list-item"><a href="/category/category_sample">Pháp luật</a></li>
       <li class="menu-list-item"><a href="/category/category_sample">Xe</a></li>
       <li class="menu-list-item"><a href="/category/category_sample">Giáo dục</a></li>
-      <li class="menu-list-item">
-        <a href="/category/category_sample" class="dropdown-toggle" data-toggle="dropdown">Thể thao<b
-            class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li class="dropdown-item"><a href="/category/category_sample">trong nước</a></li>
-          <li class="dropdown-item"><a href="/category/category_sample">ngoài nước</a></li>
+      <li class="menu-list-item menu-list-item-dropdown">
+        <a href="/category/category_sample" class="menu-list-item-dropdown__content">
+          Thể thao <i class="fas fa-caret-down expand-sub-menu-button"></i>
+        </a>
+        <ul class="menu-list-item-dropdown__menu">
+          <li class="menu-list-item-dropdown__menu__item"><a href="/category/category_sample">trong nước</a></li>
+          <li class="menu-list-item-dropdown__menu__item"><a href="/category/category_sample">ngoài nước</a></li>
         </ul>
       </li>
     </ul>
@@ -79,7 +89,8 @@
         <div class="content-search container d-flex justify-content-between">
           <div class="digital-news"><a href="/">TIN TỨC TTV</a></div>
           <form class="form-inline md-form form-sm mt-0" action="/search/result" method="GET">
-            <input class="form-control form-control-sm ml-3" name="searchInput" type="text" placeholder="Tìm kiếm" aria-label="Search">
+            <input class="form-control form-control-sm ml-3" name="searchInput" type="text" placeholder="Tìm kiếm"
+              aria-label="Search">
           </form>
         </div>
       </div>
