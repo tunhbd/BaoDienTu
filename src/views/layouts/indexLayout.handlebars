@@ -19,7 +19,9 @@
   <!-- font  -->
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <!-- custom css -->
+  <link rel="stylesheet" href="/css/reset.css">
   <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/user_menu.css">
   <link rel="stylesheet" href="/css/list-post.css">
   <link rel="stylesheet" href="/css/post-detail.css">
   <link rel="stylesheet" href="/css/responsive/index.css">
@@ -75,6 +77,34 @@
           <div class="logo">
             <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
           </div>
+          {{#if (opt (opt user '!==' undefiend opt) '&&' (opt user.account '!==' '' opt) opt)}}
+          <div id="homepage-avatar-user" class="rounded-circle overflow-hidden homepage-user-menu-is-collapse">
+            <img src="/media/images/users/{{user.avatar}}" alt="" />
+          </div>
+          <div class="homepage-user-menu">
+            <ul>
+              <li class="homepage-user-menu__item">
+                <a href="/profile" class="homepage-user-menu__item__content">
+                  Your Profile <i class="fas fa-id-card-alt homepage-user-menu__item-icon"></i>
+                  {{!-- <i class="user-menu__item__icon user-menu__item__icon-profile"></i> --}}
+                </a>
+              </li>
+              <li class="homepage-user-menu__item">
+                <a href="/change-password" class="homepage-user-menu__item__content">
+                  Change Password <i class="fas fa-user-lock homepage-user-menu__item-icon"></i>
+                  {{!-- <i class="user-menu__item__icon user-menu__item__icon-change-password"></i> --}}
+                </a>
+              </li>
+              <li class="homepage-user-menu__item">
+                <a href="/sign-out" class="homepage-user-menu__item__content">
+                  Sign Out <i class="fas fa-sign-out-alt homepage-user-menu__item-icon"></i>
+                  {{!-- <i class="user-menu__item__icon user-menu__item__icon-sign-out"></i> --}}
+                </a>
+              </li>
+            </ul>
+          </div>
+          {{/if}}
+          {{#if (opt user '===' undefiend opt)}}
           <div class="login-form">
             <i class="far fa-user">
               <span>
@@ -83,6 +113,7 @@
             </i>
           </div>
         </div>
+        {{/if}}
       </div>
       <div class="second-header mt-2">
         <!-- logo or Digital News -->
@@ -97,7 +128,7 @@
       <!-- topic content -->
       <div class="third-header mt-2">
         <div class="container">
-          <a href="#" class="btn-menu js-slideout-toggle"><i class="fas fa-bars"></i></a>
+          <div href="#" class="btn-menu js-slideout-toggle"><i class="fas fa-bars"></i></div>
           <div class="menu-topic">
             <ul class="menu-list mt-3">
               <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
@@ -159,6 +190,7 @@
   <script src="/css/slick/slick.min.js"> </script>
   <script src="/js/slideout.min.js"> </script>
   {{!-- Custom js --}}
+  <script src="/js/user_menu.js"></script>
   <script src="/js/index.js"></script>
 </body>
 

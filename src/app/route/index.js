@@ -14,7 +14,9 @@ const getSigninedUser = (json) => {
 const routesObj = {
   'get': {
     '/': (req, res) => {
-      res.render('indexContent', { layout: 'indexLayout' })
+      let signinedUser = getSigninedUser(req.cookies.signined_user)
+
+      res.render('indexContent', { user: signinedUser, layout: 'indexLayout' })
     },
     '/category/category_sample': (req, res) => {
       res.render('listPostContent', { layout: 'indexLayout' })
@@ -82,7 +84,12 @@ const routesObj = {
         res.redirect('/sign-in')
       }
       else {
-        res.render('dashboard', { user: signinedUser, layout: false })
+        if (signinedUser.rule === 'SUBSCRIBER') {
+          res.redirect('/')
+        }
+        else {
+          res.render('dashboard', { user: signinedUser, layout: false })
+        }
       }
     },
     '/dashboard-ui/edit-post': (req, res) => {

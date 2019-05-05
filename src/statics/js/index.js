@@ -130,6 +130,7 @@ for (var i = 0; i < arrImageLink.length - 1; i++) {
 
 }
 
+setEventForAvatarUser()
 // $(document).ready(function(){
 //   $('.slick-new-image').slick({
 //

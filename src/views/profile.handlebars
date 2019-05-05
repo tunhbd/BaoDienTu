@@ -19,9 +19,18 @@
 </head>
 
 <body class="bao-dien-tu-scrollbar">
-  <div class="mx-auto mt-5 col-lg-4 col-md-6 col-sm-8">
+  {{#if (opt user.rule '===' 'SUBSCRIBER' opt)}}
+  <a href="/" class="go-home">
+    <i class="fas fa-home"></i>
+  </a>
+  {{else}}
+  <a href="/dashboard" class="go-home">
+    <i class="fas fa-home"></i>
+  </a>
+  {{/if}}
+  <div class="mx-auto mt-5 profile-container">
     <!-- w-login start -->
-    <div class="w-login bao-dien-tu-scrollbar">
+    <div class="w-login">
       <!-- panel-login start -->
       <div class="w-panel panel-login text-center active">
         <div class="w-heading">
