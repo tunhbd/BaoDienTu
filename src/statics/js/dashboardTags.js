@@ -85,96 +85,93 @@
 const TAG_COUNT_PER_PAGE = 10
 
 function setUpForTagsList() {
-  // reset countCheck
-  $("#delete-all")
-    .addClass("btn-outline-secondary")
-    .removeClass("btn-outline-danger")
-    .attr("disabled", true);
-
-  // click table
-  $("tr td:not(:first-child)").click(function (event) {
-    let checkbox = $(this)
-      .closest("tr")
-      .find("input[type='checkbox']");
-
-    checkbox.attr("checked")
-      ? checkbox.attr("checked", false).change()
-      : checkbox.attr("checked", true).change();
-  });
-
-  // change checkbox
-  $('.checkbox input[type="checkbox"]').change(function (event) {
-    $(this)
-      .closest("tr")
-      .toggleClass("selected");
-
-    let check = $('.checkbox input[type="checkbox"]');
-    //if check, open remove all checked
-    let countCheck = 0;
-    check.each(function () {
-      if ($(this).attr("checked")) {
-        countCheck++;
-      }
-    });
-    countCheck !== 0
-      ? $("#delete-all")
-        .removeClass("btn-outline-secondary")
-        .addClass("btn-outline-danger")
-        .attr("disabled", false)
-      : $("#delete-all")
+    // reset countCheck
+    $("#delete-all")
         .addClass("btn-outline-secondary")
         .removeClass("btn-outline-danger")
         .attr("disabled", true);
-  });
 
-  // delete
-  $(".delete-btn").click(function (event) {
-    event.preventDefault();
-    let thisTag = $(this).closest('tr')
+    // click table
+    $("tr td:not(:first-child)").click(function(event) {
+        let checkbox = $(this)
+            .closest("tr")
+            .find("input[type='checkbox']");
 
-    showBaoDienTuDialog(
-      $('body'),
-      'small',
-      'Deleting Tag Confirmation',
-      'Do you want to delete this tag',
-      [
-        {
-          title: 'Yes, I want',
-          callback: () => {
-            let selectedPage = paginationObj.pagination('getSelectedPageNum')
-            tagsList = tagsList.filter(tag => tag.tag_id !== thisTag.attr('tag-id'))
-            let pageCount = Math.ceil(tagsList.length / TAG_COUNT_PER_PAGE)
-            selectedPage = selectedPage > pageCount ? pageCount : selectedPage
-            showDataListWithPagination(TAG_COUNT_PER_PAGE, $("#pagination-container"), tagsList, $("#data-container"), listTags, setUpForTagsList)
-            paginationObj.pagination('go', selectedPage)
-            // thisTag.remove();
-          }
-        }
-      ]
-    )
-  });
+        checkbox.attr("checked") ?
+            checkbox.attr("checked", false).change() :
+            checkbox.attr("checked", true).change();
+    });
 
-  // edit
-  $(".update-btn").click(function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    $("#submit-modal-btn").text("Update");
-    $("#tag-modal-label").text("Update Tag");
-    $("#tag-modal").modal("show");
-  });
+    // change checkbox
+    $('.checkbox input[type="checkbox"]').change(function(event) {
+        $(this)
+            .closest("tr")
+            .toggleClass("selected");
 
-  // add new
-  $("#add-new").click(function (event) {
-    $("#submit-modal-btn").text("Add New");
-    $("#tag-modal-label").text("Add New Tag");
-    $("#tag-modal").modal("show");
-  })
+        let check = $('.checkbox input[type="checkbox"]');
+        //if check, open remove all checked
+        let countCheck = 0;
+        check.each(function() {
+            if ($(this).attr("checked")) {
+                countCheck++;
+            }
+        });
+        countCheck !== 0 ?
+            $("#delete-all")
+            .removeClass("btn-outline-secondary")
+            .addClass("btn-outline-danger")
+            .attr("disabled", false) :
+            $("#delete-all")
+            .addClass("btn-outline-secondary")
+            .removeClass("btn-outline-danger")
+            .attr("disabled", true);
+    });
+
+    // delete
+    $(".delete-btn").click(function(event) {
+        event.preventDefault();
+        let thisTag = $(this).closest('tr')
+
+        showBaoDienTuDialog(
+            $('body'),
+            'small',
+            'Deleting Tag Confirmation',
+            'Do you want to delete this tag', [{
+                title: 'Yes, I want',
+                callback: () => {
+                    let selectedPage = paginationObj.pagination('getSelectedPageNum')
+                    tagsList = tagsList.filter(tag => tag.tag_id !== thisTag.attr('tag-id'))
+                    let pageCount = Math.ceil(tagsList.length / TAG_COUNT_PER_PAGE)
+                    selectedPage = selectedPage > pageCount ? pageCount : selectedPage
+                    showDataListWithPagination(TAG_COUNT_PER_PAGE, $("#pagination-container"), tagsList, $("#data-container"), listTags, setUpForTagsList)
+                    paginationObj.pagination('go', selectedPage)
+                        // thisTag.remove();
+                }
+            }]
+        )
+    });
+
+    // edit
+    $(".update-btn").click(function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $("#submit-modal-btn").text("Update");
+        $("#tag-modal-label").text("Update Tag");
+        $("#tag-modal").modal("show");
+    });
+
+    // add new
+    $("#add-new").click(function(event) {
+        $("#submit-modal-btn").text("Add New");
+        $("#tag-modal-label").text("Add New Tag");
+        $("#tag-modal").modal("show");
+    })
 }
 
 function listTags(data) {
-  return data
-    .map(item => {
-      return `
+    return data
+        .map(item => {
+                return `
         <tr tag-id=${item.tag_id}>
           <td scope="row">
             <label class="checkbox position-relative">
@@ -189,7 +186,7 @@ function listTags(data) {
           </td>
           <td scope="row">
             <span
-              >${item.active ? `<span class="badge badge-success p-2">Active</span>` : `<span class="badge badge-danger p-2">Disabled</span>`}</span
+              >${item.tag_active === 1 ? `<span class="badge badge-success p-2">Active</span>` : `<span class="badge badge-danger p-2">Disabled</span>`}</span
             >
           </td>
           <td  class="text-center" scope="row">

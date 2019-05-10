@@ -86,96 +86,93 @@ const CATEGORY_COUNT_PER_PAGE = 10
 // }
 
 function setUpForCategorieslist() {
-  // reset countCheck
-  $("#delete-all")
-    .addClass("btn-outline-secondary")
-    .removeClass("btn-outline-danger")
-    .attr("disabled", true);
-
-  // click table
-  $("tr td:not(:first-child)").click(function (event) {
-    let checkbox = $(this)
-      .closest("tr")
-      .find("input[type='checkbox']");
-
-    checkbox.attr("checked")
-      ? checkbox.attr("checked", false).change()
-      : checkbox.attr("checked", true).change();
-  });
-
-  // change checkbox
-  $('.checkbox input[type="checkbox"]').change(function (event) {
-    $(this)
-      .closest("tr")
-      .toggleClass("selected");
-
-    let check = $('.checkbox input[type="checkbox"]');
-    //if check, open remove all checked
-    let countCheck = 0;
-    check.each(function () {
-      if ($(this).attr("checked")) {
-        countCheck++;
-      }
-    });
-    countCheck !== 0
-      ? $("#delete-all")
-        .removeClass("btn-outline-secondary")
-        .addClass("btn-outline-danger")
-        .attr("disabled", false)
-      : $("#delete-all")
+    // reset countCheck
+    $("#delete-all")
         .addClass("btn-outline-secondary")
         .removeClass("btn-outline-danger")
         .attr("disabled", true);
-  });
 
-  // delete
-  $(".delete-btn").click(function (event) {
-    event.preventDefault();
-    let thisCategory = $(this).closest('tr')
+    // click table
+    $("tr td:not(:first-child)").click(function(event) {
+        let checkbox = $(this)
+            .closest("tr")
+            .find("input[type='checkbox']");
 
-    showBaoDienTuDialog(
-      $('body'),
-      'small',
-      'Deleting Category Confirmation',
-      'Do you want to delete this category',
-      [
-        {
-          title: 'Yes, I want',
-          callback: () => {
-            let selectedPage = paginationObj.pagination('getSelectedPageNum')
-            categoriesList = categoriesList.filter(category => category.category_id !== thisCategory.attr('category-id'))
-            console.log(categoriesList)
-            let pageCount = Math.ceil(categoriesList.length / CATEGORY_COUNT_PER_PAGE)
-            selectedPage = selectedPage > pageCount ? pageCount : selectedPage
-            showDataListWithPagination(CATEGORY_COUNT_PER_PAGE, $("#pagination-container"), categoriesList, $("#data-container"), listCategories, setUpForCategorieslist)
-            paginationObj.pagination('go', selectedPage)
-          }
-        }
-      ]
-    )
-  });
+        checkbox.attr("checked") ?
+            checkbox.attr("checked", false).change() :
+            checkbox.attr("checked", true).change();
+    });
 
-  // edit
-  $(".update-btn").click(function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    $("#submit-modal-btn").text("Update");
-    $("#tag-modal-label").text("Update Category");
-    $("#tag-modal").modal("show");
-  });
+    // change checkbox
+    $('.checkbox input[type="checkbox"]').change(function(event) {
+        $(this)
+            .closest("tr")
+            .toggleClass("selected");
 
-  // add new
-  $("#add-new").click(function (event) {
-    $("#submit-modal-btn").text("Add New");
-    $("#tag-modal-label").text("Add New Category");
-    $("#tag-modal").modal("show");
-  });
+        let check = $('.checkbox input[type="checkbox"]');
+        //if check, open remove all checked
+        let countCheck = 0;
+        check.each(function() {
+            if ($(this).attr("checked")) {
+                countCheck++;
+            }
+        });
+        countCheck !== 0 ?
+            $("#delete-all")
+            .removeClass("btn-outline-secondary")
+            .addClass("btn-outline-danger")
+            .attr("disabled", false) :
+            $("#delete-all")
+            .addClass("btn-outline-secondary")
+            .removeClass("btn-outline-danger")
+            .attr("disabled", true);
+    });
+
+    // delete
+    $(".delete-btn").click(function(event) {
+        event.preventDefault();
+        let thisCategory = $(this).closest('tr')
+
+        showBaoDienTuDialog(
+            $('body'),
+            'small',
+            'Deleting Category Confirmation',
+            'Do you want to delete this category', [{
+                title: 'Yes, I want',
+                callback: () => {
+                    let selectedPage = paginationObj.pagination('getSelectedPageNum')
+                    categoriesList = categoriesList.filter(category => category.category_id !== thisCategory.attr('category-id'))
+                    console.log(categoriesList)
+                    let pageCount = Math.ceil(categoriesList.length / CATEGORY_COUNT_PER_PAGE)
+                    selectedPage = selectedPage > pageCount ? pageCount : selectedPage
+                    showDataListWithPagination(CATEGORY_COUNT_PER_PAGE, $("#pagination-container"), categoriesList, $("#data-container"), listCategories, setUpForCategorieslist)
+                    paginationObj.pagination('go', selectedPage)
+                }
+            }]
+        )
+    });
+
+    // edit
+    $(".update-btn").click(function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $("#submit-modal-btn").text("Update");
+        $("#tag-modal-label").text("Update Category");
+        $("#tag-modal").modal("show");
+    });
+
+    // add new
+    $("#add-new").click(function(event) {
+        $("#submit-modal-btn").text("Add New");
+        $("#tag-modal-label").text("Add New Category");
+        $("#tag-modal").modal("show");
+    });
 }
 
 function listCategories(data) {
-  return data
-    .map(item => {
-      return `
+    return data
+        .map(item => {
+                return `
         <tr category-id="${item.category_id}">
           <td scope="row">
             <label class="checkbox position-relative">
@@ -195,7 +192,7 @@ function listCategories(data) {
           </td>
           <td scope="row">
             <span
-              >${item.active ? `<span class="badge badge-success p-2">Active</span>` : `<span class="badge badge-danger p-2">Disabled</span>`}</span
+              >${item.category_active === 1 ? `<span class="badge badge-success p-2">Active</span>` : `<span class="badge badge-danger p-2">Disabled</span>`}</span
             >
           </td>
           <td  class="text-center" scope="row">

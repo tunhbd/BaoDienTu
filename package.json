@@ -20,9 +20,13 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
-    "express-handlebars": "^3.0.2"
+    "express-handlebars": "^3.0.2",
+    "md5": "^2.2.1",
+    "mysql": "^2.17.1",
+    "passport": "^0.4.0"
   },
   "devDependencies": {
+    "morgan": "^1.9.1",
     "nodemon": "^1.19.0"
   }
 }
