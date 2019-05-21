@@ -1,5 +1,7 @@
 module.exports = {
-    config: require('./config'),
-    route: require('./route')(),
-    db: require('./db'),
+  config: require('./config'),
+  middlewares: require('./middlewares'),
+  route: require('./route')(),
+  db: require('./db'),
+  engines: require('./engines'),
 }
