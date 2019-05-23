@@ -132,11 +132,12 @@ const createPostPostRequest = (req, res) => {
   )
 
   console.log('CREATE POST')
+  console.log('body: ', req.body)
   postBus
     .createPost(post)
     .then(async newPost => {
       if (newPost) {
-        tags = req.body.tags.split(',').map(tag => tag.trim())
+        tags = JSON.parse(req.body.tags).map(tag => tag.tagId)
         await Promise
           .all(
             tags.map(
@@ -170,6 +171,10 @@ const createPostPostRequest = (req, res) => {
                   .catch(err => {
                     console.log('CREATE POST TAG ERROR: ', err)
                     reject(err)
+                    res.send({
+                      error: false,
+                      post: newPost,
+                    })
                   })
               })
             )

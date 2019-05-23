@@ -25,13 +25,12 @@
         <span class="input-group-text" id="basic-addon1">Tags</span>
       </div>
       <div class="form-control tags h-auto" id="tags">
-        <input type="text" class="labelinput dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        <input type="text" id="tagInput" class="labelinput dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">
-        <input type="hidden" value="" name="tags">
+        <input type="hidden" value="[]" name="tags">
         <div class="dropdown-menu tag-hints bao-dien-tu-scrollbar">
           {{#each tags}}
-          <span class="dropdown-item tag-hint" tag-id="{{this.tag_id}}"
-            onclick="chooseTag({{this.tag_id}})">{{this.tag_name}}
+          <span class="dropdown-item tag-hint" tag-id="{{this.tag_id}}">{{this.tag_name}}
           </span>
           {{/each}}
         </div>
@@ -69,7 +68,7 @@
       <textarea name="create-post-editor"></textarea>
     </div>
     <div class="form-group">
-      <button class="btn btn-primary w-button" type="submit" onclick="return createNewPost()">
+      <button class="btn btn-primary w-button" type="button" onclick="createNewPost()">
         Done
       </button>
     </div>
