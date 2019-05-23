@@ -1,6 +1,6 @@
 var postData = {
-  id: '',
-  title: '',
+  post_id: '',
+  post_title: '',
   author: {
     name: '',
     pseudonym: '',
@@ -11,11 +11,11 @@ var postData = {
   },
   tags: [],
   youtube_url: '',
-  avatar_image: '',
+  post_avatar_image: '',
   created_date: '',
   published_date: '',
-  summary: '',
-  content: '',
+  post_summary: '',
+  post_content: '',
 }
 
 function showEditingSpace(a, container) {
@@ -80,14 +80,11 @@ function showEditingSpace(a, container) {
 
   // Set event for avatar image
   $('#avatarImageInput').change(function () {
-    // console.log(this.files)
+    console.log(this.files)
     if (this.files.length > 0) {
-      postData.avatar_image = this.files[0]
-      
-
-      showAvatarImagePreview(this.files[0])
-    }
-    else {
+      postData.post_avatar_image = this.files[0]
+      showAvatarImagePreview(postData.post_avatar_image)
+    } else {
       $('label[name="avatarImageName"]').text('Choose image')
       $('.avatar-image-preview-container').fadeOut()
       $('.avatar-image-preview-container').removeClass('contain-image')
@@ -111,12 +108,12 @@ function showAvatarImagePreview(file, isUrl = false) {
       $('.avatar-image-preview-container').fadeIn()
       $('.avatar-image-preview-container').addClass('contain-image')
     }
-  }
-  else {
-    $('label[name="avatarImageName"]').text(this.files[0].name)
+  } else {
+    $('label[name="avatarImageName"]').text(file.name)
     let fileReader = new FileReader()
 
     fileReader.onload = function (e) {
+      // postData.post_avatar_image = e.target.result
       $('.avatar-image-preview').attr('src', e.target.result)
       $('.avatar-image-preview-container').fadeIn()
       $('.avatar-image-preview-container').addClass('contain-image')
@@ -124,4 +121,54 @@ function showAvatarImagePreview(file, isUrl = false) {
 
     fileReader.readAsDataURL(file)
   }
+}
+
+// function createNewPost() {
+//   postData.post_title = $('input[name="title"]').val()
+//   postData.category = $('select[name="category"]').val()
+//   postData.tags = $('input[name="tags"]').val().split(',')
+//   postData.youtube_url = $('input[name="youtube_url"]').val()
+//   postData.post_summary = $('input[name="summary"]').val()
+//   postData.post_content = CKEDITOR.instances['create-post-editor'].getData()
+//   let fdt = new FormData(document.querySelector('form'))
+//   fdt.append("content", postData.post_content)
+//   for (let key of fdt.entries()) {
+//     console.log(key[0] + ', ' + key[1]);
+//   }
+//   $.ajax({
+//       type: 'POST',
+//       url: '/dashboard/create-post',
+//       data: fdt.entries(),
+//       success: function (data) {
+//         console.log(data)
+//       },
+//       cache: false,
+//       contentType: false,
+//       processData: false
+//         // dataType: 'json'
+//     })
+//     // $.post('/dashboard/create-post', fdt, function (data) {
+//     //   console.log("response data", data)
+//     // })
+// }
+
+function createNewPost() {
+  let loading = showLoading(document.getElementById('dashboard-main__right-sidebar'))
+  $('textarea[name="create-post-editor"]').val(CKEDITOR.instances['create-post-editor'].getData())
+
+  $('#postForm').ajaxSubmit({
+    error: function (xhr) {
+      console.log('error')
+    },
+    success: function (res) {
+      if (!res.error && res.response) {
+        hideLoading(loading)
+        console.log('success')
+        // notifySuccess(message)
+        // resetPostForm()
+      }
+    }
+  })
+
+  return false;
 }

@@ -1,17 +1,17 @@
 const dashboardHandlers = require('../../handlers/dashboard')
 
 module.exports = {
-    'get': {
-        '/dashboard': dashboardHandlers.getDashboardGetRequest,
-        '/dashboard-ui/edit-post': dashboardHandlers.getEditPostUIGetRequest,
-        '/dashboard-ui/edit-user/:userRule': dashboardHandlers.getEditUserUIByRoleGetRequest,
-        '/dashboard-ui/:pageId': dashboardHandlers.getPageContentUIByPageIdGetRequest,
-        '/posts-list/:pageId': dashboardHandlers.getPostsListByPageIdGetRequest,
-        '/categories-list': dashboardHandlers.getFullCategoriesListGetRequest,
-        '/tags-list': dashboardHandlers.getFullTagsListGetRequest,
-        '/users-list': dashboardHandlers.getFullUsersListGetRequest,
-    },
-    'post': {
-
-    }
+  'get': {
+    '/dashboard': dashboardHandlers.dashboardGetRequest,
+    '/dashboard/dashboard-ui/edit-post': dashboardHandlers.getEditPostUIGetRequest,
+    '/dashboard/dashboard-ui/edit-user/:userRule': dashboardHandlers.getEditUserUIByRoleGetRequest,
+    '/dashboard/dashboard-ui/:pageId': dashboardHandlers.getPageContentUIByPageIdGetRequest,
+    '/dashboard/posts-list/:pageId': dashboardHandlers.getPostsListByPageIdGetRequest,
+    '/dashboard/categories-list': dashboardHandlers.getFullCategoriesListGetRequest,
+    '/dashboard/tags-list': dashboardHandlers.getFullTagsListGetRequest,
+    '/dashboard/users-list': dashboardHandlers.getFullUsersListGetRequest,
+  },
+  'post': {
+    '/dashboard/create-post': dashboardHandlers.createPostPostRequest,
+  }
 }

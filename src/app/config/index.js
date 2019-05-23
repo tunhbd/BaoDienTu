@@ -12,5 +12,11 @@ module.exports = {
     USER: 'USER',
     CATEGORY: 'CATEGORY',
     TAG: 'TAG',
+  },
+  USER_ROLES: {
+    SUBSCRIBER: 'SUBSCRIBER',
+    WRITER: 'WRITER',
+    EDITOR: 'EDITOR',
+    ADMIN: 'ADMIN',
   }
 }

@@ -8,47 +8,47 @@ const PAGES = {
   },
   CREATE_POST: {
     id: 'CREATE_POST',
-    urlUI: '/dashboard-ui/CREATE_POST',
+    urlUI: '/dashboard/dashboard-ui/CREATE_POST',
     url: '',
   },
   DRAFT: {
     id: 'DRAFT',
-    urlUI: '/dashboard-ui/DRAFT',
-    url: '/posts-list/DRAFT',
+    urlUI: '/dashboard/dashboard-ui/DRAFT',
+    url: '/dashboard/posts-list/DRAFT',
     status: false,
   },
   WAITING: {
     id: 'WAITING',
-    urlUI: '/dashboard-ui/WAITING',
-    url: '/posts-list/WAITING',
+    urlUI: '/dashboard/dashboard-ui/WAITING',
+    url: '/dashboard/posts-list/WAITING',
     status: true,
   },
   REJECT: {
     id: 'REJECT',
-    urlUI: '/dashboard-ui/REJECT',
-    url: '/posts-list/REJECT',
+    urlUI: '/dashboard/dashboard-ui/REJECT',
+    url: '/dashboard/posts-list/REJECT',
     status: false,
   },
   PUBLISHED: {
     id: 'PUBLISHED',
-    urlUI: '/dashboard-ui/PUBLISHED',
-    url: '/posts-list/PUBLISHED',
+    urlUI: '/dashboard/dashboard-ui/PUBLISHED',
+    url: '/dashboard/posts-list/PUBLISHED',
     status: true,
   },
   USER: {
     id: 'USER',
-    urlUI: '/dashboard-ui/USER',
-    url: '/users-list',
+    urlUI: '/dashboard/dashboard-ui/USER',
+    url: '/dashboard/users-list',
   },
   CATEGORY: {
     id: 'CATEGORY',
-    urlUI: '/dashboard-ui/CATEGORY',
-    url: '/categories-list',
+    urlUI: '/dashboard/dashboard-ui/CATEGORY',
+    url: '/dashboard/categories-list',
   },
   TAG: {
     id: 'TAG',
-    urlUI: '/dashboard-ui/TAG',
-    url: '/tags-list',
+    urlUI: '/dashboard/dashboard-ui/TAG',
+    url: '/dashboard/tags-list',
   },
 }
 const USERS = {
@@ -120,17 +120,22 @@ function showAndSetupPostList() {
 }
 
 function loadPageContent(pageId) {
+  mainContent.html('')
+
+  let loading = showLoading(document.getElementById('dashboard-main__right-sidebar'))
   currentDashboardPage = pageId
 
   switch (pageId) {
     case PAGES.GENERAL.id:
-      mainContent.html('')
+
       break;
     case PAGES.CREATE_POST.id:
       $.get({
         url: PAGES.CREATE_POST.urlUI,
         data: {},
         success: function (data) {
+          hideLoading(loading)
+          console.log('done')
           mainContent.html(data)
           showEditingSpace($, 'create-post-editor')
         },
@@ -323,14 +328,12 @@ function setEventForToggleMenuIcon() {
         mobileMenu.removeClass('show-menu')
         mobileMenu.addClass('hide-menu')
         console.log('hide menu')
-      }
-      else {
+      } else {
         mobileMenu.removeClass('hide-menu')
         mobileMenu.addClass('show-menu')
         console.log('show menu')
       }
-    }
-    else {
+    } else {
       if (leftSideBar.hasClass('collapse-menu')) {
 
         leftSideBar.removeClass('collapse-menu')
@@ -343,8 +346,7 @@ function setEventForToggleMenuIcon() {
           $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').fadeIn(200)
           $(':root').css('--dashboard-main-content-left-sidebar-width', '200px')
         }, 200)
-      }
-      else {
+      } else {
         leftSideBar.addClass('collapse-menu')
         leftSideBar.removeClass('expand-menu')
         $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').fadeOut(200)
