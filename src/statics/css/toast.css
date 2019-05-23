@@ -6,6 +6,7 @@
   flex-wrap: wrap;
   position: fixed;
   top: 5%;
+  right: 20px;
   z-index: 100;
 }
 

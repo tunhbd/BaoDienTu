@@ -13,5 +13,6 @@ module.exports = {
   },
   'post': {
     '/dashboard/create-post': dashboardHandlers.createPostPostRequest,
+    '/dashboard/create-tag': dashboardHandlers.createTag,
   }
 }

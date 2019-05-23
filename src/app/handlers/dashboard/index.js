@@ -1,8 +1,8 @@
-const { tagBus, postBus, categoryBus } = require('../../business')
+const { tagBus, postTagBus, postBus, categoryBus } = require('../../business')
 const mockData = require('../../mockData')
 const config = require('../../config')
 const moment = require('moment')
-const { Post } = require('../../models')
+const { Post, Tag, PostTag } = require('../../models')
 const { multerMiddlewares } = require('../../middlewares')
 
 const dashboardGetRequest = (req, res) => {
@@ -11,10 +11,10 @@ const dashboardGetRequest = (req, res) => {
       if (req.user.user_role === config.USER_ROLES.SUBSCRIBER) {
         res.redirect('/')
       } else {
-        res.render('dashboard', { user: req.user, layout: false })
+        res.render('dashboard', { user: { ...req.user, user_avatar: 'avatar_sample.png' }, layout: false })
       }
     } else {
-      res.render('dashboard', { user: req.user, layout: false })
+      res.render('dashboard', { user: { user_avatar: 'avatar_sample.png' }, layout: false })
       // res.redirect('/sign-in')
     }
   } else {
@@ -38,12 +38,17 @@ const getPageContentUIByPageIdGetRequest = (req, res) => {
     if (!req.isSignIn) {
       res.send('error')
     } else {
+      console.log('LOADING')
       switch (req.params.pageId) {
         case config.PAGES.CREATE_POST:
-          categoryBus
-            .getLessInfoCategories()
-            .then(categories => {
-              res.render('templates/dashboard-uis/createPostUI', { categories, layout: false })
+          Promise
+            .all([
+              categoryBus.getLessInfoCategories(),
+              tagBus.getLessInfoTags()
+            ])
+            .then(([categories, tags]) => {
+              console.log('DONE')
+              res.render('templates/dashboard-uis/createPostUI', { categories, tags, layout: false })
             })
             .catch(err => {
               console.log('GET LESS INFO CATEGORIES ERROR: ', err)
@@ -89,14 +94,14 @@ const getFullCategoriesListGetRequest = (req, res) => {
 
 const getFullTagsListGetRequest = (req, res) => {
   tagBus
-    .loadAllTags()
+    .getFullInfoTags()
     .then(tags => {
       console.log(tags)
       res.send(tags)
     })
     .catch(err => {
       console.log('error', err)
-      res.send('Sorry, have some error on server')
+      res.send(null)
     })
 }
 
@@ -107,30 +112,125 @@ const getFullUsersListGetRequest = (req, res) => {
 const uploadPostImageFile = multerMiddlewares.getPostImageMulterMiddleware()
 
 const createPostPostRequest = (req, res) => {
-  console.log('postId', req.generation.postId)
-  let post = new Post()
-  post.setPostId(req.generation.postId)
-  post.setPostTitle(req.body.title)
-  post.setPostSummary(req.body.summary)
-  post.setPostContent(req.body['create-post-editor'])
-  post.setYoutubeUrl(req.body.youtubeUrl)
-  post.setPostAvatarImage(req.generation.postAvatarImage ? req.generation.postAvatarImage : null)
-  post.setCategory(req.body.category)
-  // post.setAuthor(getAuthor)
-  // console.log('post', post)
+  let post = new Post(
+    req.generation.postId,
+    req.body.title,
+    {
+      account: '',
+      fullname: '',
+      pseudonym: '',
+    },
+    {
+      categoryId: req.body.category,
+      categoryName: '',
+    },
+    [],
+    req.body.youtubeUrl,
+    req.generation.postAvatarImage || null,
+    req.body.summary,
+    req.body.content
+  )
+
+  console.log('CREATE POST')
   postBus
     .createPost(post)
-    .then(status => {
-      status && res.send({
-        error: false,
-        response: true,
-      })
+    .then(async newPost => {
+      if (newPost) {
+        tags = req.body.tags.split(',').map(tag => tag.trim())
+        await Promise
+          .all(
+            tags.map(
+              async tag => new Promise(async (resolve, reject) => {
+                let tagId = tag
+                if (! await tagBus.hasTag(tagId)) {
+                  let tagName = tagId
+                  let newTag = new Tag('', tagName)
+                  await tagBus
+                    .createTag(newTag)
+                    .then(target => {
+                      tagId = target.TagId
+                      console.log('create new tag: ', target)
+                      newPost.Tags.push({ tagId: target.TagId, tagName: target.TagName })
+                    })
+                    .catch(err => {
+                      console.log('CREATE TAG ERROR: ', err)
+                    })
+                }
+                else {
+                  newPost.Tags.push({ tagId: tagId, tagName: '' })
+                }
+                console.log('Tag Id: ', tagId)
+                let postTag = new PostTag(newPost.postId, tagId)
+                await postTagBus
+                  .createPostTag(postTag)
+                  .then(newPostTag => {
+                    console.log('create new post tag: ', newPostTag)
+                    resolve(newPostTag)
+                  })
+                  .catch(err => {
+                    console.log('CREATE POST TAG ERROR: ', err)
+                    reject(err)
+                  })
+              })
+            )
+          )
+          .then(postTags => {
+            res.send({
+              error: false,
+              post: newPost,
+            })
+          })
+          .catch(err => {
+            console.log('ERROR: ', err)
+            res.send({
+              error: true,
+              post: {},
+            })
+          })
+      }
+      else {
+        res.send({
+          error: false,
+          post: {},
+        })
+      }
     })
     .catch(err => {
       console.log('CREATE POST ERROR: ', err)
       res.send({
         error: true,
-        response: false,
+        post: {},
+      })
+    })
+}
+
+const createTag = (req, res) => {
+  let tag = new Tag()
+
+  tag.TagName = req.body.tagName
+  tag.TagActive = req.body.tagActive ? 1 : 0
+
+  tagBus
+    .createTag(tag)
+    .then(ret => {
+      if (!ret.error) {
+        res.send({
+          error: false,
+          tag: ret.tag,
+        })
+      }
+      else {
+        res.send({
+          error: true,
+          tag: null,
+        })
+      }
+    })
+    .catch(err => {
+      console.log('HANDLER CREATE TAG ERROR: ', err)
+      res.send({
+        error: true,
+        tag: null,
       })
     })
 }
@@ -146,4 +246,5 @@ module.exports = {
   getFullUsersListGetRequest,
   uploadPostImageFile,
   createPostPostRequest,
+  createTag,
 }

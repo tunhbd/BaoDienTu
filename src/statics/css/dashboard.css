@@ -212,8 +212,13 @@ body {
 #dashboard-main__right-sidebar {
   width: calc(100% - var(--dashboard-main-content-left-sidebar-width));
   height: 100%;
-  overflow: auto;
   position: relative;
+}
+
+#dashboard-main__right-sidebar__content {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 @media screen and (max-width: 576px) {

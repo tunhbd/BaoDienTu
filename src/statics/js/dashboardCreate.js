@@ -152,6 +152,10 @@ function showAvatarImagePreview(file, isUrl = false) {
 //     // })
 // }
 
+function resetPostForm() {
+  mainContent.html(data)
+}
+
 function createNewPost() {
   let loading = showLoading(document.getElementById('dashboard-main__right-sidebar'))
   $('textarea[name="create-post-editor"]').val(CKEDITOR.instances['create-post-editor'].getData())
@@ -164,11 +168,17 @@ function createNewPost() {
       if (!res.error && res.response) {
         hideLoading(loading)
         console.log('success')
-        // notifySuccess(message)
-        // resetPostForm()
+        notifySuccess(message)
+        resetPostForm()
       }
     }
   })
 
   return false;
+}
+
+function setEventFotTags() {
+  $('.tag-hints .tag-hint').click(function (e) {
+    e.preventDefault()
+  })
 }
