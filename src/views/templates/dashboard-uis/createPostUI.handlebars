@@ -13,7 +13,6 @@
       </div>
       <div class="input-group select-category-container">
         <select class="custom-select h-100" name="category" id="categorySelection">
-          {{!-- {{#if (opt categories.length)}}<option selected value="none">Choose one category</option>{{/if}} --}}
           {{#each categories}}
           <option value="{{this.category_id}}">{{this.category_name}}</option>
           {{/each}}
@@ -26,8 +25,16 @@
         <span class="input-group-text" id="basic-addon1">Tags</span>
       </div>
       <div class="form-control tags h-auto" id="tags">
-        <input type="text" class="labelinput">
+        <input type="text" class="labelinput dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
         <input type="hidden" value="" name="tags">
+        <div class="dropdown-menu tag-hints bao-dien-tu-scrollbar">
+          {{#each tags}}
+          <span class="dropdown-item tag-hint" tag-id="{{this.tag_id}}"
+            onclick="chooseTag({{this.tag_id}})">{{this.tag_name}}
+          </span>
+          {{/each}}
+        </div>
       </div>
     </div>
     <div class="input-group mb-3">

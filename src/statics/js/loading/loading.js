@@ -1,4 +1,5 @@
 function showLoading(target) {
+  $(target).css('pointer-events', 'none')
   var mask = $('<div class="loading-mask"></div>')
   $(target).append(mask)
 
@@ -28,11 +29,13 @@ function showLoading(target) {
   return {
     loading,
     target,
+    mask,
     maskSelector: '.loading-mask',
   }
 }
 
 function hideLoading(loading) {
   loading.loading.stop()
-  $(loading.target).remove(loading.maskSelector)
+  $(loading.target).css('pointer-events', 'auto')
+  $(loading.mask).remove()
 }

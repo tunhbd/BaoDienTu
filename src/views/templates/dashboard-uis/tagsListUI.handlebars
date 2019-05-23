@@ -46,13 +46,13 @@
           </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="createTagForm" name="createTagForm" action="/dashboard/create-tag" method="POST">
           <div class="form-group">
             <label for="tag-name" class="col-form-label">Tag:</label>
             <input type="text" class="form-control" id="tag-name" name="tagName" />
           </div>
           <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="tag-status" checked="checked" name="active" />
+            <input type="checkbox" class="custom-control-input" id="tag-status" checked="checked" name="tagActive" />
             <label class="custom-control-label" for="tag-status">Active</label>
           </div>
         </form>

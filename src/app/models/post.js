@@ -1,46 +1,69 @@
-class PostModel {
-  constructor() {
-    this.postId = ''
-    this.postTitle = ''
-    this.author = ''
-    this.category = ''
-    this.youtubeUrl = ''
-    this.postAvatarImage = ''
-    this.createdDate = ''
-    this.publishedDate = ''
-    this.postSummary = ''
-    this.postContent = ''
+class Post {
+  constructor(
+    postId = '',
+    postTitle = '',
+    author = {
+      account: '',
+      fullname: '',
+      pseudonym: ''
+    },
+    category = {
+      categoryId: '',
+      categoryName: ''
+    },
+    tags = [],
+    youtubeUrl = '',
+    postAvatarImage = '',
+    postSummary = '',
+    postContent = '',
+    createdDate = '',
+    publishedDate = ''
+  ) {
+    this.postId = postId
+    this.postTitle = postTitle
+    this.author = author
+    this.category = category
+    this.tags = tags
+    this.youtubeUrl = youtubeUrl
+    this.postAvatarImage = postAvatarImage
+    this.postSummary = postSummary
+    this.postContent = postContent
+    this.createdDate = createdDate
+    this.publishedDate = publishedDate
   }
 
-  getPostId() { return this.postId }
-  setPostId(value) { this.postId = value }
+  get PostId() { return this.postId }
+  set PostId(value) { this.postId = value }
 
-  getPostTitle() { return this.postTitle }
-  setPostTitle(value) { this.postTitle = value }
+  get PostTitle() { return this.postTitle }
+  set PostTitle(value) { this.postTitle = value }
 
-  getPostSummary() { return this.postSummary }
-  setPostSummary(value) { this.postSummary = value }
+  get PostSummary() { return this.postSummary }
+  set PostSummary(value) { this.postSummary = value }
 
-  getPostContent() { return this.postContent }
-  setPostContent(value) { this.postContent = value }
+  get PostContent() { return this.postContent }
+  set PostContent(value) { this.postContent = value }
 
-  getPostAvatarImage() { return this.postAvatarImage }
-  setPostAvatarImage(value) { this.postAvatarImage = value }
+  get PostAvatarImage() { return this.postAvatarImage }
+  set PostAvatarImage(value) { this.postAvatarImage = value }
 
-  getAuthor() { return this.author }
-  setAuthor(value) { this.author = value }
+  get Author() { return this.author }
+  set Author(value) { this.author = value }
 
-  getCategory() { return this.category }
-  setCategory(value) { this.category = value }
+  get Category() { return this.category }
+  set Category(value) { this.category = value }
 
-  getYoutubeUrl() { return this.youtubeUrl }
-  setYoutubeUrl(value) { this.youtubeUrl = value }
+  get Tags() { return this.tags }
+  set Tags(value) { this.tags = value }
 
-  getCreatedDate() { return this.createdDate }
-  setCreatedDate(value) { this.createdDate = value }
+  get YoutubeUrl() { return this.youtubeUrl }
+  set YoutubeUrl(value) { this.youtubeUrl = value }
 
-  getPublishedDate() { return this.publishedDate }
-  setPublishedDate(value) { this.publishedDate = value }
+  get CreatedDate() { return this.createdDate }
+  set CreatedDate(value) { this.createdDate = value }
+
+  get PublishedDate() { return this.publishedDate }
+  set PublishedDate(value) { this.publishedDate = value }
 }
 
-module.exports = PostModel
+module.exports = Post

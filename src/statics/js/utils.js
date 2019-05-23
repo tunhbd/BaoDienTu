@@ -4,10 +4,12 @@ function formatVietnameseDate(dateStr) {
 
   return returnDateStr
 }
+
 const STATUS = {
   SUCCESS: 'SUCCESS',
   FAILED: 'FAILED',
 }
+
 function toastify(status, message) {
   if (!$('.toast-container')) {
     let toastContainer = $('<div class="toast-container"></div>')
@@ -16,6 +18,9 @@ function toastify(status, message) {
   if (status === STATUS.SUCCESS) {
     let toastItem = $(`<div class="alert alert-success toast-item" role="alert">${message}</div>`)
     $('.toast-container').append(toastItem)
+    setTimeout(function () {
+      toastItem.fadeOut(300).remove()
+    }, 2000)
   }
 
 }

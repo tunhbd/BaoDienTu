@@ -70,8 +70,9 @@ var categoriesList = []
 var originPostsList = []
 var pageCount = 0
 var currentPage = 1
-var mainContent = $('#dashboard-main__right-sidebar')
+var mainContent = $('#dashboard-main__right-sidebar__content')
 var paginationObj = null
+var oldHtmlCode = ''
 
 /**
  * FUNCTIONS
@@ -135,9 +136,10 @@ function loadPageContent(pageId) {
         data: {},
         success: function (data) {
           hideLoading(loading)
-          console.log('done')
+          oldHtmlCode = data
           mainContent.html(data)
           showEditingSpace($, 'create-post-editor')
+          setEventFotTags()
         },
         dateType: 'html'
       })
@@ -255,6 +257,7 @@ function loadPageContent(pageId) {
             url: PAGES.TAG.url,
             data: {},
             success: function (data) {
+              hideLoading(loading)
               tagsList = data
               // showTagsList($, tagsList)
               showDataListWithPagination(TAG_COUNT_PER_PAGE, $("#pagination-container"), tagsList, $("#data-container"), listTags, setUpForTagsList)
