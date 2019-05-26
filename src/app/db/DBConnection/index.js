@@ -1,13 +1,14 @@
 const mysql = require('mysql')
+const config = require('../../config')
 
 class DBConnection {
   constructor() {
     this.connection = mysql.createConnection({
-      host: 'db4free.net',
-      port: 3306,
-      user: 'tth2019',
-      password: 'baodientu2019',
-      database: 'baodientu'
+      host: config.DATABASE.MAIN.HOST,
+      port: config.DATABASE.MAIN.PORT,
+      user: config.DATABASE.MAIN.USER,
+      password: config.DATABASE.MAIN.PASSWORD,
+      database: config.DATABASE.MAIN.DATABASE_NAME
     });
   }
 

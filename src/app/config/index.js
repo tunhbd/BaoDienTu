@@ -18,5 +18,21 @@ module.exports = {
     WRITER: 'WRITER',
     EDITOR: 'EDITOR',
     ADMIN: 'ADMIN',
+  },
+  DATABASE: {
+    MAIN: {
+      HOST: 'mysql-1472-0.cloudclusters.net',
+      PORT: '10003',
+      USER: 'admin',
+      PASSWORD: 'baodientu2019',
+      DATABASE_NAME: 'baodientu'
+    },
+    OTHER: {
+      HOST: 'db4free.net',
+      PORT: '3306',
+      USER: 'tth2019',
+      PASSWORD: 'baodientu2019',
+      DATABASE_NAME: 'baodientu'
+    }
   }
 }
