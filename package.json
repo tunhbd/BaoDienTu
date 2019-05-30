@@ -3,8 +3,50 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "nodemon app_server.js",
-    "start": "node app_server.js"
+    "test:prod": "better-npm-run test:prod",
+    "start:prod": "better-npm-run start:prod"
+  },
+  "betterScripts": {
+    "start:local": {
+      "command": "node app_server.js",
+      "env": {
+        "DATABASE_HOST": "localhost",
+        "DATABASE_PORT": 3306,
+        "DATABASE_USER": "",
+        "DATABASE_PASSWORD": "",
+        "DATABASE_NAME": "electromechanicalstore"
+      }
+    },
+    "start:prod": {
+      "command": "node app_server.js",
+      "env": {
+        "DATABASE_HOST": "remotemysql.com",
+        "DATABASE_PORT": 3306,
+        "DATABASE_USER": "tR5hdQYWg2",
+        "DATABASE_PASSWORD": "0exK3EeGJI",
+        "DATABASE_NAME": "tR5hdQYWg2"
+      }
+    },
+    "test:local": {
+      "command": "nodemon app_server.js",
+      "env": {
+        "DATABASE_HOST": "localhost",
+        "DATABASE_PORT": 3306,
+        "DATABASE_USER": "",
+        "DATABASE_PASSWORD": "",
+        "DATABASE_NAME": "electromechanicalstore"
+      }
+    },
+    "test:prod": {
+      "command": "nodemon app_server.js",
+      "env": {
+        "DATABASE_HOST": "remotemysql.com",
+        "DATABASE_PORT": 3306,
+        "DATABASE_USER": "tR5hdQYWg2",
+        "DATABASE_PASSWORD": "0exK3EeGJI",
+        "DATABASE_NAME": "tR5hdQYWg2"
+      }
+    }
   },
   "repository": {
     "type": "git",
@@ -19,6 +61,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
+    "debug": "^4.1.1",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.2",
     "md5": "^2.2.1",
@@ -28,6 +71,7 @@
     "passport": "^0.4.0"
   },
   "devDependencies": {
+    "better-npm-run": "^0.1.1",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.0"
   }
