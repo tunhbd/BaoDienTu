@@ -77,7 +77,15 @@
           <div class="logo">
             <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
           </div>
-          {{#if (opt (opt user '!==' undefiend opt) '&&' (opt user.account '!==' '' opt) opt)}}
+          {{#if user}}
+          <div class="login-form">
+            <i class="far fa-user">
+              <span>
+                <a href="/sign-in" class="login">Đăng nhập</a> | <a href="/sign-up" class="sign-up"> Đăng kí</a>
+              </span>
+            </i>
+          </div>
+          {{else}}
           <div id="homepage-avatar-user" class="rounded-circle overflow-hidden homepage-user-menu-is-collapse">
             <img src="/media/images/users/{{user.avatar}}" alt="" />
           </div>
@@ -104,16 +112,7 @@
             </ul>
           </div>
           {{/if}}
-          {{#if (opt user '===' undefiend opt)}}
-          <div class="login-form">
-            <i class="far fa-user">
-              <span>
-                <a href="/sign-in" class="login">Đăng nhập</a> | <a href="/sign-up" class="sign-up"> Đăng kí</a>
-              </span>
-            </i>
-          </div>
         </div>
-        {{/if}}
       </div>
       <div class="second-header mt-2">
         <!-- logo or Digital News -->

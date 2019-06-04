@@ -1,5 +1,5 @@
 module.exports = {
-  Post: require('./post'),
-  Tag: require('./tag'),
-  PostTag: require('./postTag'),
-}
+  Post: require("./post"),
+  Tag: require("./tag"),
+  PostTag: require("./postTag")
+};
