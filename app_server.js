@@ -33,13 +33,13 @@ server.engine(viewEngine.engineName, viewEngine.engine)
 server.set('views', path.join(__dirname, '/src/views'));
 server.set('view engine', viewEngine.engineName)
 
-middlewares.dashboardMiddleware.registerMiddleware(server)
+middlewares.adminMiddleware.registerMiddleware(server)
 server.use('/', route)
 middlewares.notFoundMiddleware.registerMiddleware(server)
-  // server.post('/dashboard/create-post', multer(multerConfig).single('avatarImage'), function (req, res) {
-  //   console.log('body', req.body)
-  //   res.send('Complete!');
-  // })
+// server.post('/dashboard/create-post', multer(multerConfig).single('avatarImage'), function (req, res) {
+//   console.log('body', req.body)
+//   res.send('Complete!');
+// })
 
 server.listen(process.env.PORT || config.SERVER.PORT, () => {
   console.log('server is running on port ', config.SERVER.PORT)

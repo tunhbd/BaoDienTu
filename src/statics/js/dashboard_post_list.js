@@ -7,12 +7,12 @@
 // var postCountPerPage = 10
 
 const FILTERS = {
-    FILTER_SORT: {
-        INCREASING_CREATED_DATE: 1,
-        DECREASING_CREATED_DATE: 2,
-        INCREASING_PUBLISHED_DATE: 3,
-        DECREASING_PUBLISHED_DATE: 4,
-    }
+  FILTER_SORT: {
+    INCREASING_CREATED_DATE: 1,
+    DECREASING_CREATED_DATE: 2,
+    INCREASING_PUBLISHED_DATE: 3,
+    DECREASING_PUBLISHED_DATE: 4,
+  }
 }
 
 /**
@@ -34,239 +34,239 @@ const FILTERS = {
 // }
 
 function initPostListUI() {
-    $('.post-list__content').html('')
+  $('.post-list__content').html('')
 }
 
 function choosePage(pageNum, choosePageAction, initForPageCountZero) {
-    if (pageNum > 0 && pageNum <= pageCount) {
-        currentPage = pageNum
-        $('.pagination__item-active').removeClass('pagination__item-active');
-        $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
-        choosePageAction(pageNum)
-    } else {
-        initForPageCountZero()
-    }
+  if (pageNum > 0 && pageNum <= pageCount) {
+    currentPage = pageNum
+    $('.pagination__item-active').removeClass('pagination__item-active');
+    $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
+    choosePageAction(pageNum)
+  } else {
+    initForPageCountZero()
+  }
 }
 
 function showPreviousPage(choosePageAction, initForPageCountZero) {
-    if (currentPage > 1) {
-        choosePage(currentPage - 1, choosePageAction, initForPageCountZero)
-    }
+  if (currentPage > 1) {
+    choosePage(currentPage - 1, choosePageAction, initForPageCountZero)
+  }
 }
 
 function showNextPage(choosePageAction, initForPageCountZero) {
-    if (currentPage < pageCount) {
-        choosePage(currentPage + 1, choosePageAction, initForPageCountZero)
-    }
+  if (currentPage < pageCount) {
+    choosePage(currentPage + 1, choosePageAction, initForPageCountZero)
+  }
 }
 
 function showExistsPostDataToForm(post) {
-    postData = post
+  postData = post
 
-    $('input[name="titlePost"]').val(post.post_title)
-    $('select#categorySelection').val(post.category.category_id)
-    $('input[name="tags"]').val(post.tags.join(','))
-    $('input[name="youtubeUrl"]').val(post.youtube_url)
-    showAvatarImagePreview(postData.post_avatar_image, true)
-    $('input[name="summary"]').val(post.post_summary)
-    $('textarea[name="edit-post-editor"]').val(post.post_content)
+  $('input[name="titlePost"]').val(post.post_title)
+  $('select#categorySelection').val(post.category.category_id)
+  $('input[name="tags"]').val(post.tags.join(','))
+  $('input[name="youtubeUrl"]').val(post.youtube_url)
+  showAvatarImagePreview(postData.post_avatar_image, true)
+  $('input[name="summary"]').val(post.post_summary)
+  $('textarea[name="edit-post-editor"]').val(post.post_content)
 }
 
 function renderControlTooltip(postId, post, container) {
-    let control = document.createElement('td')
-    $(control).addClass('post-list__cell control-icon-container')
+  let control = document.createElement('td')
+  $(control).addClass('post-list__cell control-icon-container')
 
-    // edit button and delete button
-    if (
-        // (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id)
-        // &&
-        (userRule === USERS.WRITER || userRule === USERS.ADMIN)
-    ) {
-        // buttons container
-        let controlTooltip = document.createElement('div')
-        $(controlTooltip).addClass('control-tooltip')
+  // edit button and delete button
+  if (
+    // (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id)
+    // &&
+    (userRule === USERS.WRITER || userRule === USERS.ADMIN)
+  ) {
+    // buttons container
+    let controlTooltip = document.createElement('div')
+    $(controlTooltip).addClass('control-tooltip')
 
-        let controlButtons = document.createElement('div')
-        $(controlButtons).addClass('control-buttons')
+    let controlButtons = document.createElement('div')
+    $(controlButtons).addClass('control-buttons')
 
-        if (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id) {
-            // edit button
-            let editControl = $(
-                `<button type="button" class="btn btn-raised btn-info edit-btn">
+    if (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id) {
+      // edit button
+      let editControl = $(
+        `<button type="button" class="btn btn-raised btn-info edit-btn">
         <i class="fas fa-pen"></i>
       </button>`
-            )
-            editControl.click(function(e) {
-                e.stopPropagation()
-                $.get({
-                    url: '/dashboard-ui/edit-post',
-                    data: {},
-                    success: function(data) {
-                        showBaoDienTuDialog(
-                            $('body'),
-                            'big',
-                            'Edit Post',
-                            data, [{
-                                title: 'Save',
-                                callback: () => {
-                                    // showEditingSpace($, 'edit-post-editor')
-                                }
-                            }],
-                            () => {
-                                showEditingSpace($, 'edit-post-editor')
-                                showExistsPostDataToForm(post)
-                            }
-                        )
-                    },
-                    dataType: 'html'
-                })
-
-            })
-            $(controlButtons).append(editControl)
-        }
-
-        // delete button
-        let deleteControl = $(
-            `<button type="button" class="btn btn-raised btn-danger delete-btn">
-        <i class="fas fa-times"></i>
-      </button>`
-        )
-        deleteControl.click(function(e) {
-            //delete post
-            e.stopPropagation()
-            showBaoDienTuDialog($('body'), 'small', 'Deleting post confirmation', 'Do you want to delete this post?', [{
-                title: 'Yes, I want',
+      )
+      editControl.click(function (e) {
+        e.stopPropagation()
+        $.get({
+          url: '/dashboard-ui/edit-post',
+          data: {},
+          success: function (data) {
+            showBaoDienTuDialog(
+              $('body'),
+              'big',
+              'Edit Post',
+              data, [{
+                title: 'Save',
                 callback: () => {
-                    postsList = postsList.filter(post => post.post_id !== postId)
-
-                    originPostsList = originPostsList.filter(post => post.post_id !== postId)
-                    let selectedPageNum = paginationObj.pagination('getSelectedPageNum')
-                    showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
-                    selectedPageNum = selectedPageNum > Math.ceil(postsList.length / postCountPerPage) ? selectedPageNum - 1 : selectedPageNum
-                    paginationObj.pagination('go', selectedPageNum)
+                  // showEditingSpace($, 'edit-post-editor')
                 }
-            }])
-        })
-        $(controlButtons).append(deleteControl)
-
-        $(controlTooltip).append(controlButtons)
-        $(control).append(controlTooltip)
-
-        // trigger icon for tooltip
-        let controlIcon = document.createElement('img')
-        $(controlIcon).addClass('control-icon')
-        controlIcon.src = '../../media/statics/images/ic_more.png'
-
-        $(controlIcon).mouseenter(function() {
-            $(controlTooltip).fadeIn(100)
-
-            $(controlTooltip).mouseenter(function() {
-                $(controlTooltip).fadeIn(100)
-            })
-            $(controlTooltip).mouseleave(function() {
-                $(controlTooltip).fadeOut(0)
-            })
-        })
-        $(controlIcon).mouseleave(function() {
-            $(controlTooltip).fadeOut(0)
+              }],
+              () => {
+                showEditingSpace($, 'edit-post-editor')
+                showExistsPostDataToForm(post)
+              }
+            )
+          },
+          dataType: 'html'
         })
 
-        $(control).append(controlIcon)
+      })
+      $(controlButtons).append(editControl)
     }
 
-    return control
+    // delete button
+    let deleteControl = $(
+      `<button type="button" class="btn btn-raised btn-danger delete-btn">
+        <i class="fas fa-times"></i>
+      </button>`
+    )
+    deleteControl.click(function (e) {
+      //delete post
+      e.stopPropagation()
+      showBaoDienTuDialog($('body'), 'small', 'Deleting post confirmation', 'Do you want to delete this post?', [{
+        title: 'Yes, I want',
+        callback: () => {
+          postsList = postsList.filter(post => post.post_id !== postId)
+
+          originPostsList = originPostsList.filter(post => post.post_id !== postId)
+          let selectedPageNum = paginationObj.pagination('getSelectedPageNum')
+          showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+          selectedPageNum = selectedPageNum > Math.ceil(postsList.length / postCountPerPage) ? selectedPageNum - 1 : selectedPageNum
+          paginationObj.pagination('go', selectedPageNum)
+        }
+      }])
+    })
+    $(controlButtons).append(deleteControl)
+
+    $(controlTooltip).append(controlButtons)
+    $(control).append(controlTooltip)
+
+    // trigger icon for tooltip
+    let controlIcon = document.createElement('img')
+    $(controlIcon).addClass('control-icon')
+    controlIcon.src = '../../media/statics/images/ic_more.png'
+
+    $(controlIcon).mouseenter(function () {
+      $(controlTooltip).fadeIn(100)
+
+      $(controlTooltip).mouseenter(function () {
+        $(controlTooltip).fadeIn(100)
+      })
+      $(controlTooltip).mouseleave(function () {
+        $(controlTooltip).fadeOut(0)
+      })
+    })
+    $(controlIcon).mouseleave(function () {
+      $(controlTooltip).fadeOut(0)
+    })
+
+    $(control).append(controlIcon)
+  }
+
+  return control
 }
 
 function sort(sortId) {
-    switch (parseInt(sortId)) {
-        case FILTERS.FILTER_SORT.INCREASING_CREATED_DATE:
-            postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.created_date)) - (new Date(postTwo.created_date)))
-            break;
-        case FILTERS.FILTER_SORT.DECREASING_CREATED_DATE:
-            postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.created_date)) - (new Date(postOne.created_date)))
-            break;
-        case FILTERS.FILTER_SORT.INCREASING_PUBLISHED_DATE:
-            console.log('bo')
-            postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.published_date)) - (new Date(postTwo.published_date)))
-            break;
-        case FILTERS.FILTER_SORT.DECREASING_PUBLISHED_DATE:
-            postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.published_date)) - (new Date(postOne.published_date)))
-            break;
-    }
+  switch (parseInt(sortId)) {
+    case FILTERS.FILTER_SORT.INCREASING_CREATED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.created_date)) - (new Date(postTwo.created_date)))
+      break;
+    case FILTERS.FILTER_SORT.DECREASING_CREATED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.created_date)) - (new Date(postOne.created_date)))
+      break;
+    case FILTERS.FILTER_SORT.INCREASING_PUBLISHED_DATE:
+      console.log('bo')
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.published_date)) - (new Date(postTwo.published_date)))
+      break;
+    case FILTERS.FILTER_SORT.DECREASING_PUBLISHED_DATE:
+      postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.published_date)) - (new Date(postOne.published_date)))
+      break;
+  }
 }
 
 function filterFollowCategory(categoryId) {
-    if (categoryId === 'ALL') {
-        postsList = originPostsList
-    } else {
-        postsList = originPostsList.filter(post => post.category.category_id === categoryId)
-    }
+  if (categoryId === 'ALL') {
+    postsList = originPostsList
+  } else {
+    postsList = originPostsList.filter(post => post.category.category_id === categoryId)
+  }
 }
 
 function setEventsForFilterCategory() {
-    $('#filterCategory').change(function() {
-        let categoryId = $(this).val()
+  $('#filterCategory').change(function () {
+    let categoryId = $(this).val()
 
-        filterFollowCategory(categoryId)
-        sort($('#filterSort').val())
-            // generatePagination()
-            // choosePage(1)
-        showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
-    })
+    filterFollowCategory(categoryId)
+    sort($('#filterSort').val())
+    // generatePagination()
+    // choosePage(1)
+    showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+  })
 }
 
 function setEventsForFilterSort() {
-    $('#filterSort').change(function() {
-        let sortId = $(this).val()
+  $('#filterSort').change(function () {
+    let sortId = $(this).val()
 
-        sort(sortId)
-            // generatePagination()
-        paginationObj.pagination('go', paginationObj.pagination('getSelectedPageNum'))
-            // choosePage(currentPage)
-    })
+    sort(sortId)
+    // generatePagination()
+    paginationObj.pagination('go', paginationObj.pagination('getSelectedPageNum'))
+    // choosePage(currentPage)
+  })
 }
 
 function setEventsForFilters() {
-    setEventsForFilterCategory()
-    setEventsForFilterSort()
+  setEventsForFilterCategory()
+  setEventsForFilterSort()
 }
 
 function setEventForDeleteRowsButton() {
-    if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
-        $('button.delete-rows').click(() => {
-            let selectedPostObjs = $('.bao-dien-tu-checkbox:checked')
+  if (userRule === USERS.ADMIN || userRule === USERS.WRITER) {
+    $('button.delete-rows').click(() => {
+      let selectedPostObjs = $('.bao-dien-tu-checkbox:checked')
 
-            showBaoDienTuDialog(
-                $('body'),
-                'small',
-                'Deleting post list confirmation',
-                'Do you want to delete these posts?', [{
-                    title: 'Yes, I want',
-                    callback: () => {
-                        selectedPostObjs.each(function() {
-                            postsList = postsList.filter(post => post.post_id !== $(this).attr('post-id'))
-                        })
+      showBaoDienTuDialog(
+        $('body'),
+        'small',
+        'Deleting post list confirmation',
+        'Do you want to delete these posts?', [{
+          title: 'Yes, I want',
+          callback: () => {
+            selectedPostObjs.each(function () {
+              postsList = postsList.filter(post => post.post_id !== $(this).attr('post-id'))
+            })
 
-                        let selectedPage = paginationObj.pagination('getSelectedPageNum')
-                        showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
-                        selectedPage = selectedPage > Math.ceil(postsList.length / postCountPerPage) ? Math.ceil(postsList.length / postCountPerPage) : selectedPage
-                        paginationObj.pagination('go', selectedPage)
-                    }
-                }],
-            )
-        })
-    }
+            let selectedPage = paginationObj.pagination('getSelectedPageNum')
+            showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+            selectedPage = selectedPage > Math.ceil(postsList.length / postCountPerPage) ? Math.ceil(postsList.length / postCountPerPage) : selectedPage
+            paginationObj.pagination('go', selectedPage)
+          }
+        }],
+      )
+    })
+  }
 }
 
 function showPostDetail(post) {
-    currentPost = post
+  currentPost = post
 
-    $('#postDetailLabel').text(post.post_title)
-    $('.postDetailModal-dialog-content-body').html(post.post_content)
+  $('#postDetailLabel').text(post.post_title)
+  $('.postDetailModal-dialog-content-body').html(post.post_content)
 
-    $('.postDetailModal-dialog-content-body').append('<div class="post-info"></div>')
-    $('.post-info').append(`<div><b>Category:</b> <span class="badge badge-danger">${post.category.category_name}</span></div>`)
-    $('.post-info').append(`<div><b>Tags:</b> ${post.tags.map(tag => `<span class="badge badge-secondary">${tag}</span>`).join(' ')}</div>`)
+  $('.postDetailModal-dialog-content-body').append('<div class="post-info"></div>')
+  $('.post-info').append(`<div><b>Category:</b> <span class="badge badge-danger">${post.category.category_name}</span></div>`)
+  $('.post-info').append(`<div><b>Tags:</b> ${post.tags.map(tag => `<span class="badge badge-secondary">${tag}</span>`).join(' ')}</div>`)
 
   if (currentDashboardPage !== PAGES.DRAFT.id || (userRule !== USERS.ADMIN && userRule !== USERS.EDITOR)) {
     $('.save-btn').hide()
@@ -532,21 +532,55 @@ function generatePostList(dataList) {
   return postsListObj.children()
 }
 
-function showDataListWithPagination(countPerPage, paginationContainer, dataSource, dataContainer, generateDataListFunc, moreActionFunc = null) {
-  paginationObj = paginationContainer
+// function showDataListWithPagination(countPerPage, paginationContainer, dataSource, dataContainer, generateDataListFunc, moreActionFunc = null) {
+//   paginationObj = paginationContainer
 
-  paginationObj.pagination({
-    dataSource: dataSource,
-    pageSize: countPerPage,
-    showGoInput: true,
-    showGoButton: true,
-    className: 'paginationjs-theme-bao-dien-tu paginationjs-big',
-    callback: function (data, pagination) {
-      var dataList = generateDataListFunc(data);
-      $(dataContainer).html('')
-      $(dataContainer).append(dataList)
+//   paginationObj.pagination({
+//     dataSource: dataSource,
+//     pageSize: countPerPage,
+//     showGoInput: true,
+//     showGoButton: true,
+//     className: 'paginationjs-theme-bao-dien-tu paginationjs-big',
+//     callback: function (data, pagination) {
+//       var dataList = generateDataListFunc(data);
+//       $(dataContainer).html('')
+//       $(dataContainer).append(dataList)
 
-      moreActionFunc !== null && moreActionFunc()
-    }
-  });
+//       moreActionFunc !== null && moreActionFunc()
+//     }
+//   });
+// }
+
+function onMouseEnterMoreIcon(icon) {
+  let controlTooltip = $(icon).next('.control-tooltip')
+  controlTooltip.fadeIn(100)
+
+  controlTooltip.mouseenter(function () {
+    controlTooltip.fadeIn(100)
+  })
+  controlTooltip.mouseleave(function () {
+    controlTooltip.fadeOut(0)
+  })
 }
+
+function onMouseLeaveMoreIcon(icon) {
+  $(icon).next('.control-tooltip').fadeOut(0)
+}
+
+function setEventForCheckboxs() {
+  $('.post-list__cell-choose').each(function (index) {
+    $(this).click(function (e) {
+      e.stopPropagation()
+    })
+  })
+}
+
+function goToPreviewAndCheckPage(postAlias) {
+  window.location = `/admin/dashboard/preview-post/${postAlias}`
+}
+
+function goToEditPostPage(postAlias) {
+  window.location = `/admin/dashboard/edit-post/${postAlias}`
+}
+
+setEventForCheckboxs()

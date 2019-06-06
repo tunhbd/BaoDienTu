@@ -27,11 +27,28 @@ const getFullInfoTags = () => new Promise((resolve, reject) => {
     })
 })
 
-const getLessInfoTags = () => {
+const getLessInfoTags = () => new Promise(async (resolve, reject) => {
   let query = 'SELECT tag_id, tag_name FROM tags'
+  let dbConn = new DBConnection()
 
-  return (new DBConnection()).loadRequest(query)
-}
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let tags = []
+
+      rets.forEach(ret => {
+        let tag = new Tag()
+        tag.tagId = ret.tag_id
+        tag.tagName = ret.tag_name
+        tags.push(tag)
+      })
+
+      resolve(tags)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
 
 const hasTag = async tagId => {
   let query = `SELECT tag_id FROM tags WHERE tag_id='${tagId}'`

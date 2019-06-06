@@ -158,6 +158,29 @@ function showAvatarImagePreview(file, isUrl = false) {
 //     // })
 // }
 
+function setValidation() {
+  $('#postForm').validate({
+    rules: {
+      title: 'required',
+      summary: 'required',
+      avatarImage: 'required',
+    },
+    messages: {
+      title: 'You forget to fill post title',
+      summary: 'Should fill summary of post',
+      avatarImage: 'Do not forgot upload a image for post',
+    },
+    errorElement: 'small',
+    errorClass: 'd-block help-block text-danger',
+    highlight: function (e) {
+      $(e).removeClass('is-valid').addClass('is-invalid');
+    },
+    unhighlight: function (e) {
+      $(e).removeClass('is-invalid').addClass('is-valid');
+    }
+  })
+}
+
 function resetPostForm() {
   mainContent.html(oldHtmlCode)
   showEditingSpace($, 'create-post-editor')
@@ -197,7 +220,7 @@ function createNewPost() {
   return false;
 }
 
-function setEventFotTags() {
+function setEventForTags() {
   $('.tag-hints .tag-hint').click(function (e) {
     let tag = {
       tagId: $(this).attr('tag-id'),
@@ -206,3 +229,7 @@ function setEventFotTags() {
     $('#tags').tagInput('add', { tag })
   })
 }
+
+showEditingSpace($, 'create-post-editor')
+setEventForTags()
+setValidation()

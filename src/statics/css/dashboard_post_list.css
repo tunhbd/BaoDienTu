@@ -1,79 +1,91 @@
 :root {
-    --table-header-bg: rgb(233, 30, 99);
-    --table-row-bg-hover: rgba(233, 30, 99, 0.3)
+  --table-header-bg: rgb(233, 30, 99);
+  --table-row-bg-hover: rgba(233, 30, 99, 0.3)
 }
+
 .post-list {
-    width: 100%;
-    max-height: calc(100% - 50px)!important;
-    overflow: hidden;
-    border-radius: 3px;
-    /* box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.3); */
+  width: 100%;
+  max-height: calc(100% - 50px) !important;
+  overflow: hidden;
+  border-radius: 3px;
+  /* box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.3); */
 }
+
 .post-list__header {
-    /* line-height: 40px; */
-    border-bottom: 1px solid rgba(0,0,0,0.3);
-    background-color: var(--table-header-bg);
+  /* line-height: 40px; */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  background-color: var(--table-header-bg);
 }
+
 .post-list__header .post-list__row {
-    border: none!important;
-    font-size: 12pt;
-    line-height: 50px;
-    color: #fff;
-    font-weight: bold;
-    cursor: default;
+  border: none !important;
+  font-size: 12pt;
+  line-height: 50px;
+  color: #fff;
+  font-weight: bold;
+  cursor: default;
 }
+
 .control-icon-container {
-    width: 40px;
+  width: 40px;
 }
+
 .post-list__content {
-    /* height: calc(100% - 40px); */
-    /* overflow: hidden; */
+  /* height: calc(100% - 40px); */
+  /* overflow: hidden; */
 }
+
 .post-list__row {
-    line-height: 40px;
-    cursor: pointer;
-    transition: 0.2s;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    user-select: none;
-    -webkit-user-select: none;
-    font-size: 10pt;
-    position: relative!important;
+  line-height: 40px;
+  cursor: pointer;
+  transition: 0.2s;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  user-select: none;
+  -webkit-user-select: none;
+  font-size: 10pt;
+  position: relative !important;
 }
+
 .post-list__content .post-list__row:hover {
-    background-color: var(--table-row-bg-hover);
-    transition: 0.2s;
+  background-color: var(--table-row-bg-hover);
+  transition: 0.2s;
 }
+
 .post-list__cell {
-    /* max-width: 100px; */
-    padding: 0px 10px;
-    vertical-align: middle;
-    position: relative;
+  /* max-width: 100px; */
+  padding: 0px 10px;
+  vertical-align: middle;
+  position: relative;
 }
+
 .control-icon {
-    width: 16px;
-    height:16px;
-    visibility: hidden;
+  width: 16px;
+  height: 16px;
+  visibility: hidden;
 }
+
 .post-list__row:hover .control-icon {
-    visibility: visible;
+  visibility: visible;
 }
+
 .control-tooltip {
-    width: auto!important;
-    height: auto!important;
-    background-color: transparent!important;
-    opacity: 1!important;
-    position: absolute;
-    top: auto!important;
-    bottom: auto!important;
-    right: 0px!important;
-    border-radius: 2px;
-    padding: 5px 0!important;
-    transition: 0.2s;
-    z-index: 100;
-    display: none;
-    /* overflow: hidden; */
-    box-shadow: 0px 0px 2px 0px xrgba(0,0,0,0.5);
+  width: auto !important;
+  height: auto !important;
+  background-color: transparent !important;
+  opacity: 1 !important;
+  position: absolute;
+  top: 0px !important;
+  /* bottom: auto !important; */
+  right: 0px !important;
+  border-radius: 2px;
+  padding: 5px 0 !important;
+  transition: 0.2s;
+  z-index: 100;
+  display: none;
+  /* overflow: hidden; */
+  box-shadow: 0px 0px 2px 0px xrgba(0, 0, 0, 0.5);
 }
+
 /* .control-tooltip:before {
     content: "";
     display: block;
@@ -85,123 +97,132 @@
     right: -20px;
 } */
 .control-buttons {
-    width: auto;
-    height:auto;
-    display: flex;
+  width: auto;
+  height: auto;
+  display: flex;
 }
+
 .control-buttons button {
-    width: 30px!important;
-    height: 30px!important;
-    text-align: center;
-    font-size: 15pt;
-    line-height: 30px!important;
-    margin: 0px 2px;
-    padding: 0!important;
-    background-color: #f2f2f2;
-    border: 1px solid #42A5F5;
-    border-radius: 3!important;
-    overflow: hidden!important;
-    box-shadow: 0px 0px 1px 0px #fff!important;
-    /* font-family: 'Spectral', serif; */
+  width: 30px !important;
+  height: 30px !important;
+  text-align: center;
+  font-size: 15pt;
+  line-height: 30px !important;
+  margin: 0px 2px;
+  padding: 0 !important;
+  background-color: #f2f2f2;
+  border: 1px solid #42A5F5;
+  border-radius: 3 !important;
+  overflow: hidden !important;
+  box-shadow: 0px 0px 1px 0px #fff !important;
+  /* font-family: 'Spectral', serif; */
 }
+
 .control-buttons button.edit-btn {
-    color: #1E88E5;
+  color: #1E88E5;
 }
+
 .control-buttons button.delete-btn {
-    color: #D50000;
-    /* font-size: 25px; */
+  color: #D50000;
+  /* font-size: 25px; */
 }
+
 .control-buttons button:hover {
-    /* font-weight: bold; */
-    color: #fff;
-    background-color: rgb(233, 30, 99);
-    border: none!important;
-    box-shadow: none!important;
+  /* font-weight: bold; */
+  color: #fff;
+  background-color: rgb(233, 30, 99);
+  border: none !important;
+  box-shadow: none !important;
 }
+
 .postDetailModal {
-    width: 90%!important;
-    height: 90%!important;
-    top: 5%;
-    left: 5%;
-    padding:0!important;
-    overflow: hidden;
+  width: 90% !important;
+  height: 90% !important;
+  top: 5%;
+  left: 5%;
+  padding: 0 !important;
+  overflow: hidden;
 }
+
 .postDetailModal .postDetailModal-dialog {
-    width:100%!important;
-    height: 100%!important;
-    max-width: 100%!important;
-    margin: 0!important;
-    overflow: hidden;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden;
 }
+
 .postDetailModal-dialog-content {
-    width: 100%!important;
-    height: 100%!important;
+  width: 100% !important;
+  height: 100% !important;
 }
+
 .postDetailModal-dialog-content-header {
-    min-height: 50px!important;
-    padding: 10px 10px!important;
-    align-content: center!important;
+  min-height: 50px !important;
+  padding: 10px 10px !important;
+  align-content: center !important;
 }
+
 .postDetailModal-dialog-content-header button {
-    padding: 0!important;
-    margin: 0!important;
-    width: 30px;
-    height: 30px;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 30px;
+  height: 30px;
 }
+
 .postDetailModal-dialog-content-body {
-    height: calc(100% - 50px)!important;
-    overflow: auto!important;
+  height: calc(100% - 50px) !important;
+  overflow: auto !important;
 }
+
 .post-info {
-    width: 100%;
-    border-top: 1px solid rgba(0,0,0,0.1);
-    padding: 10px 0px;
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px 0px;
 }
+
 .post-checking {
-    width: 100%;
-    border-top: 1px solid rgba(0,0,0,0.1);
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
+
 #publishedDateInput {
-    padding: 0px 10px;
-    width: 300px!important;
-    margin: 10px!important;
-    display: none;
+  padding: 0px 10px;
+  width: 300px !important;
+  margin: 10px !important;
+  display: none;
 }
+
 #whyRejectForm {
-    display: none;
-    padding: 10px!important;
+  display: none;
+  padding: 10px !important;
 }
 
 .filters-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
+
 .filter-item {
-    margin: 0px 5px;
+  margin: 0px 5px;
 }
+
 .filter-category {
-    width: 200px!important;
+  width: 300px !important;
 }
+
 .filter-sort {
-    width: 300px!important;
+  width: 300px !important;
 }
 
-.paginationjs.paginationjs-theme-bao-dien-tu .paginationjs-go-input > input[type="text"], 
-.paginationjs.paginationjs-theme-bao-dien-tu .paginationjs-pages li {
-    border-color: #E91E63;
-}
-.paginationjs.paginationjs-theme-bao-dien-tu .paginationjs-pages li.active > a {
-    background-color: #E91E63;
-    color: #fff;
-}
-.paginationjs.paginationjs-theme-bao-dien-tu .paginationjs-go-button > input[type="button"] {
-    background: #E91E63;
-    border-color: #E91E63;
-    color: #fff;
+
+.page.page-active:hover,
+.page-active {
+  background: #E91E63;
+  color: #fff;
 }
 
-.bao-dien-tu-checkbox:checked ~ .bao-dien-tu-checkbox-mark:before {
-    background-color: #E91E63;
-    border-color: #E91E63;
+.page:not(.page-active):hover {
+  background: rgba(233, 30, 99, 0.5);
 }

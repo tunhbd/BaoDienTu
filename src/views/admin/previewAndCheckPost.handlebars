@@ -1,0 +1,114 @@
+{{#section 'moreCss'}}
+<link rel="stylesheet" href="/css/previewAndCheckPost.css">
+{{/section}}
+
+{{#section 'moreJs'}}
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
+<script src="/js/previewAndCheckPost.js"></script>
+{{/section}}
+
+<div id="previewPostContainer" class="mb-2">
+  <div id="previewPost">
+    <h3><b>{{data.post.postTitle}}</b></h3>
+    <div id="previewPost__author-category-tags" class="w-100">
+      <div id="author" class="d-flex align-content-center align-items-center mt-1 mb-1">
+        <div id="author__avatar" class="mr-2 h-100">
+          <img src="/media/images/users/{{data.post.author.avatar}}" alt="" />
+        </div>
+        <div id="author-pseudonym">{{data.post.author.pseudonym}}</div>
+      </div>
+      <div id="category" class="mt-1 mb-1">
+        <span class="badge badge-info p-2">{{data.post.category.categoryName}}</span>
+      </div>
+      <div id="tags" class="mt-1 mb-1">
+
+      </div>
+    </div>
+    <div id="previewPost__content">
+      {{{data.post.postContent}}}
+    </div>
+  </div>
+
+  {{#if (opt (opt data.user.userRole '===' 'WRITER' opt) '||' (opt data.user.userRole '===' 'ADMIN' opt) opt)}}
+  <div id="postStatus" class="border-top pt-2">
+    <label>Post Status: </label>
+    {{#if data.post.checked}}
+    {{#if (opt data.post.publishedDate '===' null opt)}}
+    <span class="badge badge-danger">Rejected</span>
+    <div class="card">
+      <div class="card-header">
+        The Reason
+      </div>
+      <div class="card-body">
+        {{data.post.reasonReject}}
+      </div>
+    </div>
+    {{else}}
+    <span class="badge badge-success">Published</span>
+    {{/if}}
+    {{else}}
+    <span class="badge badge-warning">Not browse</span>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  <div class="card mt-2">
+    {{#if (opt (opt data.user.userRole '===' 'EDITOR' opt) '||' (opt data.user.userRole '===' 'ADMIN' opt) opt)}}
+
+    {{#if (opt data.post.checked '===' false opt)}}
+    <div class="card-header">
+      Browse this post
+    </div>
+    {{/if}}
+
+    {{/if}}
+    <div class="card-body">
+      <form id="browsePostForm" method="POST" action="/admin/dashboard/preview-post/{{data.post.alias}}/browse">
+        {{#if (opt (opt data.user.userRole '===' 'EDITOR' opt) '||' (opt data.user.userRole '===' 'ADMIN' opt) opt)}}
+
+        {{#if (opt data.post.checked '===' false opt)}}
+        <h4 class="pt-2 pb-2"></h4>
+        <div id="checkPost__content">
+          <div id="allowPublish">
+            <div class="custom-control custom-radio">
+              <input type="radio" id="isPublished" value="1" name="checking" class="custom-control-input">
+              <label class="custom-control-label" style="font-size: 12pt" for="isPublished">Allow to publish</label>
+            </div>
+            <div id="publishedDateInput">
+              <input class="form-control mt-2 mb-2" name="publishedDate" placeholder="Enter date to publish post">
+            </div>
+          </div>
+
+          <div id="rejectPublish">
+            <div class="custom-control custom-radio">
+              <input type="radio" id="isRejected" value="0" name="checking" class="custom-control-input">
+              <label class="custom-control-label" style="font-size: 12pt" for="isRejected">Reject</label>
+            </div>
+            <div class="form-group" id="whyRejectForm">
+              <label for="whyReject">Why do you reject this post?</label>
+              <textarea class="form-control bao-dien-tu-scrollbar" name="reasonReject"
+                placeholder="The reason you reject this post..." id="whyReject" rows="3"></textarea>
+            </div>
+          </div>
+
+        </div>
+        {{/if}}
+
+        {{/if}}
+        <div id="checkPost__buttons" class="mt-3">
+          <a class="btn btn-secondary" href="{{data.backLink}}">Back</a>
+          {{#if (opt (opt data.user.userRole '===' 'EDITOR' opt) '||' (opt data.user.userRole '===' 'ADMIN' opt) opt)}}
+
+          {{#if (opt data.post.checked '===' false opt)}}
+          <button type="submit" class="btn btn-success">Update</button>
+          {{/if}}
+
+          {{/if}}
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+</div>

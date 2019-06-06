@@ -1,16 +1,14 @@
 const { authBus } = require('../business')
 
 const registerMiddleware = server => {
-  server.use('/dashboard', (req, res, next) => {
+  server.use('/admin', (req, res, next) => {
     let signinedUser = authBus.getSigninedUser(req.cookies.signined_user)
 
     req.error = undefined
     if (signinedUser === undefined) {
-      req.isSignIn = false
-      // mock
-      req.isSignIn = true
+      // res.redirect('/sign-in')
       req.user = {
-        user_role: 'ADMIN'
+        userRole: 'ADMIN',
       }
       next()
     } else {

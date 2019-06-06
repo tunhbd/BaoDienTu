@@ -1,6 +1,6 @@
-const { multerMiddlewares, gereratePostIdMiddleware } = require('../../middlewares')
+
 const routeMiddlewares = {
-  '/dashboard/create-post': [
+  '/admin/dashboard/create-post': [
     gereratePostIdMiddleware,
     multerMiddlewares.getPostImageMulterMiddleware(),
   ]

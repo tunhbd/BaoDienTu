@@ -1,5 +1,5 @@
 module.exports = {
-  dashboardMiddleware: require('./dashboardMiddleware'),
+  adminMiddleware: require('./adminMiddleware'),
   multerMiddlewares: require('./multerMiddlewares'),
   notFoundMiddleware: require('./notFoundMiddleware'),
   gereratePostIdMiddleware: require('./generatePostIdMiddleware'),

@@ -20,13 +20,12 @@ class DBConnection {
         } else {
           let conn = this.connection
           this.connection.query(query, function (error, results, fields) {
+            conn.end()
             if (error) {
               reject(error)
             } else {
               resolve(results)
             }
-
-            conn.end()
           });
         }
       })
@@ -42,12 +41,12 @@ class DBConnection {
           let conn = this.connection
 
           this.connection.query(query, function (error, results, fields) {
+            conn.end()
             if (error) {
               reject(error)
             } else {
               resolve(true)
             }
-            conn.end()
           });
         }
       })
@@ -63,12 +62,12 @@ class DBConnection {
           let conn = this.connection
 
           this.connection.query(query, function (error, results, fields) {
+            conn.end()
             if (error) {
               reject(error)
             } else {
               resolve(true)
             }
-            conn.end()
           });
         }
       })
@@ -84,12 +83,12 @@ class DBConnection {
           let conn = this.connection
 
           this.connection.query(query, function (error, results, fields) {
+            conn.end()
             if (error) {
               reject(error)
             } else {
               resolve(true)
             }
-            conn.end()
           });
         }
       })

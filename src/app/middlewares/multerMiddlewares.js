@@ -12,7 +12,7 @@ const getPostImageMulterMiddleware = () => {
       //Then give the file a unique name
       filename: function (req, file, next) {
         const ext = file.mimetype.split('/')[1];
-        const filename = `${req.generation && req.generation.postId ? req.generation.postId : md5('POST' + Date.now() + '@BDT')}.${ext}`
+        const filename = `${req.generation && req.generation.postId ? req.generation.postId : md5(`@POST${Date.now()}@`)}.${ext}`
         // let filename = `${file.fieldname}-${Date.now()}.${ext}`
         req.generation.postAvatarImage = filename
         next(null, filename)
@@ -41,5 +41,5 @@ const getPostImageMulterMiddleware = () => {
 }
 
 module.exports = {
-  getPostImageMulterMiddleware,
+  postImageMulterMiddleware: getPostImageMulterMiddleware(),
 }

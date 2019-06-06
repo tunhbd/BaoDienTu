@@ -84,12 +84,12 @@
   </header>
   <div id="dashboard-main" class="">
     <div class="dashboard-main__content col-12 ml-auto mr-auto d-flex">
-      <div id="dashboard-main__left-sidebar" class="border-right d-none d-sm-block">
+      <div id="dashboard-main__left-sidebar" class="border-right d-none d-sm-block bao-dien-tu-scrollbar">
         <div id="dashboard-main__left-sidebar__menu" class="w-100">
           <div class="menu-item-group w-100">
             <div menu-id="GENERAL" class="menu-item-group__item menu-item-group__item__activing">
               <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
-              <span class="menu-item-group__item__title">General</span>
+              <span class="menu-item-group__item__title">Dashboard</span>
             </div>
             {{#if (opt (opt user.user_role '===' 'ADMIN' opt) '||' (opt user.user_role '===' 'WRITER' opt) opt)}}
             <div menu-id="CREATE_POST" class="menu-item-group__item">
@@ -151,24 +151,24 @@
       </div>
     </div>
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="d-block d-sm-none">
+    <div id="mobile-menu" class="d-block d-sm-none bao-dien-tu-scrollbar">
       <!-- <div id="dashboard-main__left-sidebar__menu" class="w-100"> -->
       <div class="menu-item-group w-100">
-        <div menu-id="GENERAL" class="menu-item-group__item menu-item-group__item__activing">
+        <div menu-id="GENERAL" class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
           <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
           <span class="menu-item-group__item__title">General</span>
         </div>
-        <div menu-id="CREATE_POST" class="menu-item-group__item">
+        <div menu-id="CREATE_POST" class="menu-item-group__item item-of-mobile-menu">
           <i class="menu-item-group__item__icon fas fa-plus-square"></i>
           <span class="menu-item-group__item__title">Create post</span>
         </div>
-        <div menu-id="DRAFT" class="menu-item-group__item">
+        <div menu-id="DRAFT" class="menu-item-group__item item-of-mobile-menu">
           <!-- <img class="img-activing" src="../../media/statics/images/ic_draft.png" alt=""> -->
           <i class="menu-item-group__item__icon fas fa-file-alt"></i>
           <span class="menu-item-group__item__title">Drafts</span>
           <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
         </div>
-        <div menu-id="REJECT" class="menu-item-group__item">
+        <div menu-id="REJECT" class="menu-item-group__item item-of-mobile-menu">
           <!-- <img src="../../media/statics/images/ic_close.png" alt=""> -->
           <i class="menu-item-group__item__icon fas fa-file-excel"></i>
           <span class="menu-item-group__item__title">Rejects</span>
@@ -176,13 +176,13 @@
         </div>
       </div>
       <div class="menu-item-group w-100">
-        <div menu-id="WAITING" class="menu-item-group__item">
+        <div menu-id="WAITING" class="menu-item-group__item item-of-mobile-menu">
           <!-- <img src="../../media/statics/images/ic_waiting.png" alt=""> -->
           <i class="menu-item-group__item__icon fas fa-stopwatch"></i>
           <span class="menu-item-group__item__title">Waiting</span>
           <!-- <div class="count-num rounded-pill count-num-waiting">3</div> -->
         </div>
-        <div menu-id="PUBLISHED" class="menu-item-group__item">
+        <div menu-id="PUBLISHED" class="menu-item-group__item item-of-mobile-menu">
           <!-- <img src="../../media/statics/images/ic_like.png" alt=""> -->
           <i class="menu-item-group__item__icon fas fa-paper-plane"></i>
           <span class="menu-item-group__item__title">Published</span>
@@ -190,19 +190,19 @@
         </div>
       </div>
       <div class="menu-item-group w-100">
-        <div menu-id="TAG" class="menu-item-group__item">
+        <div menu-id="TAG" class="menu-item-group__item item-of-mobile-menu">
           <!-- <img src="../../media/statics/images/ic_tag.png" alt=""> -->
           <i class="menu-item-group__item__icon fas fa-tags"></i>
           <span class="menu-item-group__item__title">Tags</span>
           <!-- <div class="count-num rounded-pill count-num-draft">3</div> -->
         </div>
-        <div menu-id="CATEGORY" class="menu-item-group__item">
+        <div menu-id="CATEGORY" class="menu-item-group__item item-of-mobile-menu">
           <!-- <img src="../../media/statics/images/ic_category.png" alt=""> -->
           <i class="menu-item-group__item__icon fas fa-list"></i>
           <span class="menu-item-group__item__title">Categories</span>
           <!-- <div class="count-num rounded-pill">3</div> -->
         </div>
-        <div menu-id="USER" class="menu-item-group__item">
+        <div menu-id="USER" class="menu-item-group__item item-of-mobile-menu">
           <!-- <img src="../../media/statics/images/ic_user.png" alt=""> -->
           <i class="menu-item-group__item__icon fas fa-users"></i>
           <span class="menu-item-group__item__title">Users</span>

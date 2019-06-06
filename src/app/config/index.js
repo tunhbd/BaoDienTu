@@ -3,7 +3,7 @@ module.exports = {
     PORT: 3000,
   },
   PAGES: {
-    GENERAL: 'GENERAL',
+    DASHBOARD: 'DASHBOARD',
     CREATE_POST: 'CREATE_POST',
     DRAFT: 'DRAFT',
     WAITING: 'WAITING',
@@ -18,6 +18,12 @@ module.exports = {
     WRITER: 'WRITER',
     EDITOR: 'EDITOR',
     ADMIN: 'ADMIN',
+  },
+  FILTER: {
+    INCREASE_CREATED_DATE: 'increase-created-date',
+    DECREASE_CREATED_DATE: 'decrease-created-date',
+    INCREASE_PUBLISHED_DATE: 'increase-published-date',
+    DECREASE_PUBLISHED_DATE: 'decrease-published-date',
   },
   DATABASE: {
     MAIN: {

@@ -1,0 +1,43 @@
+const { adminHandlers } = require('../handlers')
+const { multerMiddlewares, gereratePostIdMiddleware } = require('../middlewares')
+
+module.exports = {
+  'get': {
+    '/admin/dashboard': [adminHandlers.renderDashboardPage],
+    '/admin/dashboard/create-post': [adminHandlers.renderCreatePostPage],
+    '/admin/dashboard/edit-post/:postAlias': [adminHandlers.renderEditPostPage],
+    '/admin/dashboard/draft-posts': [adminHandlers.renderDraftPostsPage],
+    '/admin/dashboard/reject-posts': [adminHandlers.renderRejectPostsPage],
+    '/admin/dashboard/published-posts': [adminHandlers.renderPublishedPostsPage],
+    '/admin/dashboard/waiting-posts': [adminHandlers.renderWaitingPostsPage],
+    '/admin/dashboard/users': [adminHandlers.renderUsersPage],
+    '/admin/dashboard/tags': [adminHandlers.renderTagsPage],
+    '/admin/dashboard/categories': [adminHandlers.renderCategoriesPage],
+    '/admin/dashboard/preview-post/:postAlias': [adminHandlers.renderPreviewPostAndCheckPage],
+    // '/dashboard/dashboard-ui/edit-post': adminHandlers.getEditPostUIGetRequest,
+    // '/dashboard/dashboard-ui/edit-user/:userRule': adminHandlers.getEditUserUIByRoleGetRequest,
+    // '/dashboard/dashboard-ui/:pageId': adminHandlers.getPageContentUIByPageIdGetRequest,
+    // '/dashboard/posts-list/:pageId': adminHandlers.getPostsListByPageIdGetRequest,
+    // '/dashboard/categories-list': adminHandlers.getFullCategoriesListGetRequest,
+    // '/dashboard/tags-list': adminHandlers.getFullTagsListGetRequest,
+    // '/dashboard/users-list': adminHandlers.getFullUsersListGetRequest,
+  },
+  'post': {
+    '/admin/dashboard/create-post': [gereratePostIdMiddleware, multerMiddlewares.postImageMulterMiddleware, adminHandlers.createPost],
+    '/admin/dashboard/edit-post': [adminHandlers.editPost],
+    '/admin/dashboard/create-category': [adminHandlers.createCategory],
+    '/admin/dashboard/create-tag': [adminHandlers.createTag],
+    '/admin/dashboard/preview-post/:postAlias/browse': [adminHandlers.browsePost],
+  },
+  'put': {
+    '/admin/dashboard/update-tag': [adminHandlers.updateTag],
+    '/admin/dashboard/update-category': [adminHandlers.updateCategory],
+    '/admin/dashboard/update-user': [adminHandlers.updateUser],
+  },
+  'delete': {
+    '/admin/dashboard/delete-post/:postId': [adminHandlers.deletePost],
+    '/admin/dashboard/delete-tag/:tagId': [adminHandlers.deleteTag],
+    '/admin/dashboard/delete-user/:account': [adminHandlers.deleteUser],
+    '/admin/dashboard/delete-category/:categoryId': [adminHandlers.deleteCategory],
+  }
+}
