@@ -40,5 +40,6 @@ module.exports = {
       PASSWORD: 'baodientu2019',
       DATABASE_NAME: 'baodientu'
     }
-  }
+  },
+  LIMIT_POSTS: 2
 }

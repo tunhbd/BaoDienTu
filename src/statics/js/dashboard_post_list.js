@@ -6,14 +6,14 @@
 // var pageCount = 5
 // var postCountPerPage = 10
 
-const FILTERS = {
-  FILTER_SORT: {
-    INCREASING_CREATED_DATE: 1,
-    DECREASING_CREATED_DATE: 2,
-    INCREASING_PUBLISHED_DATE: 3,
-    DECREASING_PUBLISHED_DATE: 4,
-  }
-}
+// const FILTERS = {
+//   FILTER_SORT: {
+//     INCREASING_CREATED_DATE: 1,
+//     DECREASING_CREATED_DATE: 2,
+//     INCREASING_PUBLISHED_DATE: 3,
+//     DECREASING_PUBLISHED_DATE: 4,
+//   }
+// }
 
 /**
  * FUNCTIONS
@@ -33,175 +33,175 @@ const FILTERS = {
 //   })
 // }
 
-function initPostListUI() {
-  $('.post-list__content').html('')
-}
+// function initPostListUI() {
+//   $('.post-list__content').html('')
+// }
 
-function choosePage(pageNum, choosePageAction, initForPageCountZero) {
-  if (pageNum > 0 && pageNum <= pageCount) {
-    currentPage = pageNum
-    $('.pagination__item-active').removeClass('pagination__item-active');
-    $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
-    choosePageAction(pageNum)
-  } else {
-    initForPageCountZero()
-  }
-}
+// function choosePage(pageNum, choosePageAction, initForPageCountZero) {
+//   if (pageNum > 0 && pageNum <= pageCount) {
+//     currentPage = pageNum
+//     $('.pagination__item-active').removeClass('pagination__item-active');
+//     $(`.pagination__item[page="${pageNum}"]`).addClass('pagination__item-active')
+//     choosePageAction(pageNum)
+//   } else {
+//     initForPageCountZero()
+//   }
+// }
 
-function showPreviousPage(choosePageAction, initForPageCountZero) {
-  if (currentPage > 1) {
-    choosePage(currentPage - 1, choosePageAction, initForPageCountZero)
-  }
-}
+// function showPreviousPage(choosePageAction, initForPageCountZero) {
+//   if (currentPage > 1) {
+//     choosePage(currentPage - 1, choosePageAction, initForPageCountZero)
+//   }
+// }
 
-function showNextPage(choosePageAction, initForPageCountZero) {
-  if (currentPage < pageCount) {
-    choosePage(currentPage + 1, choosePageAction, initForPageCountZero)
-  }
-}
+// function showNextPage(choosePageAction, initForPageCountZero) {
+//   if (currentPage < pageCount) {
+//     choosePage(currentPage + 1, choosePageAction, initForPageCountZero)
+//   }
+// }
 
-function showExistsPostDataToForm(post) {
-  postData = post
+// function showExistsPostDataToForm(post) {
+//   postData = post
 
-  $('input[name="titlePost"]').val(post.post_title)
-  $('select#categorySelection').val(post.category.category_id)
-  $('input[name="tags"]').val(post.tags.join(','))
-  $('input[name="youtubeUrl"]').val(post.youtube_url)
-  showAvatarImagePreview(postData.post_avatar_image, true)
-  $('input[name="summary"]').val(post.post_summary)
-  $('textarea[name="edit-post-editor"]').val(post.post_content)
-}
+//   $('input[name="titlePost"]').val(post.post_title)
+//   $('select#categorySelection').val(post.category.category_id)
+//   $('input[name="tags"]').val(post.tags.join(','))
+//   $('input[name="youtubeUrl"]').val(post.youtube_url)
+//   showAvatarImagePreview(postData.post_avatar_image, true)
+//   $('input[name="summary"]').val(post.post_summary)
+//   $('textarea[name="edit-post-editor"]').val(post.post_content)
+// }
 
-function renderControlTooltip(postId, post, container) {
-  let control = document.createElement('td')
-  $(control).addClass('post-list__cell control-icon-container')
+// function renderControlTooltip(postId, post, container) {
+//   let control = document.createElement('td')
+//   $(control).addClass('post-list__cell control-icon-container')
 
-  // edit button and delete button
-  if (
-    // (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id)
-    // &&
-    (userRule === USERS.WRITER || userRule === USERS.ADMIN)
-  ) {
-    // buttons container
-    let controlTooltip = document.createElement('div')
-    $(controlTooltip).addClass('control-tooltip')
+//   // edit button and delete button
+//   if (
+//     // (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id)
+//     // &&
+//     (userRule === USERS.WRITER || userRule === USERS.ADMIN)
+//   ) {
+//     // buttons container
+//     let controlTooltip = document.createElement('div')
+//     $(controlTooltip).addClass('control-tooltip')
 
-    let controlButtons = document.createElement('div')
-    $(controlButtons).addClass('control-buttons')
+//     let controlButtons = document.createElement('div')
+//     $(controlButtons).addClass('control-buttons')
 
-    if (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id) {
-      // edit button
-      let editControl = $(
-        `<button type="button" class="btn btn-raised btn-info edit-btn">
-        <i class="fas fa-pen"></i>
-      </button>`
-      )
-      editControl.click(function (e) {
-        e.stopPropagation()
-        $.get({
-          url: '/dashboard-ui/edit-post',
-          data: {},
-          success: function (data) {
-            showBaoDienTuDialog(
-              $('body'),
-              'big',
-              'Edit Post',
-              data, [{
-                title: 'Save',
-                callback: () => {
-                  // showEditingSpace($, 'edit-post-editor')
-                }
-              }],
-              () => {
-                showEditingSpace($, 'edit-post-editor')
-                showExistsPostDataToForm(post)
-              }
-            )
-          },
-          dataType: 'html'
-        })
+//     if (currentDashboardPage === PAGES.DRAFT.id || currentDashboardPage === PAGES.REJECT.id) {
+//       // edit button
+//       let editControl = $(
+//         `<button type="button" class="btn btn-raised btn-info edit-btn">
+//         <i class="fas fa-pen"></i>
+//       </button>`
+//       )
+//       editControl.click(function (e) {
+//         e.stopPropagation()
+//         $.get({
+//           url: '/dashboard-ui/edit-post',
+//           data: {},
+//           success: function (data) {
+//             showBaoDienTuDialog(
+//               $('body'),
+//               'big',
+//               'Edit Post',
+//               data, [{
+//                 title: 'Save',
+//                 callback: () => {
+//                   // showEditingSpace($, 'edit-post-editor')
+//                 }
+//               }],
+//               () => {
+//                 showEditingSpace($, 'edit-post-editor')
+//                 showExistsPostDataToForm(post)
+//               }
+//             )
+//           },
+//           dataType: 'html'
+//         })
 
-      })
-      $(controlButtons).append(editControl)
-    }
+//       })
+//       $(controlButtons).append(editControl)
+//     }
 
-    // delete button
-    let deleteControl = $(
-      `<button type="button" class="btn btn-raised btn-danger delete-btn">
-        <i class="fas fa-times"></i>
-      </button>`
-    )
-    deleteControl.click(function (e) {
-      //delete post
-      e.stopPropagation()
-      showBaoDienTuDialog($('body'), 'small', 'Deleting post confirmation', 'Do you want to delete this post?', [{
-        title: 'Yes, I want',
-        callback: () => {
-          postsList = postsList.filter(post => post.post_id !== postId)
+//     // delete button
+//     let deleteControl = $(
+//       `<button type="button" class="btn btn-raised btn-danger delete-btn">
+//         <i class="fas fa-times"></i>
+//       </button>`
+//     )
+//     deleteControl.click(function (e) {
+//       //delete post
+//       e.stopPropagation()
+//       showBaoDienTuDialog($('body'), 'small', 'Deleting post confirmation', 'Do you want to delete this post?', [{
+//         title: 'Yes, I want',
+//         callback: () => {
+//           postsList = postsList.filter(post => post.post_id !== postId)
 
-          originPostsList = originPostsList.filter(post => post.post_id !== postId)
-          let selectedPageNum = paginationObj.pagination('getSelectedPageNum')
-          showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
-          selectedPageNum = selectedPageNum > Math.ceil(postsList.length / postCountPerPage) ? selectedPageNum - 1 : selectedPageNum
-          paginationObj.pagination('go', selectedPageNum)
-        }
-      }])
-    })
-    $(controlButtons).append(deleteControl)
+//           originPostsList = originPostsList.filter(post => post.post_id !== postId)
+//           let selectedPageNum = paginationObj.pagination('getSelectedPageNum')
+//           showDataListWithPagination(postCountPerPage, $('.pagination'), postsList, $('.post-list__content'), generatePostList)
+//           selectedPageNum = selectedPageNum > Math.ceil(postsList.length / postCountPerPage) ? selectedPageNum - 1 : selectedPageNum
+//           paginationObj.pagination('go', selectedPageNum)
+//         }
+//       }])
+//     })
+//     $(controlButtons).append(deleteControl)
 
-    $(controlTooltip).append(controlButtons)
-    $(control).append(controlTooltip)
+//     $(controlTooltip).append(controlButtons)
+//     $(control).append(controlTooltip)
 
-    // trigger icon for tooltip
-    let controlIcon = document.createElement('img')
-    $(controlIcon).addClass('control-icon')
-    controlIcon.src = '../../media/statics/images/ic_more.png'
+//     // trigger icon for tooltip
+//     let controlIcon = document.createElement('img')
+//     $(controlIcon).addClass('control-icon')
+//     controlIcon.src = '../../media/statics/images/ic_more.png'
 
-    $(controlIcon).mouseenter(function () {
-      $(controlTooltip).fadeIn(100)
+//     $(controlIcon).mouseenter(function () {
+//       $(controlTooltip).fadeIn(100)
 
-      $(controlTooltip).mouseenter(function () {
-        $(controlTooltip).fadeIn(100)
-      })
-      $(controlTooltip).mouseleave(function () {
-        $(controlTooltip).fadeOut(0)
-      })
-    })
-    $(controlIcon).mouseleave(function () {
-      $(controlTooltip).fadeOut(0)
-    })
+//       $(controlTooltip).mouseenter(function () {
+//         $(controlTooltip).fadeIn(100)
+//       })
+//       $(controlTooltip).mouseleave(function () {
+//         $(controlTooltip).fadeOut(0)
+//       })
+//     })
+//     $(controlIcon).mouseleave(function () {
+//       $(controlTooltip).fadeOut(0)
+//     })
 
-    $(control).append(controlIcon)
-  }
+//     $(control).append(controlIcon)
+//   }
 
-  return control
-}
+//   return control
+// }
 
-function sort(sortId) {
-  switch (parseInt(sortId)) {
-    case FILTERS.FILTER_SORT.INCREASING_CREATED_DATE:
-      postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.created_date)) - (new Date(postTwo.created_date)))
-      break;
-    case FILTERS.FILTER_SORT.DECREASING_CREATED_DATE:
-      postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.created_date)) - (new Date(postOne.created_date)))
-      break;
-    case FILTERS.FILTER_SORT.INCREASING_PUBLISHED_DATE:
-      console.log('bo')
-      postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.published_date)) - (new Date(postTwo.published_date)))
-      break;
-    case FILTERS.FILTER_SORT.DECREASING_PUBLISHED_DATE:
-      postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.published_date)) - (new Date(postOne.published_date)))
-      break;
-  }
-}
+// function sort(sortId) {
+//   switch (parseInt(sortId)) {
+//     case FILTERS.FILTER_SORT.INCREASING_CREATED_DATE:
+//       postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.created_date)) - (new Date(postTwo.created_date)))
+//       break;
+//     case FILTERS.FILTER_SORT.DECREASING_CREATED_DATE:
+//       postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.created_date)) - (new Date(postOne.created_date)))
+//       break;
+//     case FILTERS.FILTER_SORT.INCREASING_PUBLISHED_DATE:
+//       console.log('bo')
+//       postsList = postsList.sort((postOne, postTwo) => (new Date(postOne.published_date)) - (new Date(postTwo.published_date)))
+//       break;
+//     case FILTERS.FILTER_SORT.DECREASING_PUBLISHED_DATE:
+//       postsList = postsList.sort((postOne, postTwo) => (new Date(postTwo.published_date)) - (new Date(postOne.published_date)))
+//       break;
+//   }
+// }
 
-function filterFollowCategory(categoryId) {
-  if (categoryId === 'ALL') {
-    postsList = originPostsList
-  } else {
-    postsList = originPostsList.filter(post => post.category.category_id === categoryId)
-  }
-}
+// function filterFollowCategory(categoryId) {
+//   if (categoryId === 'ALL') {
+//     postsList = originPostsList
+//   } else {
+//     postsList = originPostsList.filter(post => post.category.category_id === categoryId)
+//   }
+// }
 
 function setEventsForFilterCategory() {
   $('#filterCategory').change(function () {
@@ -581,6 +581,50 @@ function goToPreviewAndCheckPage(postAlias) {
 
 function goToEditPostPage(postAlias) {
   window.location = `/admin/dashboard/edit-post/${postAlias}`
+}
+
+function goToPreviousPage() {
+  if (currentPage > 1) {
+    switchToPage(currentPage - 1)
+  }
+}
+
+function goToNextPage() {
+  if (currentPage < pageCount) {
+    switchToPage(currentPage + 1)
+  }
+}
+
+function goToPage(pageObj) {
+  let page = parseInt($(pageObj).text())
+
+  if (page !== currentPage) {
+    switchToPage(page)
+  }
+}
+
+function switchToPage(pageNum) {
+  let category = $('#filterCategory').val()
+  let filterBy = $('#filterSort').val()
+
+  window.location = `${window.location.origin}${window.location.pathname}?category=${category}&filterBy=${filterBy}&page=${pageNum}`
+}
+
+function filterPostsByCategory() {
+  switchToPage(1)
+}
+
+function filterPostsBySort() {
+  switchToPage(1)
+}
+
+function updateDeleteButtonStatus() {
+  if ($('.post-checkbox:checked').length > 0) {
+    $('button.delete-button').removeAttr('disabled')
+  }
+  else {
+    $('button.delete-button').attr('disabled', 'disabled')
+  }
 }
 
 setEventForCheckboxs()

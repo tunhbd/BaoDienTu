@@ -44,7 +44,7 @@ const renderCreatePostPage = (req, res) => {
 
 const renderPreviewPostAndCheckPage = (req, res) => {
   let alias = req.params.postAlias
-  let backLink = req.rawHeaders.filter(raw => raw.indexOf('admin/dashboard/draft-posts') > 0)[0]
+  let backLink = req.headers.referer ? req.headers.referer : '/admin/dashboard'
   backLink = backLink ? backLink : '/admin/dashboard'
   postBus
     .getOneByAlias(alias)
@@ -67,31 +67,64 @@ const renderPreviewPostAndCheckPage = (req, res) => {
 }
 
 const renderEditPostPage = (req, res) => {
+  let alias = req.params.postAlias
+  let backLink = req.headers.referer ? req.headers.referer : '/admin/dashboard'
 
+  Promise
+    .all([
+      categoryBus.getLessInfoCategories(),
+      tagBus.getLessInfoTags(),
+      postBus.getOneByAlias(alias)
+    ])
+    .then(([categories, tags, post]) => {
+      console.log('post', post)
+      res.render('admin/createPost', {
+        data: {
+          title: 'Edit post',
+          user: req.user,
+          backLink,
+          pageId: 'EDIT_POST',
+          categories,
+          tags,
+          post,
+          tagIds: post.tags.map(t => t.tagId),
+          tagsOfPost: JSON.stringify(post.tags)
+        },
+        layout: 'dashboardLayout'
+      })
+    })
+    .catch(err => {
+      console.log('Render Edit Post Error: ', err)
+      res.send('error')
+    })
 }
 
 const renderDraftPostsPage = (req, res) => {
-  let pageNum = !req.query.page ? 1 : req.query.page
+  let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
   let categoryAlias = !req.query.category ? 'ALL' : req.query.category
   let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
 
   Promise
     .all([
       categoryBus.getLessInfoCategories(),
-      postBus.getDraftPostsFilterBy(pageNum, categoryAlias, filterId, 10),
+      postBus.getDraftPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS),
       postBus.getCountDraftPostsFilterBy(pageNum, categoryAlias, filterId),
     ])
     .then(([categories, posts, countPosts]) => {
       let pages = []
-      for (let index = 1; index <= Math.ceil(countPosts / 10); index++) {
+      let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
+      for (let index = 1; index <= pageCount; index++) {
         pages.push({ pageNum: index })
       }
-      console.log('count', pages)
+
       res.render('admin/postList', {
         data: {
           title: 'Draft posts',
           user: req.user,
+          selectedCategory: categoryAlias,
+          selectedFilter: filterId,
           pages,
+          pageCount,
           pageId: 'DRAFT',
           thisPage: pageNum,
           categories,
@@ -136,7 +169,69 @@ const createCategory = (req, res) => {
 }
 
 const editPost = (req, res) => {
+  let post = new Post()
+  post.postId = req.generation.postId
+  post.postTitle = trim(req.body.title)
+  post.alias = convertToAlias(post.postTitle)
+  // post.author = req.user.account
+  let author = new User()
+  author.account = 'admin'
+  post.author = author
 
+  let category = new Category()
+  category.categoryId = req.body.category
+  post.category = category
+  console.log('tags', req.body.tags)
+  post.tags = JSON.parse(req.body.tags).map(t => {
+    let tag = new Tag()
+    tag.tagId = t.tagId
+    tag.tagName = trim(t.tagName)
+
+    return tag
+  })
+  post.postSummary = trim(req.body.summary)
+  post.postContent = req.body['content']
+  post.postAvatarImage = req.generation.postAvatarImage
+  post.youtubeUrl = trim(req.body.youtubeUrl)
+
+  console.log('post', post)
+
+  postBus
+    .updatePost(post)
+    .then(async Post => {
+      if (Post) {
+        await post.tags.forEach(async tag => {
+          await tagBus
+            .hasTag(tag.tagId)
+            .then(async ret => {
+              if (!ret) {
+                tag.alias = convertToAlias(tag.tagName)
+                tag.generateId()
+                await tagBus.createTag(tag)
+              }
+
+              let postTag = new PostTag()
+              postTag.postId = post.postId
+              postTag.tagId = tag.tagId
+              postTagBus.createPostTag(postTag)
+            })
+            .catch(err => {
+
+            })
+
+          await postTagBus.deleteOldPostTagsOfPost(post.postId, post.tags.map(t => t.tagId))
+        })
+
+        res.redirect('/admin/dashboard')
+      }
+      else {
+        res.send('error')
+      }
+    })
+    .catch(err => {
+      console.log('UPDATE POST ERROR: ', err)
+      res.send('error')
+    })
 }
 
 const updateTag = (req, res) => {
@@ -243,7 +338,7 @@ const createPost = (req, res) => {
     return tag
   })
   post.postSummary = trim(req.body.summary)
-  post.postContent = req.body['create-post-editor']
+  post.postContent = req.body['content']
   post.postAvatarImage = req.generation.postAvatarImage
   post.youtubeUrl = trim(req.body.youtubeUrl)
 
@@ -272,58 +367,6 @@ const createPost = (req, res) => {
         })
 
         res.redirect('/admin/dashboard/create-post')
-        // await Promise
-        //   .all(
-        //     post.tags.map(
-        //       tag => new Promise(async (resolve, reject) => {
-        //         let tagId = tag.tagId
-        //         if (! await tagBus.hasTag(tagId)) {
-        //           await tagBus
-        //             .createTag(tag)
-        //             .then(target => {
-        //               tagId = target.TagId
-        //               console.log('create new tag: ', target)
-        //               newPost.Tags.push({ tagId: target.TagId, tagName: target.TagName })
-        //             })
-        //             .catch(err => {
-        //               console.log('CREATE TAG ERROR: ', err)
-        //             })
-        //         }
-        //         else {
-        //           newPost.Tags.push({ tagId: tagId, tagName: '' })
-        //         }
-        //         console.log('Tag Id: ', tagId)
-        //         let postTag = new PostTag(newPost.postId, tagId)
-        //         await postTagBus
-        //           .createPostTag(postTag)
-        //           .then(newPostTag => {
-        //             console.log('create new post tag: ', newPostTag)
-        //             resolve(newPostTag)
-        //           })
-        //           .catch(err => {
-        //             console.log('CREATE POST TAG ERROR: ', err)
-        //             reject(err)
-        //             res.send({
-        //               error: false,
-        //               post: newPost,
-        //             })
-        //           })
-        //       })
-        //     )
-        //   )
-        //   .then(postTags => {
-        //     res.send({
-        //       error: false,
-        //       post: newPost,
-        //     })
-        //   })
-        //   .catch(err => {
-        //     console.log('ERROR: ', err)
-        //     res.send({
-        //       error: true,
-        //       post: {},
-        //     })
-        //   })
       }
       else {
         res.send('error')

@@ -7,12 +7,29 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
 <script src="/js/tagsinput/tagInput.js"></script>
-<script src="https://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/4.11.4/standard-all/ckeditor.js"></script>
+<script
+  src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js?apiKey=u50i7a8j990tu41psxw6vtkxhqp67ep75sn1shcdh4ibcwd0"></script>
+{{#if (opt data.pageId '===' 'EDIT_POST' opt)}}
+<script>
+  var isEdit = true
+  var notChange = true
+  var oldContent = `{{{ data.post.postContent }}}`
+  console.log('oldContent', oldContent)
+</script>
+{{else}}
+<script>
+  var isEdit = false
+  var notChange = false
+  var oldContent = ''
+</script>
+{{/if}}
 <script src="/js/dashboardCreate.js"></script>
+
 {{/section}}
 <div style="padding: 20px;">
   <form id="postForm" name="createPostForm" encType="multipart/form-data" method="POST"
-    action="/admin/dashboard/create-post">
+    action="{{#if (opt data.pageId '===' 'EDIT_POST' opt)}}/admin/dashboard/edit-post/{{data.post.postId}}{{else}}/admin/dashboard/create-post{{/if}}">
     {{!-- <div class=" d-flex justify-content-between">
       <div class="form-group position-relative wrap-input">
         <input type="text" class="form-control title-input" name="title" placeholder="Title..." />
@@ -25,7 +42,8 @@
         <span class="input-group-text form-item-title" id="basic-addon1">Title</span>
       </div>
       <input type="text" class="form-control form-item-content w-100" name="title" placeholder="Title..."
-        aria-describedby="basic-addon1">
+        aria-describedby="basic-addon1" {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}value="{{data.post.postTitle}}"
+        {{/if}}>
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
@@ -34,7 +52,9 @@
       <div class="input-group select-category-container">
         <select class="custom-select form-item-content h-100" name="category" id="categorySelection">
           {{#each data.categories}}
-          <option value="{{this.categoryId}}">{{this.categoryName}}</option>
+          <option value="{{this.categoryId}}"
+            {{#if (opt (opt data.pageId '===' 'EDIT_POST' opt) '&&' (opt this.categoryId '===' ../data.post.category.categoryId opt) opt)}}selected{{/if}}>
+            {{this.categoryName}}</option>
           {{/each}}
         </select>
       </div>
@@ -47,10 +67,14 @@
       <div class="form-control tags h-auto" id="tags">
         <input type="text" id="tagInput" class="labelinput dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">
-        <input type="hidden" value="[]" name="tags">
+        <input type="hidden"
+          value='{{#if (opt data.pageId '===' 'EDIT_POST' opt)}}{{#jsonStringify data.post.tags}}{{/jsonStringify}}{{else}}[]{{/if}}'
+          name="tags">
         <div class="dropdown-menu tag-hints bao-dien-tu-scrollbar">
           {{#each data.tags}}
-          <span class="dropdown-item tag-hint" tag-id="{{this.tagId}}">{{this.tagName}}
+          <span class="dropdown-item tag-hint" tag-id="{{this.tagId}}"
+            {{#if (opt (opt data.pageId '===' 'EDIT_POST' opt) '&&' (opt this.tagId 'in' ../data.tagIds opt) opt)}}hidden="hidden"
+            {{/if}}>{{this.tagName}}
           </span>
           {{/each}}
         </div>
@@ -61,20 +85,30 @@
         <span class="input-group-text form-item-title" id="basic-addon1">Youtube Url</span>
       </div>
       <input type="text" class="form-control form-item-content" name="youtubeUrl" placeholder="Youtube url..."
-        aria-label="youtubeUrl" aria-describedby="basic-addon1">
+        aria-label="youtubeUrl" aria-describedby="basic-addon1"
+        {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}value="{{data.post.youtubeUrl}}" {{/if}}>
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <span class="input-group-text form-item-title" id="avatarImageLabel">Upload Avatar Image</span>
+        <span class="input-group-text form-item-title" id="avatarImageLabel">Upload Post Image</span>
       </div>
       <div class="custom-file h-auto">
         <input type="file" class="custom-file-input h-100" id="avatarImageInput" name="avatarImage"
           accept="image/png, image/jpeg, image/gif" aria-describedby="avatarImageLabel">
-        <label class="custom-file-label h-100" name="avatarImageName" for="avatarImageInput">Choose image</label>
+        <label class="custom-file-label h-100" name="avatarImageName" for="avatarImageInput">
+          {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}
+          {{data.post.postAvatarImage}}
+          {{else}}
+          Choose image file
+          {{/if}}
+        </label>
       </div>
     </div>
-    <div class="avatar-image-preview-container">
-      <img src="" alt="..." class="avatar-image-preview img-thumbnail">
+    <div class="avatar-image-preview-container {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}contain-image{{/if}}"
+      for="avatarImageInput">
+      <img
+        src="/media/images/posts/{{#if (opt data.pageId '===' 'EDIT_POST' opt)}}{{data.post.postAvatarImage}}{{else}}placeholder.png{{/if}}"
+        alt="..." class="avatar-image-preview img-thumbnail">
       <button type="button" class="btn btn-danger rounded-circle p-0 m-0 remove-avatar-image-button">
         <i class="fas fa-times-circle"></i>
       </button>
@@ -84,7 +118,8 @@
         <span class="input-group-text form-item-title" id="basic-addon1">Summary</span>
       </div>
       <input type="text" class="form-control form-item-content w-100" name="summary" placeholder="Summary..."
-        aria-describedby="basic-addon1">
+        aria-describedby="basic-addon1" {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}value="{{data.post.postSummary}}"
+        {{/if}}>
     </div>
     {{!-- <div class="form-group position-relative wrap-input">
       <input type="text" class="form-control summary-input" name="summary" placeholder="Summary" />
@@ -92,9 +127,15 @@
       <span class="summary-harsh">Summary:</span>
     </div> --}}
     <div class="form-group">
-      <textarea name="create-post-editor"></textarea>
+      <textarea id="create-post-editor" name="content"
+        {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}value="{{data.post.postContent}}" {{/if}}></textarea>
     </div>
     <div class="form-group">
+      {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}
+      <a href="{{data.backLink}}" class="btn btn-primary w-button" type="button">
+        Cancel
+      </a>
+      {{/if}}
       <button class="btn btn-primary w-button" type="submit">
         Done
       </button>

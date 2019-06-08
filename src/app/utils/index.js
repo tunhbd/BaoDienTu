@@ -1,5 +1,5 @@
 const convertToAlias = text => {
-  var alias = text;
+  var alias = text.trim();
   alias = alias.toLowerCase();
   alias = alias.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
   alias = alias.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');

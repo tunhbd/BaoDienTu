@@ -1,4 +1,4 @@
-const { Post, Category, User, Writer } = require('../../models')
+const { Post, Category, User, Writer, Tag } = require('../../models')
 const { DBConnection } = require('../../db')
 const { convertToAlias } = require('../../utils')
 const { FILTER } = require('../../config')
@@ -155,7 +155,7 @@ const getOneByAlias = alias => new Promise(async (resolve, reject) => {
 
   await dbConn
     .loadRequest(query)
-    .then(rets => {
+    .then(async rets => {
       let post = new Post()
 
       if (rets.length > 0) {
@@ -184,7 +184,30 @@ const getOneByAlias = alias => new Promise(async (resolve, reject) => {
         author.avatar = rets[0].user_avatar
         post.author = author
       }
-      resolve(post)
+
+      let query =
+        `SELECT t.tag_id, t.tag_name, t.tag_alias
+        FROM tags t JOIN post_tags pt ON t.tag_id=pt.tag_id
+        WHERE pt.post_id='${post.postId}'`
+      let dbConn = new DBConnection()
+      await dbConn
+        .loadRequest(query)
+        .then(rets => {
+          console.log('rets', rets.length)
+          post.tags = rets.map(ret => {
+            let t = new Tag()
+            t.tagId = ret.tag_id
+            t.tagName = ret.tag_name
+            t.alias = ret.tag_alias
+
+            return t
+          })
+          resolve(post)
+        })
+        .catch(err => {
+          reject(err)
+        })
+
     })
     .catch(err => {
       reject(err)
@@ -210,8 +233,33 @@ const browse = (alias, checking, publishedDate, reasonReject) => new Promise(asy
     })
 })
 
+const updatePost = post => new Promise(async (resolve, reject) => {
+  let query =
+    `UPDATE posts SET post_title='${post.postTitle}',
+      post_alias='${post.alias}',
+      category='${post.category.categoryId}',
+      post_summary='${escape(post.postSummary)}',
+      post_content='${escape(post.postContent)}',
+      youtube_url='${post.youtubeUrl}',
+      author='${post.author.account}'
+      ${post.postAvatarImage ? `, post_avatar_image='${post.postAvatarImage}'` : ''}
+    WHERE post_id='${post.postId}'`
+
+  let dbConn = new DBConnection()
+
+  await dbConn
+    .updateRequest(query)
+    .then(rets => {
+      resolve(post)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 module.exports = {
   createPost,
+  updatePost,
   getDraftPostsFilterBy,
   getCountDraftPostsFilterBy,
   getOneByAlias,

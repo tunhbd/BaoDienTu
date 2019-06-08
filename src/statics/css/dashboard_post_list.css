@@ -74,7 +74,7 @@
   background-color: transparent !important;
   opacity: 1 !important;
   position: absolute;
-  top: 0px !important;
+  top: calc((100% - 40px)/2) !important;
   /* bottom: auto !important; */
   right: 0px !important;
   border-radius: 2px;
@@ -122,8 +122,8 @@
   color: #1E88E5;
 }
 
-.control-buttons button.delete-btn {
-  color: #D50000;
+.control-buttons button.preview-btn {
+  color: #1E88E5;
   /* font-size: 25px; */
 }
 

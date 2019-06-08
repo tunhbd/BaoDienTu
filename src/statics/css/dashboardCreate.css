@@ -199,7 +199,7 @@
 .avatar-image-preview-container {
   width: 500px;
   height: 300px;
-  display: none;
+  /* display: none; */
   ;
   padding: 10px;
   margin: 10px auto;

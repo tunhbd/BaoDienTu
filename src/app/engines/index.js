@@ -38,7 +38,19 @@ const getViewEngine = () => {
           case '&&':
             return (valA && valB)
             break;
+          case 'in':
+            if (valB === null || valB === undefined) {
+              return false
+            }
+            return valB.filter(val => val === valA).length > 0
+            break;
         }
+      },
+      jsonStringify: function (object) {
+        return JSON.stringify(object)
+      },
+      jsonParse: function (json) {
+        return JSON.parse(json)
       },
       viDate: function (date) {
         return moment(date).format('DD/MM/YYYY')

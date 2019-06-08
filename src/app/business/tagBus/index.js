@@ -61,11 +61,11 @@ const hasTag = async tagId => {
 }
 
 const createTag = (tag) => new Promise(async (resolve, reject) => {
-  let createdDate = moment().format('YYYY/MM/DD')
-  tag.CreatedDate = createdDate
+  // let createdDate = moment().format('YYYY/MM/DD')
+  // tag.CreatedDate = createdDate
   tag.TagId = generateNewTagId()
 
-  let queryString = `INSERT INTO tags(tag_id, tag_name, tag_active, created_date) VALUES('${tag.TagId}', N'${tag.TagName}', ${tag.TagActive}, '${createdDate}')`
+  let queryString = `INSERT INTO tags(tag_id, tag_name, tag_alias) VALUES('${tag.TagId}', N'${tag.TagName}', '${tag.alias}')`
 
   let DBConnect = new DBConnection()
 

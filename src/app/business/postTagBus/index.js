@@ -15,6 +15,21 @@ const createPostTag = (postTag) => new Promise(async (resolve, reject) => {
     })
 })
 
+const deleteOldPostTagsOfPost = (postId, tagIds) => new Promise(async (resolve, reject) => {
+  let query = `DELETE FROM post_tags WHERE post_id='${postId}' AND tag_id NOT IN (${tagIds.map(tId => `'${tId}'`).join(',')})`
+  console.log('query', query)
+  let dbConn = new DBConnection()
+  await dbConn
+    .deleteRequest(query)
+    .then(ret => {
+      resolve(ret)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 module.exports = {
   createPostTag,
+  deleteOldPostTagsOfPost,
 }
