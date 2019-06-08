@@ -101,6 +101,18 @@ CREATE TABLE post_tags(
   CONSTRAINT POST_TAG_REFERENCE_TAG FOREIGN KEY(tag_id) REFERENCES tags(tag_id)
 );
 
+CREATE TABLE comments(
+  comment_id VARCHAR(32) NOT NULL,
+  post_id VARCHAR(32) NOT NULL,
+  user_account VARCHAR(50) NOT NULL,
+  comment_date DATE NOT NULL,
+  comment_content TEXT NOT NULL,
+
+  PRIMARY KEY(comment_id),
+  CONSTRAINT COMMENT_REFERENCE_POST FOREIGN KEY(post_id) REFERENCES posts(post_id),
+  CONSTRAINT COMMENT_REFERENCE_USER FOREIGN KEY(user_account) REFERENCES users(user_account)
+);
+
 insert into categories(category_id, category_name, category_alias, parent_category) values
 ('CATEGORY05062019212730','Xã hội','xa-hoi',null),
 ('d60302f4367f8232f9469871492c2b7d','Kinh tế','kinh-te',null),

@@ -2,6 +2,10 @@ const { Post, Category, User, Writer, Tag } = require('../../models')
 const { DBConnection } = require('../../db')
 const { convertToAlias } = require('../../utils')
 const { FILTER } = require('../../config')
+const commentBus = require('../commentBus')
+const postTagBus = require('../postTagBus')
+const fs = require('fs')
+const path = require('path')
 
 const createPost = post => new Promise(async (resolve, reject) => {
   let query =
@@ -257,11 +261,39 @@ const updatePost = post => new Promise(async (resolve, reject) => {
     })
 })
 
+const deletePosts = postIds => new Promise(async (resolve, reject) => {
+  await postIds.forEach(async postId => {
+    // Delete comment and post tags of post
+    await Promise.all([
+      commentBus.deleteCommentByPostId(postId),
+      postTagBus.deletePostTagsByPostId(postId)
+    ])
+
+    // Delete post image
+    let filename = fs.readdirSync(path.join(__dirname, '/../../../statics/media/images/posts/')).filter(fn => fn.split('.')[0] === postId)[0]
+    fs.unlinkSync(path.join(__dirname, '/../../../statics/media/images/posts/', filename))
+
+    // Delete post
+    let query = `DELETE FROM posts WHERE post_id='${postId}'`
+    let dbConn = new DBConnection()
+    await dbConn
+      .deleteRequest(query)
+      .then(ret => {
+        resolve(postIds.length)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+
+})
+
 module.exports = {
   createPost,
   updatePost,
   getDraftPostsFilterBy,
   getCountDraftPostsFilterBy,
   getOneByAlias,
-  browse
+  browse,
+  deletePosts,
 }

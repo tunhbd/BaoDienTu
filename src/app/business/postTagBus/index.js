@@ -29,7 +29,22 @@ const deleteOldPostTagsOfPost = (postId, tagIds) => new Promise(async (resolve, 
     })
 })
 
+const deletePostTagsByPostId = postId => new Promise(async (resolve, reject) => {
+  let query = `DELETE FROM post_tags WHERE post_id='${postId}'`
+  let dbConn = new DBConnection()
+
+  await dbConn
+    .deleteRequest(query)
+    .then(ret => {
+      resolve(ret)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 module.exports = {
   createPostTag,
   deleteOldPostTagsOfPost,
+  deletePostTagsByPostId,
 }

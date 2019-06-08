@@ -28,6 +28,7 @@ module.exports = {
     '/admin/dashboard/create-category': [adminHandlers.createCategory],
     '/admin/dashboard/create-tag': [adminHandlers.createTag],
     '/admin/dashboard/preview-post/:postAlias/browse': [adminHandlers.browsePost],
+    '/admin/dashboard/delete-posts': [adminHandlers.deletePosts],
   },
   'put': {
     '/admin/dashboard/update-tag': [adminHandlers.updateTag],
@@ -35,7 +36,7 @@ module.exports = {
     '/admin/dashboard/update-user': [adminHandlers.updateUser],
   },
   'delete': {
-    '/admin/dashboard/delete-post/:postId': [adminHandlers.deletePost],
+
     '/admin/dashboard/delete-tag/:tagId': [adminHandlers.deleteTag],
     '/admin/dashboard/delete-user/:account': [adminHandlers.deleteUser],
     '/admin/dashboard/delete-category/:categoryId': [adminHandlers.deleteCategory],

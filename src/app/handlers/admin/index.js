@@ -246,8 +246,26 @@ const updateUser = (req, res) => {
 
 }
 
-const deletePost = (req, res) => {
+const deletePosts = (req, res) => {
+  console.log('body', req.body)
+  let postIds = req.body.postIds
 
+  postBus
+    .deletePosts(postIds)
+    .then(deletedPostCount => {
+      res.json({
+        error: undefined,
+        data: {
+          deletedPostCount,
+        }
+      })
+    })
+    .catch(err => {
+      res.json({
+        error: true,
+        data: {}
+      })
+    })
 }
 
 const deleteTag = (req, res) => {
@@ -449,7 +467,7 @@ module.exports = {
   updateCategory,
   updateTag,
   updateUser,
-  deletePost,
+  deletePosts,
   deleteCategory,
   deleteTag,
   deleteUser,

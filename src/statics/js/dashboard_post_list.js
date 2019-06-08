@@ -627,4 +627,41 @@ function updateDeleteButtonStatus() {
   }
 }
 
+function deletePosts() {
+  let postIds = []
+  let postCountOfPage = $('.post-checkbox').length
+
+  $('.post-checkbox:checked').each(function (index) {
+    postIds.push($(this).attr('post-id'))
+  })
+  console.log(postIds)
+
+  $.ajax({
+    type: 'POST',
+    url: '/admin/dashboard/delete-posts',
+    data: {
+      postIds
+    },
+    success: function (res) {
+      if (res.error) {
+
+      }
+      else {
+        console.log('res', res)
+        if (res.data.deletedPostCount === postCountOfPage) {
+          if (currentPage === pageCount && pageCount > 1) {
+            switchToPage(currentPage - 1)
+          }
+          else {
+            switchToPage(currentPage)
+          }
+        }
+        else {
+          switchToPage(currentPage)
+        }
+      }
+    }
+  })
+}
+
 setEventForCheckboxs()
