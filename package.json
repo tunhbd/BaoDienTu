@@ -5,7 +5,7 @@
   "main": "npm run start:prod",
   "scripts": {
     "test:prod": "better-npm-run test:prod",
-    "start:prod": "better-npm-run start:prod"
+    "start": "better-npm-run start:prod"
   },
   "betterScripts": {
     "start:local": {
