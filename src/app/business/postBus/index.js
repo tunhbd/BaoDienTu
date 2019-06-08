@@ -146,6 +146,348 @@ const getCountDraftPostsFilterBy = (pageNum, categoryAlias, filterId) => new Pro
     })
 })
 
+const getRejectPostsFilterBy = (pageNum, categoryAlias, filterId, limit) => new Promise(async (resolve, reject) => {
+  let query =
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
+    c.category_id, c.category_name, c.category_alias,
+    u.user_account, u.user_fullname, w.pseudonym
+    FROM (
+      (
+        (
+          (
+            posts p 
+            JOIN 
+            categories c 
+            ON p.category=c.category_id
+          ) 
+          JOIN 
+          users u 
+          ON p.author=u.user_account
+        )
+        JOIN
+        writers w
+        ON w.user_account=u.user_account
+      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
+    )
+    WHERE p.published_date IS NULL AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+    ${
+    filterId === FILTER.INCREASE_CREATED_DATE
+      ? 'ORDER BY created_date ASC'
+      : filterId === FILTER.DECREASE_CREATED_DATE
+        ? 'ORDER BY created_date DESC'
+        : filterId === FILTER.INCREASE_PUBLISHED_DATE
+          ? 'ORDER BY published_date ASC'
+          : 'ORDER BY published_date DESC'
+    }
+    LIMIT ${(pageNum - 1) * limit}, ${limit}`
+
+  let dbConn = new DBConnection()
+  await dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let posts = rets.map(ret => {
+        let post = new Post()
+        post.postId = ret.post_id
+        post.postTitle = unescape(ret.post_title)
+        post.alias = ret.post_alias
+        post.createdDate = ret.created_date
+        post.publishedDate = ret.published_date
+
+        let category = new Category()
+        category.categoryId = ret.category_id
+        category.alias = ret.category_alias
+        category.categoryName = ret.category_name
+        post.category = category
+
+        let author = new Writer()
+        author.account = ret.user_account
+        author.fullname = ret.user_fullname
+        author.pseudonym = ret.pseudonym
+        post.author = author
+
+        return post
+      })
+
+      resolve(posts)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const getCountRejectPostsFilterBy = (pageNum, categoryAlias, filterId) => new Promise(async (resolve, reject) => {
+  let query =
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
+    c.category_id, c.category_name, c.category_alias,
+    u.user_account, u.user_fullname, w.pseudonym
+    FROM (
+      (
+        (
+          (
+            posts p 
+            JOIN 
+            categories c 
+            ON p.category=c.category_id
+          ) 
+          JOIN 
+          users u 
+          ON p.author=u.user_account
+        )
+        JOIN
+        writers w
+        ON w.user_account=u.user_account
+      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
+    )
+    WHERE p.published_date IS NULL AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+    ${
+    filterId === FILTER.INCREASE_CREATED_DATE
+      ? 'ORDER BY created_date ASC'
+      : filterId === FILTER.DECREASE_CREATED_DATE
+        ? 'ORDER BY created_date DESC'
+        : filterId === FILTER.INCREASE_PUBLISHED_DATE
+          ? 'ORDER BY published_date ASC'
+          : 'ORDER BY published_date DESC'
+    }`
+
+  let dbConn = new DBConnection()
+  await dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const getPublishedPostsFilterBy = (pageNum, categoryAlias, filterId, limit) => new Promise(async (resolve, reject) => {
+  let query =
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
+    c.category_id, c.category_name, c.category_alias,
+    u.user_account, u.user_fullname, w.pseudonym
+    FROM (
+      (
+        (
+          (
+            posts p 
+            JOIN 
+            categories c 
+            ON p.category=c.category_id
+          ) 
+          JOIN 
+          users u 
+          ON p.author=u.user_account
+        )
+        JOIN
+        writers w
+        ON w.user_account=u.user_account
+      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
+    )
+    WHERE p.published_date IS NOT NULL AND DATEDIFF(NOW(), p.published_date) >= 0 AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+    ${
+    filterId === FILTER.INCREASE_CREATED_DATE
+      ? 'ORDER BY created_date ASC'
+      : filterId === FILTER.DECREASE_CREATED_DATE
+        ? 'ORDER BY created_date DESC'
+        : filterId === FILTER.INCREASE_PUBLISHED_DATE
+          ? 'ORDER BY published_date ASC'
+          : 'ORDER BY published_date DESC'
+    }
+    LIMIT ${(pageNum - 1) * limit}, ${limit}`
+
+  let dbConn = new DBConnection()
+  await dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let posts = rets.map(ret => {
+        let post = new Post()
+        post.postId = ret.post_id
+        post.postTitle = unescape(ret.post_title)
+        post.alias = ret.post_alias
+        post.createdDate = ret.created_date
+        post.publishedDate = ret.published_date
+
+        let category = new Category()
+        category.categoryId = ret.category_id
+        category.alias = ret.category_alias
+        category.categoryName = ret.category_name
+        post.category = category
+
+        let author = new Writer()
+        author.account = ret.user_account
+        author.fullname = ret.user_fullname
+        author.pseudonym = ret.pseudonym
+        post.author = author
+
+        return post
+      })
+
+      resolve(posts)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const getCountPublishedPostsFilterBy = (pageNum, categoryAlias, filterId) => new Promise(async (resolve, reject) => {
+  let query =
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
+    c.category_id, c.category_name, c.category_alias,
+    u.user_account, u.user_fullname, w.pseudonym
+    FROM (
+      (
+        (
+          (
+            posts p 
+            JOIN 
+            categories c 
+            ON p.category=c.category_id
+          ) 
+          JOIN 
+          users u 
+          ON p.author=u.user_account
+        )
+        JOIN
+        writers w
+        ON w.user_account=u.user_account
+      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
+    )
+    WHERE p.published_date IS NOT NULL AND DATEDIFF(NOW(), p.published_date) >= 0 AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+    ${
+    filterId === FILTER.INCREASE_CREATED_DATE
+      ? 'ORDER BY created_date ASC'
+      : filterId === FILTER.DECREASE_CREATED_DATE
+        ? 'ORDER BY created_date DESC'
+        : filterId === FILTER.INCREASE_PUBLISHED_DATE
+          ? 'ORDER BY published_date ASC'
+          : 'ORDER BY published_date DESC'
+    }`
+
+  let dbConn = new DBConnection()
+  await dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const getWaitingPostsFilterBy = (pageNum, categoryAlias, filterId, limit) => new Promise(async (resolve, reject) => {
+  let query =
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
+    c.category_id, c.category_name, c.category_alias,
+    u.user_account, u.user_fullname, w.pseudonym
+    FROM (
+      (
+        (
+          (
+            posts p 
+            JOIN 
+            categories c 
+            ON p.category=c.category_id
+          ) 
+          JOIN 
+          users u 
+          ON p.author=u.user_account
+        )
+        JOIN
+        writers w
+        ON w.user_account=u.user_account
+      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
+    )
+    WHERE p.published_date IS NOT NULL AND DATEDIFF(NOW(), p.published_date) < 0 AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+    ${
+    filterId === FILTER.INCREASE_CREATED_DATE
+      ? 'ORDER BY created_date ASC'
+      : filterId === FILTER.DECREASE_CREATED_DATE
+        ? 'ORDER BY created_date DESC'
+        : filterId === FILTER.INCREASE_PUBLISHED_DATE
+          ? 'ORDER BY published_date ASC'
+          : 'ORDER BY published_date DESC'
+    }
+    LIMIT ${(pageNum - 1) * limit}, ${limit}`
+  console.log('query', query)
+  let dbConn = new DBConnection()
+  await dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let posts = rets.map(ret => {
+        let post = new Post()
+        post.postId = ret.post_id
+        post.postTitle = unescape(ret.post_title)
+        post.alias = ret.post_alias
+        post.createdDate = ret.created_date
+        post.publishedDate = ret.published_date
+
+        let category = new Category()
+        category.categoryId = ret.category_id
+        category.alias = ret.category_alias
+        category.categoryName = ret.category_name
+        post.category = category
+
+        let author = new Writer()
+        author.account = ret.user_account
+        author.fullname = ret.user_fullname
+        author.pseudonym = ret.pseudonym
+        post.author = author
+
+        return post
+      })
+
+      resolve(posts)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const getCountWaitingPostsFilterBy = (pageNum, categoryAlias, filterId) => new Promise(async (resolve, reject) => {
+  let query =
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
+    c.category_id, c.category_name, c.category_alias,
+    u.user_account, u.user_fullname, w.pseudonym
+    FROM (
+      (
+        (
+          (
+            posts p 
+            JOIN 
+            categories c 
+            ON p.category=c.category_id
+          ) 
+          JOIN 
+          users u 
+          ON p.author=u.user_account
+        )
+        JOIN
+        writers w
+        ON w.user_account=u.user_account
+      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
+    )
+    WHERE p.published_date IS NOT NULL AND DATEDIFF(NOW(), p.published_date) < 0 AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+    ${
+    filterId === FILTER.INCREASE_CREATED_DATE
+      ? 'ORDER BY created_date ASC'
+      : filterId === FILTER.DECREASE_CREATED_DATE
+        ? 'ORDER BY created_date DESC'
+        : filterId === FILTER.INCREASE_PUBLISHED_DATE
+          ? 'ORDER BY published_date ASC'
+          : 'ORDER BY published_date DESC'
+    }`
+
+  let dbConn = new DBConnection()
+  await dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 const getOneByAlias = alias => new Promise(async (resolve, reject) => {
   let query =
     `SELECT 
@@ -271,7 +613,7 @@ const deletePosts = postIds => new Promise(async (resolve, reject) => {
 
     // Delete post image
     let filename = fs.readdirSync(path.join(__dirname, '/../../../statics/media/images/posts/')).filter(fn => fn.split('.')[0] === postId)[0]
-    fs.unlinkSync(path.join(__dirname, '/../../../statics/media/images/posts/', filename))
+    filename && fs.unlinkSync(path.join(__dirname, '/../../../statics/media/images/posts/', filename))
 
     // Delete post
     let query = `DELETE FROM posts WHERE post_id='${postId}'`
@@ -293,6 +635,12 @@ module.exports = {
   updatePost,
   getDraftPostsFilterBy,
   getCountDraftPostsFilterBy,
+  getRejectPostsFilterBy,
+  getCountRejectPostsFilterBy,
+  getPublishedPostsFilterBy,
+  getCountPublishedPostsFilterBy,
+  getWaitingPostsFilterBy,
+  getCountWaitingPostsFilterBy,
   getOneByAlias,
   browse,
   deletePosts,

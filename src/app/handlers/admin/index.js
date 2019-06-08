@@ -141,15 +141,127 @@ const renderDraftPostsPage = (req, res) => {
 }
 
 const renderRejectPostsPage = (req, res) => {
+  let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
+  let categoryAlias = !req.query.category ? 'ALL' : req.query.category
+  let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
 
+  Promise
+    .all([
+      categoryBus.getLessInfoCategories(),
+      postBus.getRejectPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS),
+      postBus.getCountRejectPostsFilterBy(pageNum, categoryAlias, filterId),
+    ])
+    .then(([categories, posts, countPosts]) => {
+      let pages = []
+      let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
+      for (let index = 1; index <= pageCount; index++) {
+        pages.push({ pageNum: index })
+      }
+
+      res.render('admin/postList', {
+        data: {
+          title: 'Reject posts',
+          user: req.user,
+          selectedCategory: categoryAlias,
+          selectedFilter: filterId,
+          pages,
+          pageCount,
+          pageId: 'REJECT',
+          thisPage: pageNum,
+          categories,
+          posts,
+          status: false,
+          postType: 'REJECT',
+        },
+        layout: 'dashboardLayout'
+      })
+    })
+    .catch(err => {
+
+    })
 }
 
 const renderPublishedPostsPage = (req, res) => {
+  let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
+  let categoryAlias = !req.query.category ? 'ALL' : req.query.category
+  let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
 
+  Promise
+    .all([
+      categoryBus.getLessInfoCategories(),
+      postBus.getPublishedPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS),
+      postBus.getCountPublishedPostsFilterBy(pageNum, categoryAlias, filterId),
+    ])
+    .then(([categories, posts, countPosts]) => {
+      let pages = []
+      let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
+      for (let index = 1; index <= pageCount; index++) {
+        pages.push({ pageNum: index })
+      }
+
+      res.render('admin/postList', {
+        data: {
+          title: 'Published posts',
+          user: req.user,
+          selectedCategory: categoryAlias,
+          selectedFilter: filterId,
+          pages,
+          pageCount,
+          pageId: 'PUBLISHED',
+          thisPage: pageNum,
+          categories,
+          posts,
+          status: true,
+          postType: 'PUBLISHED',
+        },
+        layout: 'dashboardLayout'
+      })
+    })
+    .catch(err => {
+
+    })
 }
 
 const renderWaitingPostsPage = (req, res) => {
+  let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
+  let categoryAlias = !req.query.category ? 'ALL' : req.query.category
+  let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
 
+  Promise
+    .all([
+      categoryBus.getLessInfoCategories(),
+      postBus.getWaitingPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS),
+      postBus.getCountWaitingPostsFilterBy(pageNum, categoryAlias, filterId),
+    ])
+    .then(([categories, posts, countPosts]) => {
+      console.log('count', countPosts)
+      let pages = []
+      let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
+      for (let index = 1; index <= pageCount; index++) {
+        pages.push({ pageNum: index })
+      }
+
+      res.render('admin/postList', {
+        data: {
+          title: 'Waiting posts',
+          user: req.user,
+          selectedCategory: categoryAlias,
+          selectedFilter: filterId,
+          pages,
+          pageCount,
+          pageId: 'WAITING',
+          thisPage: pageNum,
+          categories,
+          posts,
+          status: true,
+          postType: 'WAITING',
+        },
+        layout: 'dashboardLayout'
+      })
+    })
+    .catch(err => {
+
+    })
 }
 
 const renderUsersPage = (req, res) => {
