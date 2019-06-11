@@ -5,4 +5,4 @@ module.exports = {
   Category: require('./category'),
   User: require('./user'),
   Writer: require('./writer'),
-}
+};

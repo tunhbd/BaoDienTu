@@ -1,4 +1,4 @@
 module.exports = {
   adminHandlers: require('./admin'),
-  homepageHandlers: require('./homepage'),
+  userHandlers: require('./user'),
 }

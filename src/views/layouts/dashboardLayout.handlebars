@@ -99,7 +99,7 @@
             </a>
             {{/if}}
 
-            {{#if (opt (opt data.user.userRole '===' 'ADMIN' opt) '||' (opt data.user.userRole '===' 'WRITER' opt) opt)}}
+            {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
             {{#if (opt data.pageId '===' 'CREATE_POST')}}
             <a href="/admin/dashboard/create-post" menu-id="CREATE_POST"
               class="menu-item-group__item menu-item-group__item__activing">
@@ -127,7 +127,7 @@
             </a>
             {{/if}}
 
-            {{#if (opt (opt data.user.userRole '===' 'ADMIN' opt) '||' (opt data.user.userRole '===' 'WRITER' opt) opt)}}
+            {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
             {{#if (opt data.pageId '===' 'REJECT')}}
             <a href="/admin/dashboard/reject-posts" menu-id="REJECT"
               class="menu-item-group__item menu-item-group__item__activing">
@@ -142,7 +142,7 @@
             {{/if}}
             {{/if}}
           </div>
-          {{#if (opt (opt data.user.userRole '===' 'ADMIN' opt) '||' (opt data.user.userRole '===' 'WRITER' opt) opt)}}
+          {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
           <div class="menu-item-group w-100">
             {{#if (opt data.pageId '===' 'WAITING')}}
             <a href="/admin/dashboard/waiting-posts" menu-id="WAITING"
@@ -173,7 +173,7 @@
           </div>
           {{/if}}
 
-          {{#if (opt data.user.userRole '===' 'ADMIN')}}
+          {{#if (opt data.user.role '===' 'ADMIN')}}
           <div class="menu-item-group w-100">
             {{#if (opt data.pageId '===' 'TAGS')}}
             <a href="/admin/dashboard/tags" menu-id="TAG" class="menu-item-group__item menu-item-group__item__activing">
@@ -238,7 +238,7 @@
         </a>
         {{/if}}
 
-        {{#if (opt (opt data.user.userRole '===' 'ADMIN' opt) '||' (opt data.user.userRole '===' 'WRITER' opt) opt)}}
+        {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
         {{#if (opt data.pageId '===' 'CREATE_POST')}}
         <a href="/admin/dashboard/create-post" menu-id="CREATE_POST"
           class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
@@ -266,7 +266,7 @@
         </a>
         {{/if}}
 
-        {{#if (opt (opt data.user.userRole '===' 'ADMIN' opt) '||' (opt data.user.userRole '===' 'WRITER' opt) opt)}}
+        {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
         {{#if (opt data.pageId '===' 'REJECT')}}
         <a href="/admin/dashboard/reject-posts" menu-id="REJECT"
           class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
@@ -282,7 +282,7 @@
         {{/if}}
       </div>
 
-      {{#if (opt (opt data.user.userRole '===' 'ADMIN' opt) '||' (opt data.user.userRole '===' 'WRITER' opt) opt)}}
+      {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
       <div class="menu-item-group w-100">
         {{#if (opt data.pageId '===' 'WAITING')}}
         <a href="/admin/dashboard/waiting-posts" menu-id="WAITING"
@@ -313,7 +313,7 @@
       </div>
       {{/if}}
 
-      {{#if (opt data.user.userRole '===' 'ADMIN')}}
+      {{#if (opt data.user.role '===' 'ADMIN')}}
       <div class="menu-item-group w-100">
         {{#if (opt data.pageId '===' 'TAG')}}
         <a href="/admin/dashboard/tags" menu-id="TAG"
@@ -410,7 +410,7 @@
   {{!-- <script src="/js/dashboardCategories.js"></script> --}}
   {{!-- <script src="/js/dashboardTags.js"></script> --}}
   <script>
-    userRole = '{{data.user.userRole}}'
+    userRole = '{{data.user.role}}'
     console.log(userRole)
   </script>
   {{{_sections.moreJs}}}

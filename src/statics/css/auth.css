@@ -7,11 +7,16 @@ h5,
 h6 {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
+
 body,
 html {
   overflow-x: hidden;
   font-size: 16px;
   background-color: #f0f2f5;
+}
+
+label {
+  margin: 0;
 }
 body {
   font-weight: 400;
@@ -193,13 +198,13 @@ a:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.wrap-input .form-control:focus + .w-input:before {
+.wrap-input .form-control:focus ~ .w-input:before {
   width: 100%;
   outline: 0;
 }
 .wrap-input {
   /* width: 100%; */
-  margin:0;
+  margin: 0;
   border-radius: 0;
   position: relative;
   border-bottom: 2px solid #d9d9d9;
@@ -363,7 +368,6 @@ a:focus {
 }
 
 .profile-item-title span {
-
   width: 100px;
 }
 .profile-item-content {
@@ -376,7 +380,7 @@ a:focus {
   margin-left: 1px;
 }
 .profile-item-input:disabled {
-  background-color: rgba(0,0,0,0.05);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .go-home {
@@ -398,7 +402,7 @@ a:focus {
   width: 0px;
   height: 0px;
   display: block;
-  content: '';
+  content: "";
   border-radius: 100%;
   background-color: #e91e63;
   position: absolute;

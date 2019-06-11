@@ -3,4 +3,5 @@ module.exports = {
   multerMiddlewares: require('./multerMiddlewares'),
   notFoundMiddleware: require('./notFoundMiddleware'),
   gereratePostIdMiddleware: require('./generatePostIdMiddleware'),
+  passport: require('./passport'),
 }

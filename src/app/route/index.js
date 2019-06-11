@@ -42,7 +42,7 @@ const renderRoutes = (routesObj, method = null) => {
 
 const route = () => {
   renderRoutes(require('./auth'))
-  renderRoutes(require('./homepage'))
+  renderRoutes(require('./user'))
   renderRoutes(require('./admin'))
 
   return Router

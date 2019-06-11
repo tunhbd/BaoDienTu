@@ -1,4 +1,4 @@
-const homepageHandlers = require('../../handlers/homepage')
+const homepageHandlers = require('../../handlers/user')
 
 module.exports = {
   'get': {
