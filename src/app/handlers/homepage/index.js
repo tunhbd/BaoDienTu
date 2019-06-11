@@ -12,10 +12,13 @@ const homepageGetRequest = (req, res) => {
   // let signinedUser = business.authBus.getSigninedUser(
   //   req.cookies.signined_user
   // );
-  console.log(Boolean(req.user));
   res.render("indexContent", {
-    user: !req.user,
-    layout: "indexLayout"
+    user: req.user,
+    layout: "indexLayout",
+    message: {
+      error: req.flash("mes"),
+      success: req.flash("suc")
+    }
   });
 };
 

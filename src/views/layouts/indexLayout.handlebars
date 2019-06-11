@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="/css/responsive/index.css">
   <link rel="stylesheet" href="/css/responsive/slideout.css">
   <link rel="stylesheet" href="/css/bao_dien_tu_scrollbar.css">
+
 </head>
 
 <body data-spy="scroll" data-target=".new-content" data-offset="10" class="bao-dien-tu-scrollbar">
@@ -78,17 +79,9 @@
             <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
           </div>
           {{#if user}}
-          <div class="login-form">
-            <i class="far fa-user">
-              <span>
-                <a href="/sign-in" class="login">Đăng nhập</a> | <a href="/sign-up" class="sign-up"> Đăng kí</a>
-              </span>
-            </i>
-          </div>
-          {{else}}
-          <div id="homepage-avatar-user" class="rounded-circle overflow-hidden homepage-user-menu-is-collapse">
-            <img src="/media/images/users/{{user.avatar}}" alt="" />
-          </div>
+          <img width="40px" height="40px" id="homepage-avatar-user"
+            class="rounded-circle overflow-hidden homepage-user-menu-is-collapse" src="{{user.user_avatar}}" alt="" />
+          {{user.user_fullname}}
           <div class="homepage-user-menu">
             <ul>
               <li class="homepage-user-menu__item">
@@ -110,6 +103,14 @@
                 </a>
               </li>
             </ul>
+          </div>
+
+          {{else}} <div class="login-form">
+            <i class="far fa-user">
+              <span>
+                <a href="/sign-in" class="login">Đăng nhập</a> | <a href="/sign-up" class="sign-up"> Đăng kí</a>
+              </span>
+            </i>
           </div>
           {{/if}}
         </div>
@@ -191,6 +192,25 @@
   {{!-- Custom js --}}
   <script src="/js/user_menu.js"></script>
   <script src="/js/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  {{#if message.success}}
+  <script>
+    swal.fire({
+      type: 'success',
+      title: 'Success!',
+      text: "{{message.success}}",
+    })
+  </script>
+  {{/if}}
+  {{#if message.error}}
+  <script>
+    swal.fire({
+      type: 'error',
+      title: 'Oops!',
+      text: "{{message.error}}",
+    })
+  </script>
+  {{/if}}
 </body>
 
 </html>

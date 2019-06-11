@@ -59,8 +59,11 @@
   },
   "homepage": "https://github.com/tunhbd/BaoDienTu#readme",
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
+    "async": "^3.0.1",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "debug": "^4.1.1",
     "express": "^4.16.4",

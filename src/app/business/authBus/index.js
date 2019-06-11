@@ -21,8 +21,8 @@ const registryUser = userInfo => {
   let q = `INSERT INTO users VALUES ( 
     '${userInfo.username}', \
     '${hash}', \
-    '${userInfo.fullname}', \
-    '${userInfo.username}', \ 
+    '${userInfo.username}', \
+    '${userInfo.email}', \ 
     null, \
     'https://image.flaticon.com/icons/svg/1781/1781013.svg', \
     1, \

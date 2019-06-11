@@ -105,3 +105,10 @@ CREATE TABLE post_tags
   CONSTRAINT POST_TAG_REFERENCE_POST FOREIGN KEY(post_id) REFERENCES posts(post_id),
   CONSTRAINT POST_TAG_REFERENCE_TAG FOREIGN KEY(tag_id) REFERENCES tags(tag_id)
 );
+
+-- CREATE TABLE `user-reset` (
+-- 	`ur-index` INT NOT NULL AUTO_INCREMENT,
+-- 	`ur-email` VARCHAR(50) NOT NULL,
+-- 	`ur-tok` VARCHAR(100),
+-- 	PRIMARY KEY (`ur-index`)
+-- );
