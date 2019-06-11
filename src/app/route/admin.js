@@ -26,6 +26,8 @@ module.exports = {
     '/admin/dashboard/create-post': [gereratePostIdMiddleware, multerMiddlewares.postImageMulterMiddleware, adminHandlers.createPost],
     '/admin/dashboard/edit-post/:postId': [gereratePostIdMiddleware, multerMiddlewares.postImageMulterMiddleware, adminHandlers.editPost],
     '/admin/dashboard/create-category': [adminHandlers.createCategory],
+    '/admin/dashboard/update-category': [adminHandlers.updateCategory],
+    '/admin/dashboard/delete-category': [adminHandlers.deleteCategory],
     '/admin/dashboard/create-tag': [adminHandlers.createTag],
     '/admin/dashboard/preview-post/:postAlias/browse': [adminHandlers.browsePost],
     '/admin/dashboard/delete-posts': [adminHandlers.deletePosts],

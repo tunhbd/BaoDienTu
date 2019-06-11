@@ -1,15 +1,37 @@
+.bao-dien-tu-dialog {
+  max-height: 800px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.bao-dien-tu-dialog-mask {}
+
 .bao-dien-tu-dialog-small {
-    max-width: 500px!important;
+  max-width: 500px !important;
 }
 
 .bao-dien-tu-dialog-ex-small {
-    max-width: 300px!important;
+  max-width: 300px !important;
 }
 
 .bao-dien-tu-dialog-medium {
-    max-width: 70%!important;
+  max-width: 70% !important;
 }
 
 .bao-dien-tu-dialog-big {
-    max-width: 90%!important;
+  max-width: 90% !important;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.bao-dien-tu-dialog-style-zoom {
+  animation-name: zoom;
+  animation-duration: 0.5s;
 }

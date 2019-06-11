@@ -1,4 +1,5 @@
 const moment = require('moment')
+const { convertToAlias } = require('../utils')
 
 module.exports = class Category {
   constructor() {
@@ -8,9 +9,14 @@ module.exports = class Category {
     this.parent = null
     this.createdDate = ''
     this.active = true
+    this.subCategories = []
   }
 
   generateId() {
     this.categoryId = `CATEGORY${moment().format('DDMMYYYYhhmmss')}`
+  }
+
+  generateAlias() {
+    this.alias = convertToAlias(this.categoryName)
   }
 }

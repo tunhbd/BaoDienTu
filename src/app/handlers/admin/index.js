@@ -273,11 +273,90 @@ const renderTagsPage = (req, res) => {
 }
 
 const renderCategoriesPage = (req, res) => {
-
+  categoryBus
+    .getAllWithLevel()
+    .then(categories => {
+      res.render('admin/categoryList', {
+        data: {
+          title: 'Categories Management',
+          user: req.user,
+          pageId: 'CATEGORY',
+          categories,
+        },
+        layout: 'dashboardLayout'
+      })
+    })
+    .catch(err => {
+      res.send('error')
+    })
 }
 
 const createCategory = (req, res) => {
+  let category = new Category()
+  category.categoryName = req.body.categoryName
+  category.parent = req.body.parentCategory ? req.body.parentCategory : null
 
+  categoryBus
+    .addCategory(category)
+    .then(categ => {
+      res.json({
+        error: undefined,
+        data: {
+          category: categ,
+        }
+      })
+    })
+    .catch(err => {
+      res.json({
+        error: true,
+        data: {}
+      })
+    })
+}
+
+const updateCategory = (req, res) => {
+  let category = new Category()
+  category.categoryId = req.body.categoryId
+  category.categoryName = req.body.categoryName
+
+  categoryBus
+    .updateCategory(category)
+    .then(categ => {
+      res.json({
+        error: undefined,
+        data: {
+          category: categ,
+        }
+      })
+    })
+    .catch(err => {
+      res.json({
+        error: true,
+        data: {}
+      })
+    })
+}
+
+const deleteCategory = (req, res) => {
+  let categoryId = req.body.categoryId
+  let isParent = req.body.isParent
+
+  categoryBus
+    .deleteCategory(categoryId, isParent)
+    .then(categId => {
+      res.json({
+        error: undefined,
+        data: {
+          categoryId: categId,
+        }
+      })
+    })
+    .catch(err => {
+      res.json({
+        error: true,
+        data: {}
+      })
+    })
 }
 
 const editPost = (req, res) => {
@@ -350,10 +429,6 @@ const updateTag = (req, res) => {
 
 }
 
-const updateCategory = (req, res) => {
-
-}
-
 const updateUser = (req, res) => {
 
 }
@@ -385,10 +460,6 @@ const deleteTag = (req, res) => {
 }
 
 const deleteUser = (req, res) => {
-
-}
-
-const deleteCategory = (req, res) => {
 
 }
 
@@ -575,7 +646,6 @@ module.exports = {
   editPost,
   createCategory,
   createTag,
-  createCategory,
   updateCategory,
   updateTag,
   updateUser,
