@@ -23,13 +23,8 @@ CREATE TABLE users
   user_birthday DATE,
   user_avatar VARCHAR(60),
   user_status TINYINT DEFAULT 1 NOT NULL,
-  user_role VARCHAR(11) NOT NULL,
-<<<<<<< HEAD
-  
-=======
+  user_role VARCHAR(11) NOT NULL,  
   -- user_token VARCHAR(32),
-
->>>>>>> 6fadd6ca1b8663bb039203313c69011af28d927c
   PRIMARY KEY(user_account)
 );
 
@@ -115,7 +110,6 @@ CREATE TABLE post_tags
   CONSTRAINT POST_TAG_REFERENCE_TAG FOREIGN KEY(tag_id) REFERENCES tags(tag_id)
 );
 
-<<<<<<< HEAD
 CREATE TABLE comments(
   comment_id VARCHAR(32) NOT NULL,
   post_id VARCHAR(32) NOT NULL,
@@ -137,11 +131,3 @@ insert into categories(category_id, category_name, category_alias, parent_catego
 ('a1c3d04dfd6b7ca10b12de7a7a108ffb','Công nghệ','cong-nghe',null),
 ('83de934910c68328803a543fb559eb9e','Giải trí','giai-tri',null),
 ('2b986ded59305dacfa5e8f215f1cb0cf','Văn hóa','van-hoa',null);
-=======
--- CREATE TABLE `user-reset` (
--- 	`ur-index` INT NOT NULL AUTO_INCREMENT,
--- 	`ur-email` VARCHAR(50) NOT NULL,
--- 	`ur-tok` VARCHAR(100),
--- 	PRIMARY KEY (`ur-index`)
--- );
->>>>>>> 6fadd6ca1b8663bb039203313c69011af28d927c

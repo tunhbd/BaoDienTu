@@ -41,8 +41,14 @@ const signIn = (req, res, next) => {
     }
     else {
       req.logIn(user, err => {
-        if (err) return next(err);
-        res.redirect("/");
+        if (err) return next(err)
+
+        if (user.role === 'SUBSCRIBER') {
+          res.redirect("/")
+        }
+        else {
+          res.redirect("/admin/dashboard")
+        }
       });
     }
   })(req, res, next);

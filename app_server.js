@@ -54,6 +54,7 @@ server.set("view engine", viewEngine.engineName);
 //   })
 // );
 
+middlewares.rootMiddleware.registerMiddleware(server)
 middlewares.adminMiddleware.registerMiddleware(server)
 server.use('/', route)
 middlewares.notFoundMiddleware.registerMiddleware(server)

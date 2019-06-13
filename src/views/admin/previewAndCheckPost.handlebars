@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  {{#if (opt (opt data.user.userRole '===' 'WRITER' opt) '||' (opt data.user.userRole '===' 'ADMIN' opt) opt)}}
+  {{#if (opt (opt data.user.role '===' 'WRITER' opt) '||' (opt data.user.role '===' 'ADMIN' opt) opt)}}
   <div id="postStatus" class="border-top pt-2">
     <label>Post Status: </label>
     {{#if data.post.checked}}
@@ -54,7 +54,7 @@
   {{/if}}
 
   <div class="card mt-2">
-    {{#if (opt (opt data.user.userRole '===' 'EDITOR' opt) '||' (opt data.user.userRole '===' 'ADMIN' opt) opt)}}
+    {{#if (opt (opt data.user.role '===' 'EDITOR' opt) '||' (opt data.user.role '===' 'ADMIN' opt) opt)}}
 
     {{#if (opt data.post.checked '===' false opt)}}
     <div class="card-header">
@@ -65,7 +65,7 @@
     {{/if}}
     <div class="card-body">
       <form id="browsePostForm" method="POST" action="/admin/dashboard/preview-post/{{data.post.alias}}/browse">
-        {{#if (opt (opt data.user.userRole '===' 'EDITOR' opt) '||' (opt data.user.userRole '===' 'ADMIN' opt) opt)}}
+        {{#if (opt (opt data.user.role '===' 'EDITOR' opt) '||' (opt data.user.role '===' 'ADMIN' opt) opt)}}
 
         {{#if (opt data.post.checked '===' false opt)}}
         <h4 class="pt-2 pb-2"></h4>
@@ -98,7 +98,7 @@
         {{/if}}
         <div id="checkPost__buttons" class="mt-3">
           <a class="btn btn-secondary" href="{{data.backLink}}">Back</a>
-          {{#if (opt (opt data.user.userRole '===' 'EDITOR' opt) '||' (opt data.user.userRole '===' 'ADMIN' opt) opt)}}
+          {{#if (opt (opt data.user.role '===' 'EDITOR' opt) '||' (opt data.user.role '===' 'ADMIN' opt) opt)}}
 
           {{#if (opt data.post.checked '===' false opt)}}
           <button type="submit" class="btn btn-success">Update</button>
@@ -109,6 +109,4 @@
       </form>
     </div>
   </div>
-
-
 </div>

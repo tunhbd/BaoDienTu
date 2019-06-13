@@ -19,7 +19,6 @@ module.exports = function (server) {
         .loadRequest(q)
         .then(rows => {
           if (rows.length === 0) {
-            console.log('not exsists')
             return done(null, false, {
               username,
               password,
@@ -35,7 +34,11 @@ module.exports = function (server) {
               }
               return done(null, user);
             }
-            return done(null, false, { message: "Mật khẩu chưa đúng" });
+            return done(null, false, {
+              username,
+              password,
+              message: "Mật khẩu chưa đúng"
+            });
           }
         })
         .catch(err => {

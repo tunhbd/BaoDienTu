@@ -7,10 +7,16 @@ const registerMiddleware = server => {
         .getUserInfoWithNoPassword(req.user.account)
         .then(user => {
           req.user = user
+          next()
         })
         .catch(err => {
-
+          console.log(err)
+          console.log(req.user)
+          res.send('error')
         })
+    }
+    else {
+      next()
     }
   })
 }

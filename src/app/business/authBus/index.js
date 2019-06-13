@@ -1,4 +1,4 @@
-const db = require("../../db");
+const { DBConnection } = require("../../db");
 const bcrypt = require("bcrypt");
 const moment = require('moment')
 const { User } = require('../../models')
@@ -10,7 +10,7 @@ const getSigninedUser = json => {
 const checkSignInedUser = userToken => {
   let nowDate = Date();
   let checkQuery = `SELECT * FROM sign_in_history WHERE user_token='${userToken}' AND user_token_expiration <= ${nowDate.toString()}`;
-  return new db.DBConnection().loadRequest(checkQuery);
+  return new DBConnection().loadRequest(checkQuery);
 };
 
 const registryUser = userInfo => {
@@ -30,7 +30,7 @@ const registryUser = userInfo => {
       null, \
       '${userInfo.role}');`;
 
-  return new db.DBConnection().insertRequest(q);
+  return new DBConnection().insertRequest(q);
 };
 
 const getUserInfoWithNoPassword = account => new Promise((resolve, reject) => {

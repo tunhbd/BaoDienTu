@@ -55,7 +55,9 @@
         </div>
 
         <div id="avatar-user" class="rounded-circle overflow-hidden user-menu-is-collapse">
-          <img src="/media/images/users/{{data.user.user_avatar}}" alt="" />
+          <img
+            src="/media/images/users/{{#if (opt data.user.avatar '===' null opt)}}avatar_sample.png{{else}}{{data.user.avatar}}{{/if}}"
+            alt="" />
         </div>
         <div class="user-menu">
           <ul>

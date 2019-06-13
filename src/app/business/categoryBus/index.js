@@ -2,8 +2,11 @@ const { DBConnection } = require('../../db')
 const { Category } = require('../../models')
 const { convertToAlias } = require('../../utils')
 
-const getLessInfoCategories = () => new Promise(async (resolve, reject) => {
-  let query = 'SELECT category_id, category_name, category_alias FROM categories WHERE category_active=1'
+const getLessInfoCategories = (account = null) => new Promise(async (resolve, reject) => {
+  let query =
+    `SELECT c.category_id, c.category_name, c.category_alias 
+    FROM categories c ${account !== null ? `JOIN assigned_categories ac ON ac.category_id=c.category_id` : ''} 
+    WHERE c.category_active=1 ${account !== null ? `ac.user_account='${account}' AND ac.disabled_category=0` : ''}`
   let dbConn = new DBConnection()
 
   await dbConn
