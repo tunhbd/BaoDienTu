@@ -32,9 +32,14 @@ let hashPwd = pwd => {
   var salt = bcrypt.genSaltSync(rounds);
   return bcrypt.hashSync(pwd, salt);
 };
-let checkPermis = (req, permis = null) => {
+let checkPermis = (req, res, permis = null) => {
   if (!permis) {
-    if (!req.user) throw "No user is logining";
+    if (!req.user) {
+      req.flash("mes", "No user is logining");
+      res.redirect("/sign-in");
+    } else {
+      res.redirect("/");
+    }
   }
   return true;
 };

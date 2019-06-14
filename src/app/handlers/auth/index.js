@@ -6,19 +6,21 @@ const db = require("../../db");
 const bcrypt = require("bcrypt");
 const sgMail = require("@sendgrid/mail");
 const { checkPermis, testPwd, hashPwd } = require("../../utils");
+const moment = require("moment");
 
 const renderSignInPage = (req, res) => {
   if (req.user) {
-    switch (req.user.userRole) {
-      case "SUBSCRIBER":
-        res.redirect("/");
-        break;
-      case "WRITER":
-      case "EDITOR":
-      case "ADMIN":
-        res.redirect("/admin/dashboard");
-        break;
-    }
+    // switch (req.user.userRole) {
+    //   case "SUBSCRIBER":
+    //     res.redirect("/");
+    //     break;
+    //   case "WRITER":
+    //   case "EDITOR":
+    //   case "ADMIN":
+    //     res.redirect("/admin/dashboard");
+    //     break;
+    // }
+    res.redirect("/");
   } else {
     res.render("user/signIn", {
       layout: false,
@@ -82,8 +84,8 @@ const changePasswordGetRequest = (req, res) => {
   }
 };
 
-const changePasswordPostRequest = (req, res) => {
-  checkPermis(req);
+const changePasswordPostRequest = (req, res, next) => {
+  checkPermis(req, res);
   if (!testPwd(req.body.newPwd) || req.body.newPwd !== req.body.confirmNewPwd)
     throw "Password Error";
 
@@ -115,7 +117,7 @@ const changePasswordPostRequest = (req, res) => {
       }
     })
     .catch(err => {
-      throw err;
+      next(err);
     });
 };
 
@@ -123,16 +125,33 @@ const forgotPasswordGetRequest = (req, res) => {
   res.render("forgotPassword", { layout: false });
 };
 const profileGetRequest = (req, res) => {
-  let signinedUser = authBus.getSigninedUser(req.cookies.signined_user);
-
-  if (signinedUser === undefined) {
-    res.redirect("/sign-in");
-  } else {
-    res.render("profile", { user: signinedUser, layout: false });
-  }
+  checkPermis(req, res);
+  res.render("profile", {
+    user: req.user,
+    birthday: moment(req.user.birthday).format("YYYY-MM-DD"),
+    layout: false
+  });
 };
-const profilePostRequest = (req, res) => {
-  res.render("profile", { layout: false });
+const profilePostRequest = (req, res, next) => {
+  if (req.body.email == "") throw "Email is empty";
+  else {
+    let updateQuery = `UPDATE users
+            SET user_fullname = '${req.body.fullname}',
+            user_email = '${req.body.email}'
+            , user_birthday = '${moment(req.body.birthday, "YYYY-MM-DD").format(
+              "YYYY/MM/DD"
+            )}'
+            WHERE user_account = '${req.user.account}';`;
+    new db.DBConnection()
+      .loadRequest(updateQuery)
+      .then(() => {
+        req.flash("suc", "Cập nhật thành công");
+        res.redirect("/");
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
 };
 const authFacebookGetRequest = function() {
   passport.authenticate("facebook", { scope: "email" });
@@ -178,7 +197,7 @@ const forgotPasswordPostRequest = (req, res) => {
 const resetPasswordGetRequest = (req, res) => {
   res.render("resetPassword", { token: req.params.token, layout: false });
 };
-const resetPasswordPostRequest = (req, res) => {
+const resetPasswordPostRequest = (req, res, next) => {
   let tok = req.params.token;
 
   let getUserQuery = `SELECT * FROM users join user_reset on users.user_email = user_reset.ur_email WHERE user_reset.ur_token='${tok}';`;
@@ -197,7 +216,6 @@ const resetPasswordPostRequest = (req, res) => {
       let changeQ = `UPDATE users
           SET user_password = '${newHash}'
           WHERE user_email = '${rows[0].user_email}';`;
-      console.log(rows[0].user_email);
       new db.DBConnection()
         .loadRequest(changeQ)
         .then(() => {
@@ -210,7 +228,7 @@ const resetPasswordPostRequest = (req, res) => {
       return true;
     })
     .catch(err => {
-      throw err;
+      next(err);
     });
 };
 
