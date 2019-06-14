@@ -1,10 +1,10 @@
-!(function (a) {
+!(function(a) {
   "use strict";
   a("html, body");
   let frmCtrl = a(".pwd-mask > .form-control");
   let tglPwd = a(".pwd-toggle");
 
-  a(tglPwd).on("click", function (event) {
+  a(tglPwd).on("click", function(event) {
     event.preventDefault();
     a(this).toggleClass("fa-eye-slash fa-eye");
     a(this).hasClass("fa-eye")
@@ -13,12 +13,10 @@
   });
 })(jQuery);
 
-$.validator.addMethod("pwcheck", function (value) {
-  return (
-    /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) && // consists of only these
-    /[a-z]/.test(value) && // has a lowercase letter
-    /\d/.test(value)
-  ); // has a digit
+$.validator.addMethod("pwcheck", function(value) {
+  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
+    value
+  );
 });
 
 $("#loginForm").validate({
@@ -27,7 +25,7 @@ $("#loginForm").validate({
     username: "required",
     password: {
       required: true,
-      minlength: 6,
+      minlength: 8,
       pwcheck: true
     }
   },
@@ -35,8 +33,66 @@ $("#loginForm").validate({
     username: "Tài khoản phải được nhập",
     password: {
       required: "Mật khẩu phải được nhập",
-      minlength: "Mật khẩu phải dài hơn 6 ký tự",
-      pwcheck: "Mật khẩu gồm ký tự in hoa, in thường và số"
+      minlength: "Mật khẩu phải dài hơn 8 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
+    }
+  }
+});
+
+$("#changePwdForm").validate({
+  errorClass: "small text-danger d-flex",
+  rules: {
+    oldPwd: {
+      required: true,
+      minlength: 8,
+      pwcheck: true
+    },
+    newPwd: {
+      required: true,
+      minlength: 8,
+      pwcheck: true
+    },
+    confirmNewPwd: {
+      equalTo: "#newPwd"
+    }
+  },
+  messages: {
+    oldPwd: {
+      required: "Mật khẩu phải được nhập",
+      minlength: "Mật khẩu phải dài hơn 8 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
+    },
+    newPwd: {
+      required: "Mật khẩu phải được nhập",
+      minlength: "Mật khẩu phải dài hơn 8 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
+    },
+    confirmNewPwd: {
+      equalTo: "Mật khẩu không khớp"
+    }
+  }
+});
+
+$("#resetForm").validate({
+  errorClass: "small text-danger d-flex",
+  rules: {
+    newPwd: {
+      required: true,
+      minlength: 8,
+      pwcheck: true
+    },
+    confirmNewPwd: {
+      equalTo: "#newPwd"
+    }
+  },
+  messages: {
+    newPwd: {
+      required: "Mật khẩu phải được nhập",
+      minlength: "Mật khẩu phải dài hơn 8 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
+    },
+    confirmNewPwd: {
+      equalTo: "Mật khẩu không khớp"
     }
   }
 });
@@ -65,15 +121,15 @@ $("#signupForm").validate({
     password: {
       required: "Mật khẩu phải được nhập",
       minlength: "Mật khẩu phải dài hơn 6 ký tự",
-      pwcheck: "Mật khẩu gồm ký tự in hoa, in thường và số"
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
     }
   }
 });
 
 $('input[name="birthday"]').datepicker({
   defaultDate: new Date(),
-  minDate: new Date('1900/01/01'),
-  dateFormat: 'd/mm/yy'
+  minDate: new Date("1900/01/01"),
+  dateFormat: "d/mm/yy"
 });
 
 $("#forgetForm").validate({

@@ -1,7 +1,8 @@
 const { DBConnection } = require("../../db");
 const bcrypt = require("bcrypt");
-const moment = require('moment')
-const { User } = require('../../models')
+const moment = require("moment");
+const { User } = require("../../models");
+const { testPwd, testUsn, hashPwd } = require("../../utils");
 
 const getSigninedUser = json => {
   return json === undefined ? undefined : JSON.parse(json);
@@ -14,50 +15,49 @@ const checkSignInedUser = userToken => {
 };
 
 const registryUser = userInfo => {
-  const rounds = 10;
-  const plain = userInfo.password;
+  if (!testPwd(userInfo.password) || !testUsn(userInfo.username))
+    throw "Username or Password is invalid!";
 
-  var salt = bcrypt.genSaltSync(rounds);
-  var hash = bcrypt.hashSync(plain, salt);
+  var hash = hashPwd(userInfo.password);
 
-  let q =
-    `INSERT INTO users(user_account, user_password, user_fullname, user_email, user_birthday, user_avatar, user_role) VALUES ( 
+  let insertQuery = `INSERT INTO users(user_account, user_password, user_fullname, user_email, user_birthday, user_avatar, user_role) VALUES ( 
       '${userInfo.username}',
       '${hash}',
       '${userInfo.fullname}',
       '${userInfo.email}',
-      '${moment(userInfo.birthday, 'DD/MM/YYYY').format('YYYY/MM/DD')}', \
+      '${moment(userInfo.birthday, "DD/MM/YYYY").format("YYYY/MM/DD")}', \
       null, \
       '${userInfo.role}');`;
 
-  return new DBConnection().insertRequest(q);
+  return new DBConnection().insertRequest(insertQuery);
 };
 
-const getUserInfoWithNoPassword = account => new Promise((resolve, reject) => {
-  let query = `SELECT user_account, user_role, user_email, user_birthday, user_fullname, user_avatar FROM users WHERE user_account='${account}'`
-  let dbConn = new DBConnection()
+const getUserInfoWithNoPassword = account =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT user_account, user_role, user_email, user_birthday, user_fullname, user_avatar FROM users WHERE user_account='${account}'`;
+    let dbConn = new DBConnection();
 
-  dbConn
-    .loadRequest(query)
-    .then(rets => {
-      let user = new User()
-      user.account = rets[0].user_account
-      user.avatar = rets[0].user_avatar
-      user.birthday = rets[0].user_birthday
-      user.role = rets[0].user_role
-      user.email = rets[0].user_email
-      user.fullname = rets[0].user_fullname
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        let user = new User();
+        user.account = rets[0].user_account;
+        user.avatar = rets[0].user_avatar;
+        user.birthday = rets[0].user_birthday;
+        user.role = rets[0].user_role;
+        user.email = rets[0].user_email;
+        user.fullname = rets[0].user_fullname;
 
-      resolve(user)
-    })
-    .catch(err => {
-      reject(err)
-    })
-})
+        resolve(user);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
 
 module.exports = {
   getSigninedUser,
   checkSignInedUser,
   registryUser,
-  getUserInfoWithNoPassword,
+  getUserInfoWithNoPassword
 };

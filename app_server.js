@@ -24,19 +24,19 @@ server.use(
   })
 );
 server.use(flash());
-server.use(
-  morgan(function (tokens, req, res) {
-    return [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens.res(req, res, "content-length"),
-      "-",
-      tokens["response-time"](req, res),
-      "ms"
-    ].join(" ");
-  })
-);
+// server.use(
+//   morgan(function (tokens, req, res) {
+//     return [
+//       tokens.method(req, res),
+//       tokens.url(req, res),
+//       tokens.status(req, res),
+//       tokens.res(req, res, "content-length"),
+//       "-",
+//       tokens["response-time"](req, res),
+//       "ms"
+//     ].join(" ");
+//   })
+// );
 server.use(express.static("./src/statics"));
 middlewares.passport(server);
 require("./src/app/middlewares/sendgrid");
@@ -46,19 +46,16 @@ server.engine(viewEngine.engineName, viewEngine.engine);
 server.set("views", path.join(__dirname, "/src/views"));
 server.set("view engine", viewEngine.engineName);
 
-// server.get(
-//   "/auth/facebook/callback",
-//   passport.authenticate("facebook", {
-//     successRedirect: "/",
-//     failureRedirect: "/sign-in"
-//   })
-// );
+middlewares.rootMiddleware.registerMiddleware(server);
+middlewares.adminMiddleware.registerMiddleware(server);
+server.use("/", route);
+middlewares.notFoundMiddleware.registerMiddleware(server);
 
-middlewares.rootMiddleware.registerMiddleware(server)
-middlewares.adminMiddleware.registerMiddleware(server)
-server.use('/', route)
-middlewares.notFoundMiddleware.registerMiddleware(server)
-
+//handle error
+server.use(function(err, req, res, next) {
+  console.error(err);
+  res.status(500).send(err);
+});
 server.listen(process.env.PORT || config.SERVER.PORT, () => {
   console.log("server is running on port ", config.SERVER.PORT);
 });
