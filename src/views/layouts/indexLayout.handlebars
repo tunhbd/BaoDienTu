@@ -20,6 +20,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <!-- custom css -->
   <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/auth.css">
   <link rel="stylesheet" href="/css/index.css">
   <link rel="stylesheet" href="/css/user_menu.css">
   <link rel="stylesheet" href="/css/list-post.css">
@@ -38,27 +39,27 @@
     <ul class="menu-list bao-dien-tu-scrollbar">
       <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
 
-      {{#each listParent}}
-          {{#if (opt this.children.length '>' 0 opt)}}
-            <li class="menu-list-item">
-              <a href="/category/{{this.categoryId}}" class="menu-list-item-dropdown__content">
-                {{this.categoryName}}<i class="fas fa-caret-down expand-sub-menu-button"></i>
-              </a>
-              <ul class="menu-list-item-dropdown__menu">
-                  {{#each this.children}}
-                    <li class="menu-list-item-dropdown__menu__item">
-                      <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
-                    </li>
-                  {{/each}}
-              </ul>
-            </li>
-          {{else}}
-            <li class="menu-list-item-dropdown__menu__item">
-              <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
-            </li>
-          {{/if}}
-      {{/each}}
-        <!-- <li class="menu-list-item menu-list-item-dropdown">
+      {{!-- {{#each listParent}}
+      {{#if (opt this.children.length '>' 0 opt)}}
+      <li class="menu-list-item">
+        <a href="/category/{{this.categoryId}}" class="menu-list-item-dropdown__content">
+          {{this.categoryName}}<i class="fas fa-caret-down expand-sub-menu-button"></i>
+        </a>
+        <ul class="menu-list-item-dropdown__menu">
+          {{#each this.children}}
+          <li class="menu-list-item-dropdown__menu__item">
+            <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+          </li>
+          {{/each}}
+        </ul>
+      </li>
+      {{else}}
+      <li class="menu-list-item-dropdown__menu__item">
+        <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+      </li>
+      {{/if}}
+      {{/each}} --}}
+      <!-- <li class="menu-list-item menu-list-item-dropdown">
                 <a href="/category/category_sample" class="menu-list-item-dropdown__content">
                   Kinh tế <i class="fas fa-caret-down expand-sub-menu-button"></i>
                 </a>
@@ -77,10 +78,30 @@
   </nav>
   <!-- <div class="container"> -->
   <div id="wrapper" class="panel">
-    <section id="section-header" class="mt-2">
-      <!-- login - register -->
-      <div class="container">
+    <!-- logo or Digital News -->
+    <div class="w-100 fixed-top py-3 shadow-sm" style="background-color:white">
+      <div class="container d-flex align-items-end justify-content-between">
+        <div class="digital-news"><a href="/"><img src="/media/images/logo/brand.png" height="50px"
+              alt="logo RST - News" /></a>
+        </div>
+
+        <!-- login - register -->
         <div class="first-content d-flex justify-content-between">
+          <div class="search mr-3">
+            <form class="position-relative d-flex" action="" method="GET" id="searchtForm">
+
+
+              <i style="align-self: flex-end;transform: translateY(-6px) ;margin-top: 4px;margin-right: 16px;"
+                class="fas fa-search search-icon"></i>
+
+              <div class="form-group wrap-input">
+                <input style="padding: 0 !important;height: auto;" value="" type="text" class="form-control"
+                  name="username" placeholder="Tìm kiếm..." />
+                <span class="w-input"></span>
+              </div>
+              {{!-- <button class="btn btn-primary position-absolute" type="submit">Search</button> --}}
+            </form>
+          </div>
           <div class="logo">
             <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
           </div>
@@ -111,61 +132,61 @@
             </ul>
           </div>
 
-          {{else}} <div class="login-form">
-            <i class="far fa-user">
-              <span>
-                <a href="/sign-in" class="login">Đăng nhập</a> | <a href="/sign-up" class="sign-up"> Đăng kí</a>
-              </span>
-            </i>
+          {{else}} <div class="login-form" style="font-size: 16px;">
+
+            <a href="/sign-in" class="login">Đăng nhập</a> | <a href="/sign-up" class="sign-up"> Đăng kí</a>
+            </span>
           </div>
           {{/if}}
         </div>
       </div>
-      <div class="second-header mt-2">
-        <!-- logo or Digital News -->
-        <div class="content-search container d-flex justify-content-between">
-          <div class="digital-news"><a href="/">TIN TỨC TTV</a></div>
-          <form class="form-inline md-form form-sm mt-0" action="/search/result" method="GET">
-            <input class="form-control form-control-sm ml-3" name="searchInput" type="text" placeholder="Tìm kiếm"
-              aria-label="Search">
-          </form>
-        </div>
-      </div>
+
+      <hr>
+
       <!-- topic content -->
       <div class="third-header mt-2">
         <div class="container">
           <div href="#" class="btn-menu js-slideout-toggle"><i class="fas fa-bars"></i></div>
           <div class="menu-topic">
             <ul class="menu-list">
-              <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
-
+              {{!-- <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li> --}}
               {{#each listParent}}
-                  {{#if (opt this.children.length '>' 0 opt)}}
-                    <li class="menu-list-item dropdown">
-                      <a href="/category/{{this.categoryId}}" class="dropdown-toggle"
-                          data-toggle="dropdown">
-                        {{this.categoryName}}<b class="caret"></b>
-                      </a>
-                      <ul class="dropdown-menu">
-                          {{#each this.children}}
-                            <li class="dropdown-item">
-                              <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
-                            </li>
-                          {{/each}}
-                      </ul>
-                    </li>
-                  {{else}}
-                    <li class="menu-list-item">
-                      <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
-                    </li>
-                  {{/if}}
+              {{!-- {{#if (opt this.children.length '>' 0 opt)}} --}}
+
+              <li class="menu-list-item dropdown">
+                {{#if this.children}}
+                <a href="/category/{{this.categoryId}}" class="dropdown-toggle" data-toggle="dropdown">
+                  {{this.categoryName}}<b class="caret"></b>
+                </a>
+                {{else}}
+                <a href="/category/{{this.categoryId}}">
+                  {{this.categoryName}}<b></b>
+                </a>
+                {{/if}}
+                <ul class="dropdown-menu">
+                  {{#each this.children}}
+                  <li class="dropdown-item">
+                    <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+                  </li>
+                  {{/each}}
+                </ul>
+              </li>
+              {{!-- {{else}}
+              <li class="menu-list-item">
+                <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+              </li>
+              {{/if}} --}}
               {{/each}}
             </ul>
           </div>
         </div>
       </div>
-    </section>
-    <section id="section-body" class="mt-2">
+    </div>
+
+
+
+
+    <section id="section-body" style="margin-top: 160px">
       {{{ body }}}
     </section>
     <footer id="section-footer">
@@ -187,6 +208,8 @@
         </div>
       </div>
     </footer>
+
+
   </div>
   <!-- </div> -->
   {{!-- Js file references --}}

@@ -15,7 +15,51 @@ const renderHomePage = (req, res) => {
     message: {
       error: req.flash("mes"),
       success: req.flash("suc")
-    }
+    },
+    listParent: [
+      {
+        categoryName: "Hành tinh",
+        categoryId: "haha",
+        children: [{ categoryName: "hehe", categoryId: "hehe" }]
+      },
+      {
+        categoryName: "Truyện cười",
+        categoryId: "haha",
+        children: [
+          { categoryName: "hehe", categoryId: "hehe" },
+          { categoryName: "hehe", categoryId: "hehe" },
+          { categoryName: "hehe", categoryId: "hehe" }
+        ]
+      },
+      {
+        categoryName: "Cuộc sống",
+        categoryId: "hehe"
+      },
+      {
+        categoryName: "Thú cưng",
+        categoryId: "hehe"
+      },
+      {
+        categoryName: "Chăm sóc",
+        categoryId: "hehe"
+      },
+      {
+        categoryName: "Ngon bổ rẻ",
+        categoryId: "hehe"
+      },
+      {
+        categoryName: "Xe cộ",
+        categoryId: "hehe"
+      },
+      {
+        categoryName: "Đời sống",
+        categoryId: "hehe"
+      },
+      {
+        categoryName: "Học hành",
+        categoryId: "hehe"
+      }
+    ]
   });
 };
 

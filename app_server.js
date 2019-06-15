@@ -25,7 +25,7 @@ server.use(
 );
 server.use(flash());
 server.use(
-  morgan(function (tokens, req, res) {
+  morgan(function(tokens, req, res) {
     return [
       tokens.method(req, res),
       tokens.url(req, res),
@@ -54,10 +54,10 @@ server.set("view engine", viewEngine.engineName);
 //   })
 // );
 
-middlewares.rootMiddleware.registerMiddleware(server)
-middlewares.adminMiddleware.registerMiddleware(server)
-server.use('/', route)
-middlewares.notFoundMiddleware.registerMiddleware(server)
+middlewares.rootMiddleware.registerMiddleware(server);
+middlewares.adminMiddleware.registerMiddleware(server);
+server.use("/", route);
+middlewares.notFoundMiddleware.registerMiddleware(server);
 
 server.listen(process.env.PORT || config.SERVER.PORT, () => {
   console.log("server is running on port ", config.SERVER.PORT);

@@ -1,6 +1,6 @@
 :root {
   --table-header-bg: rgb(233, 30, 99);
-  --table-row-bg-hover: rgba(233, 30, 99, 0.3)
+  --table-row-bg-hover: rgba(233, 30, 99, 0.3);
 }
 
 .post-list {
@@ -74,7 +74,7 @@
   background-color: transparent !important;
   opacity: 1 !important;
   position: absolute;
-  top: calc((100% - 40px)/2) !important;
+  top: calc((100% - 40px) / 2) !important;
   /* bottom: auto !important; */
   right: 0px !important;
   border-radius: 2px;
@@ -111,19 +111,18 @@
   margin: 0px 2px;
   padding: 0 !important;
   background-color: #f2f2f2;
-  border: 1px solid #42A5F5;
+  border: 1px solid #42a5f5;
   border-radius: 3 !important;
   overflow: hidden !important;
   box-shadow: 0px 0px 1px 0px #fff !important;
-  /* font-family: 'Spectral', serif; */
 }
 
 .control-buttons button.edit-btn {
-  color: #1E88E5;
+  color: #1e88e5;
 }
 
 .control-buttons button.preview-btn {
-  color: #1E88E5;
+  color: #1e88e5;
   /* font-size: 25px; */
 }
 
@@ -216,10 +215,9 @@
   width: 300px !important;
 }
 
-
 .page.page-active:hover,
 .page-active {
-  background: #E91E63;
+  background: #e91e63;
   color: #fff;
 }
 

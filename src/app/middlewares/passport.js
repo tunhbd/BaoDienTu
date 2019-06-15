@@ -1,19 +1,19 @@
-const passport = require("passport")
-const bcrypt = require("bcrypt")
-const LocalStrategy = require("passport-local").Strategy
-const FacebookStrategy = require("passport-facebook").Strategy
-const { DBConnection } = require("../db")
-const { User } = require('../models')
-const crypto = require("crypto")
+const passport = require("passport");
+const bcrypt = require("bcrypt");
+const LocalStrategy = require("passport-local").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
+const { DBConnection } = require("../db");
+const { User } = require("../models");
+const crypto = require("crypto");
 
-module.exports = function (server) {
+module.exports = function(server) {
   server.use(passport.initialize());
   server.use(passport.session());
 
   passport.use(
-    new LocalStrategy(function (username, password, done) {
+    new LocalStrategy(function(username, password, done) {
       let q = `SELECT * FROM users WHERE user_account='${username}'`;
-      let dbConn = new DBConnection()
+      let dbConn = new DBConnection();
 
       dbConn
         .loadRequest(q)
@@ -24,14 +24,13 @@ module.exports = function (server) {
               password,
               message: "Username không tồn tại"
             });
-          }
-          else {
+          } else {
             let isMatch = bcrypt.compareSync(password, rows[0].user_password);
             if (isMatch) {
               let user = {
                 account: rows[0].user_account,
                 role: rows[0].user_role
-              }
+              };
               return done(null, user);
             }
             return done(null, false, {
@@ -65,7 +64,7 @@ module.exports = function (server) {
           "link"
         ]
       },
-      function (accessToken, refreshToken, userInfo, done) {
+      function(accessToken, refreshToken, userInfo, done) {
         crypto.randomBytes(256, (err, buf) => {
           if (err) throw err;
           const rounds = 10;
@@ -88,10 +87,10 @@ module.exports = function (server) {
     )
   );
 
-  passport.serializeUser(function (user, done) {
+  passport.serializeUser(function(user, done) {
     done(null, user);
   });
-  passport.deserializeUser(function (user, done) {
+  passport.deserializeUser(function(user, done) {
     done(null, user);
   });
 };
