@@ -49,7 +49,7 @@ function showBaoDienTuDialog(container, dialogType = 'small', dialogTitle, dialo
   let actionsObj = dialog.find('.bao-dien-tu-dialog__actions')
   dialogActions.forEach(action => {
     let btn = $(`<button type="${action.type ? action.type : 'button'}" ${action.type ? `form="${action.form}"` : ''} class="btn ${action.class}">${action.title}</button>`)
-    btn.click(() => {
+    action.callback !== null && btn.click(() => {
       action.callback()
     })
     actionsObj.append(btn)

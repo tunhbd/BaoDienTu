@@ -365,7 +365,8 @@ const createCategory = (req, res) => {
   else {
     let category = new Category()
     category.categoryName = req.body.categoryName
-    category.parent = req.body.parentCategory ? req.body.parentCategory : null
+    category.parent = req.body.parentCategory === '' ? null : req.body.parentCategory
+    console.log('new category', category)
 
     categoryBus
       .addCategory(category)
@@ -397,6 +398,7 @@ const updateCategory = (req, res) => {
     let category = new Category()
     category.categoryId = req.body.categoryId
     category.categoryName = req.body.categoryName
+    category.parent = req.body.parentCategory === '' ? null : req.body.parentCategory
 
     categoryBus
       .updateCategory(category)
@@ -448,7 +450,6 @@ const deleteCategory = (req, res) => {
 }
 
 const editPost = (req, res) => {
-  console.log('headers', req.headers)
   if (req.user.role === 'EDITOR') {
     res.redirect('/admin/dashboard')
   }
