@@ -27,11 +27,28 @@ const getFullInfoTags = () => new Promise((resolve, reject) => {
     })
 })
 
-const getLessInfoTags = () => {
+const getLessInfoTags = () => new Promise(async (resolve, reject) => {
   let query = 'SELECT tag_id, tag_name FROM tags'
+  let dbConn = new DBConnection()
 
-  return (new DBConnection()).loadRequest(query)
-}
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let tags = []
+
+      rets.forEach(ret => {
+        let tag = new Tag()
+        tag.tagId = ret.tag_id
+        tag.tagName = ret.tag_name
+        tags.push(tag)
+      })
+
+      resolve(tags)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
 
 const hasTag = async tagId => {
   let query = `SELECT tag_id FROM tags WHERE tag_id='${tagId}'`
@@ -44,11 +61,11 @@ const hasTag = async tagId => {
 }
 
 const createTag = (tag) => new Promise(async (resolve, reject) => {
-  let createdDate = moment().format('YYYY/MM/DD')
-  tag.CreatedDate = createdDate
+  // let createdDate = moment().format('YYYY/MM/DD')
+  // tag.CreatedDate = createdDate
   tag.TagId = generateNewTagId()
 
-  let queryString = `INSERT INTO tags(tag_id, tag_name, tag_active, created_date) VALUES('${tag.TagId}', N'${tag.TagName}', ${tag.TagActive}, '${createdDate}')`
+  let queryString = `INSERT INTO tags(tag_id, tag_name, tag_alias) VALUES('${tag.TagId}', N'${tag.TagName}', '${tag.alias}')`
 
   let DBConnect = new DBConnection()
 

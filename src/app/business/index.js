@@ -4,4 +4,5 @@ module.exports = {
   authBus: require('./authBus'),
   postBus: require('./postBus'),
   categoryBus: require('./categoryBus'),
+  commentBus: require('./commentBus'),
 }

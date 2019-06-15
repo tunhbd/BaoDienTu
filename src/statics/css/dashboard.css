@@ -1,8 +1,8 @@
 :root {
-  --db-header-height: 80px;
+  --db-header-height: 70px;
   --small-icon-size: 20px;
   --avatar-size: 40px;
-  --menu-item-height: 50px;
+  --menu-item-height: 40px;
   --menu-item-bg: yellow;
   --menu-item-bg-hover: rgba(233, 30, 99, 0.5);
   --menu-item-color: rgba(0, 0, 0, 0.7);
@@ -29,6 +29,7 @@ body {
   background-color: #fff;
   height: 100%;
   overflow: hidden;
+  font-size: 10pt;
 }
 
 /* header */
@@ -94,8 +95,10 @@ body {
 
 .dashboard-main__content {
   height: 100%;
+  display: flex;
   flex-wrap: wrap;
   justify-items: stretch;
+  padding: 0px;
 }
 
 /* main menu */
@@ -158,6 +161,8 @@ body {
   user-select: none;
   -webkit-user-select: none;
   box-sizing: border-box;
+  text-decoration: none !important;
+  color: #000;
 }
 
 .menu-item-group__item__activing {
@@ -170,7 +175,7 @@ body {
   display: block;
   width: 24px;
   height: 24px;
-  font-size: 24px !important;
+  font-size: 15pt !important;
   text-align: center;
   color: rgba(0, 0, 0, 0.4);
 }
@@ -228,12 +233,12 @@ body {
 }
 
 #mobile-menu {
-  width: 300px;
-  height: auto;
+  width: 200px;
+  height: 100%;
   position: absolute;
-  top: -20px;
+  top: 0px;
   left: -300px;
-  padding: 20px;
+  /* padding: 20px; */
   z-index: 101;
   background-color: #0d0d0d;
 }

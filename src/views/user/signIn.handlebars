@@ -16,9 +16,12 @@
   <!-- custom css -->
   <link rel="stylesheet" href="/css/auth.css" />
   <link rel="stylesheet" href="/css/bao_dien_tu_scrollbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
 </head>
 
 <body>
+
   <a href="/" class="go-home">
     <i class="fas fa-home"></i>
   </a>
@@ -37,7 +40,7 @@
         <!-- social login buttons start -->
         <div class="row social-buttons">
           <div class="col-xs-4 col-sm-4">
-            <a href="#" class="btn btn-lg btn-block btn-facebook">
+            <a href="/auth/facebook" class="btn btn-lg btn-block btn-facebook">
               <i class="fab fa-facebook-f"></i>
             </a>
           </div>
@@ -61,16 +64,16 @@
         </div>
         <div class="row">
           <div class="col-xs-12 col-sm-12">
-            <form name="loginForm" class="loginForm" action="/sign-in" method="POST">
+            <form name="loginForm" id="loginForm" class="loginForm" action="/sign-in" method="POST">
               <div class="form-group wrap-input">
-                <input value="{{oldInfo.username}}" type="text" class="form-control" name="username"
+                <input value="{{ov.username}}" type="text" class="form-control" name="username"
                   placeholder="Tên đăng nhập..." />
                 <span class="w-input"></span>
               </div>
 
               <div class="form-group wrap-input">
                 <div class="pwd-mask">
-                  <input value="{{oldInfo.password}}" type="password" class="form-control password" name="password"
+                  <input value="{{ov.password}}" type="password" class="form-control password" name="password"
                     placeholder="Mật khẩu..." />
                   <span class="w-input"></span>
                   <span class="fa fa-eye-slash pwd-toggle"></span>
@@ -88,11 +91,11 @@
                   </p>
                 </div>
               </div>
-              {{#if (opt oldInfo.username '!==' '' opt)}}
+              {{!-- {{#if (opt oldInfo.username '!==' '' opt)}}
               <div class="alert alert-danger" role="alert">
                 Tên tài khoản hoặc mật khẩu chưa đúng.
               </div>
-              {{/if}}
+              {{/if}} --}}
               <!-- end remember-row -->
               <div class="form-group">
                 <button class="btn btn-primary w-button" type="submit">
@@ -119,8 +122,28 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script src="/js/auth.js"></script>
+  {{#if message.success}}
+  <script>
+    swal.fire({
+      type: 'success',
+      title: 'Success!',
+      text: "{{message.success}}",
+    })
+  </script>
+  {{/if}}
+  {{#if message.error}}
+  <script>
+    swal.fire({
+      type: 'error',
+      title: 'Oops!',
+      text: "{{message.error}}",
+    })
+  </script>
+  {{/if}}
+
 </body>
 
 </html>

@@ -1,0 +1,421 @@
+{{!-- <!DOCTYPE html> --}}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="shortcut icon" href="/media/images/logo/logo.png" />
+  {{!-- Reference css --}}
+  <link rel="stylesheet" href="/js/jquery-ui-1.12.1/jquery-ui.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Spectral:400,500,600" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
+  <link rel="stylesheet" href="/css/spinjs/spin.css">
+
+  <!-- paginationjs css -->
+  {{!-- <link rel="stylesheet" href="/css/paginationjs/paginationjs.css" /> --}}
+
+
+  <!-- Custom css -->
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <link rel="stylesheet" href="/css/user_menu.css" />
+  <link rel="stylesheet" href="/css/bao_dien_tu_scrollbar.css">
+
+  {{!-- <link rel="stylesheet" href="/css/dashboard_user_list.css"> --}}
+  {{!-- <link rel="stylesheet" href="/css/dashboardTags.css" /> --}}
+  {{!-- <link rel="stylesheet" href="/css/pagination.css"> --}}
+  {{!-- <link rel="stylesheet" href="/css/dialog.css"> --}}
+  {{!-- <link rel="stylesheet" href="/css/toast.css"> --}}
+  {{!-- <link rel="stylesheet" href="/css/loading/loading.css"> --}}
+  {{{_sections.moreCss}}}
+  <!-- CND javascript libraries -->
+
+  <title>{{data.title}}</title>
+</head>
+
+<body class="col-12 ml-auto mr-auto pl-0 pr-0 bao-dien-tu-scrollbar">
+  <header id="dashboard-header" class="border-bottom clearfix m-0 p-0">
+    <div class="col-12 ml-auto mr-auto w-100 h-100">
+      <div class="dashboard-header__toggle-menu float-left mt-auto mb-auto d-sm-block d-none">
+        <img src="/media/statics/images/ic_toggle_menu.png" alt="" />
+      </div>
+      <div
+        class="dashboard-header__toggle-menu dashboard-header__toggle-menu-mobile float-left mt-auto mb-auto d-sm-none d-block">
+        <img src="/media/statics/images/ic_toggle_menu.png" alt="" />
+      </div>
+      <div id="dashboard-header__right-sidebar"
+        class="float-right d-flex justify-content-between align-items-center h-100">
+        <div class="image-small-container dashboard-header__right-sidebar__icon">
+          <img src="/media/statics/images/ic_search.png" alt="" />
+        </div>
+
+        <div class="image-small-container dashboard-header__right-sidebar__icon">
+          <img src="/media/statics/images/ic_dashboard.png" alt="" />
+        </div>
+
+        <div id="avatar-user" class="rounded-circle overflow-hidden user-menu-is-collapse">
+          <img
+            src="/media/images/users/{{#if (opt data.user.avatar '===' null opt)}}avatar_sample.png{{else}}{{data.user.avatar}}{{/if}}"
+            alt="" />
+        </div>
+        <div class="user-menu">
+          <ul>
+            <li class="user-menu__item">
+              <a href="/profile" class="user-menu__item__content">
+                Your Profile <i class="fas fa-id-card-alt user-menu__item-icon"></i>
+                {{!-- <i class="user-menu__item__icon user-menu__item__icon-profile"></i> --}}
+              </a>
+            </li>
+            <li class="user-menu__item">
+              <a href="/change-password" class="user-menu__item__content">
+                Change Password <i class="fas fa-user-lock user-menu__item-icon"></i>
+                {{!-- <i class="user-menu__item__icon user-menu__item__icon-change-password"></i> --}}
+              </a>
+            </li>
+            <li class="user-menu__item">
+              <a href="/sign-out" class="user-menu__item__content">
+                Sign Out <i class="fas fa-sign-out-alt user-menu__item-icon"></i>
+                {{!-- <i class="user-menu__item__icon user-menu__item__icon-sign-out"></i> --}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div id="dashboard-main" class="">
+    <div class="dashboard-main__content col-12 ml-auto mr-auto">
+      <div id="dashboard-main__left-sidebar" class="border-right d-none d-sm-block bao-dien-tu-scrollbar">
+        <div id="dashboard-main__left-sidebar__menu" class="w-100">
+          <div class="menu-item-group w-100">
+            {{#if (opt data.pageId '===' 'DASHBOARD')}}
+            <a href="/admin/dashboard" menu-id="GENERAL" class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
+              <span class="menu-item-group__item__title">Dashboard</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard" menu-id="GENERAL" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
+              <span class="menu-item-group__item__title">Dashboard</span>
+            </a>
+            {{/if}}
+
+            {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
+            {{#if (opt data.pageId '===' 'CREATE_POST')}}
+            <a href="/admin/dashboard/create-post" menu-id="CREATE_POST"
+              class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-plus-square"></i>
+              <span class="menu-item-group__item__title">Create post</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard/create-post" menu-id="CREATE_POST" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-plus-square"></i>
+              <span class="menu-item-group__item__title">Create post</span>
+            </a>
+            {{/if}}
+            {{/if}}
+
+            {{#if (opt data.pageId '===' 'DRAFT')}}
+            <a href="/admin/dashboard/draft-posts" menu-id="DRAFT"
+              class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-file-alt"></i>
+              <span class="menu-item-group__item__title">Drafts</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard/draft-posts" menu-id="DRAFT" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-file-alt"></i>
+              <span class="menu-item-group__item__title">Drafts</span>
+            </a>
+            {{/if}}
+
+            {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
+            {{#if (opt data.pageId '===' 'REJECT')}}
+            <a href="/admin/dashboard/reject-posts" menu-id="REJECT"
+              class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-file-excel"></i>
+              <span class="menu-item-group__item__title">Rejects</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard/reject-posts" menu-id="REJECT" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-file-excel"></i>
+              <span class="menu-item-group__item__title">Rejects</span>
+            </a>
+            {{/if}}
+            {{/if}}
+          </div>
+          {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
+          <div class="menu-item-group w-100">
+            {{#if (opt data.pageId '===' 'WAITING')}}
+            <a href="/admin/dashboard/waiting-posts" menu-id="WAITING"
+              class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-stopwatch"></i>
+              <span class="menu-item-group__item__title">Waiting</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard/waiting-posts" menu-id="WAITING" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-stopwatch"></i>
+              <span class="menu-item-group__item__title">Waiting</span>
+            </a>
+            {{/if}}
+
+            {{#if (opt data.pageId '===' 'PUBLISHED')}}
+            <a href="/admin/dashboard/published-posts" menu-id="PUBLISHED"
+              class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-paper-plane"></i>
+              <span class="menu-item-group__item__title">Published</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard/published-posts" menu-id="PUBLISHED" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-paper-plane"></i>
+              <span class="menu-item-group__item__title">Published</span>
+            </a>
+            {{/if}}
+
+          </div>
+          {{/if}}
+
+          {{#if (opt data.user.role '===' 'ADMIN')}}
+          <div class="menu-item-group w-100">
+            {{#if (opt data.pageId '===' 'TAGS')}}
+            <a href="/admin/dashboard/tags" menu-id="TAG" class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-tags"></i>
+              <span class="menu-item-group__item__title">Tags</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard/tags" menu-id="TAG" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-tags"></i>
+              <span class="menu-item-group__item__title">Tags</span>
+            </a>
+            {{/if}}
+
+            {{#if (opt data.pageId '===' 'CATEGORY')}}
+            <a href="/admin/dashboard/categories" menu-id="CATEGORY"
+              class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-list"></i>
+              <span class="menu-item-group__item__title">Categories</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard/categories" menu-id="CATEGORY" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-list"></i>
+              <span class="menu-item-group__item__title">Categories</span>
+            </a>
+            {{/if}}
+
+            {{#if (opt data.pageId '===' 'USER')}}
+            <a href="/admin/dashboard/users" menu-id="USER"
+              class="menu-item-group__item menu-item-group__item__activing">
+              <i class="menu-item-group__item__icon fas fa-users"></i>
+              <span class="menu-item-group__item__title">Users</span>
+            </a>
+            {{else}}
+            <a href="/admin/dashboard/users" menu-id="USER" class="menu-item-group__item">
+              <i class="menu-item-group__item__icon fas fa-users"></i>
+              <span class="menu-item-group__item__title">Users</span>
+            </a>
+            {{/if}}
+          </div>
+          {{/if}}
+        </div>
+      </div>
+      <div id="dashboard-main__right-sidebar" class="pl-1 pr-1">
+        <div id="dashboard-main__right-sidebar__content" class="bao-dien-tu-scrollbar">
+          {{{body}}}
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="d-block d-sm-none bao-dien-tu-scrollbar">
+      <div class="menu-item-group w-100">
+        {{#if (opt data.pageId '===' 'DASHBOARD')}}
+        <a href="/admin/dashboard" menu-id="GENERAL"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
+          <span class="menu-item-group__item__title">Dashboard</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard" menu-id="GENERAL" class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-tachometer-alt"></i>
+          <span class="menu-item-group__item__title">Dashboard</span>
+        </a>
+        {{/if}}
+
+        {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
+        {{#if (opt data.pageId '===' 'CREATE_POST')}}
+        <a href="/admin/dashboard/create-post" menu-id="CREATE_POST"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-plus-square"></i>
+          <span class="menu-item-group__item__title">Create post</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard/create-post" menu-id="CREATE_POST" class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-plus-square"></i>
+          <span class="menu-item-group__item__title">Create post</span>
+        </a>
+        {{/if}}
+        {{/if}}
+
+        {{#if (opt data.pageId '===' 'DRAFT')}}
+        <a href="/admin/dashboard/draft-posts" menu-id="DRAFT"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-file-alt"></i>
+          <span class="menu-item-group__item__title">Drafts</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard/draft-posts" menu-id="DRAFT" class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-file-alt"></i>
+          <span class="menu-item-group__item__title">Drafts</span>
+        </a>
+        {{/if}}
+
+        {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
+        {{#if (opt data.pageId '===' 'REJECT')}}
+        <a href="/admin/dashboard/reject-posts" menu-id="REJECT"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-file-excel"></i>
+          <span class="menu-item-group__item__title">Rejects</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard/reject-posts" menu-id="REJECT" class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-file-excel"></i>
+          <span class="menu-item-group__item__title">Rejects</span>
+        </a>
+        {{/if}}
+        {{/if}}
+      </div>
+
+      {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
+      <div class="menu-item-group w-100">
+        {{#if (opt data.pageId '===' 'WAITING')}}
+        <a href="/admin/dashboard/waiting-posts" menu-id="WAITING"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-stopwatch"></i>
+          <span class="menu-item-group__item__title">Waiting</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard/waiting-posts" menu-id="WAITING" class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-stopwatch"></i>
+          <span class="menu-item-group__item__title">Waiting</span>
+        </a>
+        {{/if}}
+
+        {{#if (opt data.pageId '===' 'PUBLISHED')}}
+        <a href="/admin/dashboard/published-posts" menu-id="PUBLISHED"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-paper-plane"></i>
+          <span class="menu-item-group__item__title">Published</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard/published-posts" menu-id="PUBLISHED"
+          class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-paper-plane"></i>
+          <span class="menu-item-group__item__title">Published</span>
+        </a>
+        {{/if}}
+      </div>
+      {{/if}}
+
+      {{#if (opt data.user.role '===' 'ADMIN')}}
+      <div class="menu-item-group w-100">
+        {{#if (opt data.pageId '===' 'TAG')}}
+        <a href="/admin/dashboard/tags" menu-id="TAG"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-tags"></i>
+          <span class="menu-item-group__item__title">Tags</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard/tags" menu-id="TAG" class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-tags"></i>
+          <span class="menu-item-group__item__title">Tags</span>
+        </a>
+        {{/if}}
+
+        {{#if (opt data.pageId '===' 'CATGORY')}}
+        <a href="/admin/dashboard/categories" menu-id="CATEGORY"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-list"></i>
+          <span class="menu-item-group__item__title">Categories</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard/categories" menu-id="CATEGORY" class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-list"></i>
+          <span class="menu-item-group__item__title">Categories</span>
+        </a>
+        {{/if}}
+
+        {{#if (opt data.pageId '===' 'USER')}}
+        <a href="/admin/dashboard/users" menu-id="USER"
+          class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
+          <i class="menu-item-group__item__icon fas fa-users"></i>
+          <span class="menu-item-group__item__title">Users</span>
+        </a>
+        {{else}}
+        <a href="/admin/dashboard/users" menu-id="USER" class="menu-item-group__item item-of-mobile-menu">
+          <i class="menu-item-group__item__icon fas fa-users"></i>
+          <span class="menu-item-group__item__title">Users</span>
+        </a>
+        {{/if}}
+
+      </div>
+      {{/if}}
+    </div>
+  </div>
+  <!-- Modal -->
+  {{!-- <div class="modal fade postDetailModal bao-dien-tu-scrollbar" id="postDetail" tabindex="-1" role="dialog"
+    aria-labelledby="postDetailLabel" aria-hidden="true">
+    <div class="modal-dialog postDetailModal-dialog" role="document">
+      <div class="modal-content postDetailModal-dialog-content">
+        <div class="modal-header postDetailModal-dialog-content-header">
+          <h5 class="modal-title" id="postDetailLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body postDetailModal-dialog-content-body bao-dien-tu-scrollbar"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success save-btn" data-dismiss="modal">
+            Save
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> --}}
+  <!-- Script References -->
+  <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+  <script src="/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/user_menu.js"></script>
+  <script src="/js/dashboard.js"></script>
+  {{!-- <script src="/js/spinjs/spin.js"></script> --}}
+  {{!-- <script src="/js/popper/popper.js"></script> --}}
+
+  <!-- paginationjs -->
+  {{!-- <script src="/js/paginationjs/paginationjs.js"></script> --}}
+
+  <!-- custom table -->
+  {{!-- <script src="/js/data.js"></script> --}}
+
+  {{!-- <script src="/js/dialog.js"></script> --}}
+  {{!-- <script src="/js/loading/loading.js"></script> --}}
+
+
+  {{!-- <script src="/js/dashboard_post_list.js"></script> --}}
+  {{!-- <script src="/js/dashboard_user_list.js"></script> --}}
+  {{!-- <script src="/js/dashboardCategories.js"></script> --}}
+  {{!-- <script src="/js/dashboardTags.js"></script> --}}
+  <script>
+    userRole = '{{data.user.role}}'
+    console.log(userRole)
+  </script>
+  {{{_sections.moreJs}}}
+</body>
+
+</html>

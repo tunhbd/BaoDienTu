@@ -1,0 +1,9 @@
+.functionButtons button {
+  /* background: none !important; */
+  margin: 0px 5px;
+}
+
+.rootCategory,
+.subCategory {
+  cursor: pointer;
+}

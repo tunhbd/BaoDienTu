@@ -1,35 +1,19 @@
 class Post {
-  constructor(
-    postId = '',
-    postTitle = '',
-    author = {
-      account: '',
-      fullname: '',
-      pseudonym: ''
-    },
-    category = {
-      categoryId: '',
-      categoryName: ''
-    },
-    tags = [],
-    youtubeUrl = '',
-    postAvatarImage = '',
-    postSummary = '',
-    postContent = '',
-    createdDate = '',
-    publishedDate = ''
-  ) {
-    this.postId = postId
-    this.postTitle = postTitle
-    this.author = author
-    this.category = category
-    this.tags = tags
-    this.youtubeUrl = youtubeUrl
-    this.postAvatarImage = postAvatarImage
-    this.postSummary = postSummary
-    this.postContent = postContent
-    this.createdDate = createdDate
-    this.publishedDate = publishedDate
+  constructor() {
+    this.postId = ''
+    this.postTitle = ''
+    this.alias = ''
+    this.author = ''
+    this.category = null
+    this.tags = null
+    this.youtubeUrl = ''
+    this.postAvatarImage = ''
+    this.postSummary = ''
+    this.postContent = ''
+    this.createdDate = ''
+    this.publishedDate = ''
+    this.checked = false
+    this.reasonReject = ''
   }
 
   get PostId() { return this.postId }

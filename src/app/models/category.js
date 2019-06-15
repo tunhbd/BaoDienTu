@@ -1,27 +1,22 @@
-class Category{
-  constructor(
-      categoryId='',
-      categoryName='',
-      categoryParent='',
-      children = []
-  )
-  {
-    this.categoryId=categoryId;
-    this.categoryName = categoryName;
-    this.categoryParent=categoryParent;
-    this.children=children;
+const moment = require("moment");
+const { convertToAlias } = require("../utils");
+
+module.exports = class Category {
+  constructor() {
+    this.categoryId = "";
+    this.categoryName = "";
+    this.alias = null;
+    this.parent = null;
+    this.createdDate = "";
+    this.active = true;
+    this.subCategories = [];
   }
-  get CategoryId(){return this.categoryId}
-  set CategoryId(val){this.categoryId = val}
 
-  get CategoryName(){return this.categoryName}
-  set CategoryName(val){this.categoryName = val}
+  generateId() {
+    this.categoryId = `CATEGORY${moment().format("DDMMYYYYhhmmss")}`;
+  }
 
-  get CategoryParent(){return this.categoryParent}
-  set CategoryParent(val){this.categoryParent = val}
-
-  get Children(){return this.children}
-  set Children(val){this.children = val}
-}
-
-module.exports = Category
+  generateAlias() {
+    this.alias = convertToAlias(this.categoryName);
+  }
+};
