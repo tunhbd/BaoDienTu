@@ -36,36 +36,42 @@
     </div>
     <ul class="menu-list bao-dien-tu-scrollbar">
       <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
-      <li class="menu-list-item"><a href="/category/category_sample">Xã hội</a></li>
-      <li class="menu-list-item menu-list-item-dropdown">
-        <a href="/category/category_sample" class="menu-list-item-dropdown__content">
-          Kinh tế <i class="fas fa-caret-down expand-sub-menu-button"></i>
-        </a>
-        <ul class="menu-list-item-dropdown__menu">
-          <li class="menu-list-item-dropdown__menu__item">
-            <a href="/category/category_sample">Nông nghiệp</a>
-          </li>
-          <li class="menu-list-item-dropdown__menu__item">
-            <a href="/category/category_sample">Công nghiệp</a>
-          </li>
-        </ul>
-      </li>
-      <li class="menu-list-item"><a href="/category/category_sample">Thế giới</a></li>
-      <li class="menu-list-item"><a href="/category/category_sample">Công nghệ</a></li>
-      <li class="menu-list-item"><a href="/category/category_sample">Giải trí</a></li>
-      <li class="menu-list-item"><a href="/category/category_sample">Văn hóa</a></li>
-      <li class="menu-list-item"><a href="/category/category_sample">Pháp luật</a></li>
-      <li class="menu-list-item"><a href="/category/category_sample">Xe</a></li>
-      <li class="menu-list-item"><a href="/category/category_sample">Giáo dục</a></li>
-      <li class="menu-list-item menu-list-item-dropdown">
-        <a href="/category/category_sample" class="menu-list-item-dropdown__content">
-          Thể thao <i class="fas fa-caret-down expand-sub-menu-button"></i>
-        </a>
-        <ul class="menu-list-item-dropdown__menu">
-          <li class="menu-list-item-dropdown__menu__item"><a href="/category/category_sample">trong nước</a></li>
-          <li class="menu-list-item-dropdown__menu__item"><a href="/category/category_sample">ngoài nước</a></li>
-        </ul>
-      </li>
+
+      {{#each listParent}}
+          {{#if (opt this.children.length '>' 0 opt)}}
+            <li class="menu-list-item">
+              <a href="/category/{{this.categoryId}}" class="menu-list-item-dropdown__content">
+                {{this.categoryName}}<i class="fas fa-caret-down expand-sub-menu-button"></i>
+              </a>
+              <ul class="menu-list-item-dropdown__menu">
+                  {{#each this.children}}
+                    <li class="menu-list-item-dropdown__menu__item">
+                      <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+                    </li>
+                  {{/each}}
+              </ul>
+            </li>
+          {{else}}
+            <li class="menu-list-item-dropdown__menu__item">
+              <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+            </li>
+          {{/if}}
+      {{/each}}
+        <!-- <li class="menu-list-item menu-list-item-dropdown">
+                <a href="/category/category_sample" class="menu-list-item-dropdown__content">
+                  Kinh tế <i class="fas fa-caret-down expand-sub-menu-button"></i>
+                </a>
+                <ul class="menu-list-item-dropdown__menu">
+                  <li class="menu-list-item-dropdown__menu__item">
+                    <a href="/category/category_sample">Nông nghiệp</a>
+                  </li>
+                  <li class="menu-list-item-dropdown__menu__item">
+                    <a href="/category/category_sample">Công nghiệp</a>
+                  </li>
+                </ul>
+      </li> -->
+
+
     </ul>
   </nav>
   <!-- <div class="container"> -->
@@ -130,30 +136,30 @@
         <div class="container">
           <div href="#" class="btn-menu js-slideout-toggle"><i class="fas fa-bars"></i></div>
           <div class="menu-topic">
-            <ul class="menu-list mt-3">
+            <ul class="menu-list">
               <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
-              <li class="menu-list-item"><a href="/category/category_sample">Xã hội</a></li>
-              <li class="menu-list-item dropdown"><a href="/category/category_sample" class="dropdown-toggle"
-                  data-toggle="dropdown">Kinh tế<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li class="dropdown-item"><a href="/category/category_sample">Nông nghiệp</a></li>
-                  <li class="dropdown-item"><a href="/category/category_sample">Công nghiệp</a></li>
-                </ul>
-              </li>
-              <li class="menu-list-item"><a href="/category/category_sample">Thế giới</a></li>
-              <li class="menu-list-item"><a href="/category/category_sample">Công nghệ</a></li>
-              <li class="menu-list-item"><a href="/category/category_sample">Giải trí</a></li>
-              <li class="menu-list-item"><a href="/category/category_sample">Văn hóa</a></li>
-              <li class="menu-list-item"><a href="/category/category_sample">Pháp luật</a></li>
-              <li class="menu-list-item"><a href="/category/category_sample">Xe</a></li>
-              <li class="menu-list-item"><a href="/category/category_sample">Giáo dục</a></li>
-              <li class="menu-list-item">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Thể thao<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li class="dropdown-item"><a href="/category/category_sample">trong nước</a></li>
-                  <li class="dropdown-item"><a href="/category/category_sample">ngoài nước</a></li>
-                </ul>
-              </li>
+
+              {{#each listParent}}
+                  {{#if (opt this.children.length '>' 0 opt)}}
+                    <li class="menu-list-item dropdown">
+                      <a href="/category/{{this.categoryId}}" class="dropdown-toggle"
+                          data-toggle="dropdown">
+                        {{this.categoryName}}<b class="caret"></b>
+                      </a>
+                      <ul class="dropdown-menu">
+                          {{#each this.children}}
+                            <li class="dropdown-item">
+                              <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+                            </li>
+                          {{/each}}
+                      </ul>
+                    </li>
+                  {{else}}
+                    <li class="menu-list-item">
+                      <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+                    </li>
+                  {{/if}}
+              {{/each}}
             </ul>
           </div>
         </div>
