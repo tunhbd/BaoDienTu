@@ -1,25 +1,36 @@
-const { DBConnection } = require('../../db')
-const { Category } = require('../../models')
-const { convertToAlias } = require('../../utils')
+const { DBConnection } = require("../../db");
+const { Category } = require("../../models");
+const { convertToAlias } = require("../../utils");
 
-const getLessInfoCategories = (account = null) => new Promise(async (resolve, reject) => {
-  let query =
-    `SELECT c.category_id, c.category_name, c.category_alias 
-    FROM categories c ${account !== null ? ` JOIN assigned_categories ac ON ac.category_id=c.category_id` : ''} 
-    WHERE c.category_active=1 ${account !== null ? ` AND ac.user_account='${account}' AND ac.disabled_category=0` : ''}`
-  let dbConn = new DBConnection()
+const getLessInfoCategories = (account = null) =>
+  new Promise(async (resolve, reject) => {
+    let query = `SELECT c.category_id, c.category_name, c.category_alias 
+    FROM categories c ${
+      account !== null
+        ? `JOIN assigned_categories ac ON ac.category_id=c.category_id`
+        : ""
+    } 
+    WHERE c.category_active=1 ${
+      account !== null
+        ? `ac.user_account='${account}' AND ac.disabled_category=0`
+        : ""
+    }`;
+    let dbConn = new DBConnection();
 
-  await dbConn
-    .loadRequest(query)
-    .then(rets => {
-      let categories = []
-      rets.forEach(ret => {
-        let category = new Category()
-        category.categoryId = ret.category_id
-        category.categoryName = ret.category_name
-        category.alias = ret.category_alias
+    await dbConn
+      .loadRequest(query)
+      .then(rets => {
+        let categories = [];
+        rets.forEach(ret => {
+          let category = new Category();
+          category.categoryId = ret.category_id;
+          category.categoryName = ret.category_name;
+          category.alias = ret.category_alias;
 
-        categories.push(category)
+          categories.push(category);
+        });
+
+        resolve(categories);
       })
       .catch(err => {
         reject(err);
