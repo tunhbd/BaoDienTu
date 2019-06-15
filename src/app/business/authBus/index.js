@@ -2,6 +2,7 @@ const { DBConnection } = require("../../db");
 const bcrypt = require("bcrypt");
 const moment = require('moment')
 const { User } = require('../../models')
+const { USER_ROLES } = require('../../config')
 
 const getSigninedUser = json => {
   return json === undefined ? undefined : JSON.parse(json);
@@ -13,7 +14,7 @@ const checkSignInedUser = userToken => {
   return new DBConnection().loadRequest(checkQuery);
 };
 
-const registryUser = userInfo => {
+const registryUser = userInfo => new Promise((resolve, reject) => {
   const rounds = 10;
   const plain = userInfo.password;
 
@@ -30,8 +31,46 @@ const registryUser = userInfo => {
       null, \
       '${userInfo.role}');`;
 
-  return new DBConnection().insertRequest(q);
-};
+  let dbConn = new DBConnection()
+  dbConn
+    .insertRequest(q)
+    .then(ret => {
+      if (ret) {
+        let query = ''
+        let dbConn = null
+        switch (userInfo.role) {
+
+          case USER_ROLES.SUBSCRIBER:
+            query = `INSERT INTO subscribers(user_account, expiration_date) VALUES('${userInfo.username}','${moment().add(7, 'days').format('YYYY/MM/DD')}')`
+            dbConn = new DBConnection()
+            dbConn
+              .insertRequest(query)
+              .then(ret => {
+                ret && resolve(true)
+              })
+              .catch(err => {
+                reject(err)
+              })
+            break;
+          case USER_ROLES.WRITER:
+            query = `INSERT INTO writers(user_account, pseudonym) VALUES('${userInfo.username}',null)`
+            dbConn = new DBConnection()
+            dbConn
+              .insertRequest(query)
+              .then(ret => {
+                ret && resolve(true)
+              })
+              .catch(err => {
+                reject(err)
+              })
+            break;
+        }
+      }
+    })
+    .catch(err => {
+      reject(err)
+    })
+});
 
 const getUserInfoWithNoPassword = account => new Promise((resolve, reject) => {
   let query = `SELECT user_account, user_role, user_email, user_birthday, user_fullname, user_avatar FROM users WHERE user_account='${account}'`
@@ -55,9 +94,24 @@ const getUserInfoWithNoPassword = account => new Promise((resolve, reject) => {
     })
 })
 
+const checkExistsUserAccount = account => new Promise((resolve, reject) => {
+  let query = `SELECT user_fullname FROM users WHERE user_account='${account}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length > 0 ? true : false)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 module.exports = {
   getSigninedUser,
   checkSignInedUser,
   registryUser,
   getUserInfoWithNoPassword,
+  checkExistsUserAccount,
 };

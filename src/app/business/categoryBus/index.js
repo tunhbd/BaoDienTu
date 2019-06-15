@@ -5,8 +5,8 @@ const { convertToAlias } = require('../../utils')
 const getLessInfoCategories = (account = null) => new Promise(async (resolve, reject) => {
   let query =
     `SELECT c.category_id, c.category_name, c.category_alias 
-    FROM categories c ${account !== null ? `JOIN assigned_categories ac ON ac.category_id=c.category_id` : ''} 
-    WHERE c.category_active=1 ${account !== null ? `ac.user_account='${account}' AND ac.disabled_category=0` : ''}`
+    FROM categories c ${account !== null ? ` JOIN assigned_categories ac ON ac.category_id=c.category_id` : ''} 
+    WHERE c.category_active=1 ${account !== null ? ` AND ac.user_account='${account}' AND ac.disabled_category=0` : ''}`
   let dbConn = new DBConnection()
 
   await dbConn

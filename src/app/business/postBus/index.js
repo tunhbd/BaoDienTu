@@ -1,7 +1,7 @@
 const { Post, Category, User, Writer, Tag } = require('../../models')
 const { DBConnection } = require('../../db')
 const { convertToAlias } = require('../../utils')
-const { FILTER } = require('../../config')
+const { FILTER, USER_ROLES } = require('../../config')
 const commentBus = require('../commentBus')
 const postTagBus = require('../postTagBus')
 const fs = require('fs')
@@ -10,17 +10,19 @@ const path = require('path')
 const createPost = post => new Promise(async (resolve, reject) => {
   let query =
     `INSERT INTO 
-    posts(post_id, post_title, post_alias, post_avatar_image, category, youtube_url, author, post_summary, post_content)
+    posts(post_id, post_title, post_alias, post_avatar_image, category, youtube_url, author, post_summary, post_content, premium)
     VALUES(
       '${post.postId}',
       '${escape(post.postTitle)}',
       '${post.alias}',
       '${post.postAvatarImage}',
       '${post.category.categoryId}',
-      '${post.youtubeUrl}',
+      ${post.youtubeUrl === null ? null : `'${post.youtubeUrl}'`},
       '${post.author.account}',
       '${escape(post.postSummary)}',
-      '${escape(post.postContent)}')`
+      '${escape(post.postContent)}',
+      ${post.premium ? 1 : 0})`
+
   let dbConnect = new DBConnection()
   let ret = await dbConnect.insertRequest(query)
 
@@ -34,52 +36,40 @@ const createPost = post => new Promise(async (resolve, reject) => {
 
 const getDraftPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
-    c.category_id, c.category_name, c.category_alias,
-    u.user_account, u.user_fullname, w.pseudonym
-    FROM (
-      (
-        (
-          (
-            posts p 
-            JOIN 
-            categories c 
-            ON p.category=c.category_id
-          ) 
-          JOIN 
-          users u 
-          ON p.author=u.user_account
-        )
-        JOIN
-        writers w
-        ON w.user_account=u.user_account
-      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
-    ${
-    user.role === 'EDITOR'
-      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id`
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date, p.premium,
+      c.category_id, c.category_name, c.category_alias,
+      u.user_account, u.user_fullname, w.pseudonym
+    FROM
+      posts p JOIN categories c ON p.category = c.category_id
+      JOIN users u ON p.author = u.user_account
+      JOIN writers w ON w.user_account = u.user_account
+      LEFT JOIN categories cp ON cp.category_id = c.parent_category
+      ${
+    user.role === USER_ROLES.EDITOR
+      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
       : ''
     }
-    )
     WHERE
-      p.published_date IS NULL 
-      AND p.checked=0 
-      ${user.role === 'WRITER' ? `AND p.author='${user.account}' ` : ''} 
-      ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+      p.checked = 0
+      ${ user.role === USER_ROLES.EDITOR ? ` AND ac.user_account='${user.account}' ` : ''}
+      ${ user.role === USER_ROLES.WRITER ? `AND p.author='${user.account}' ` : ''}
+      ${ categoryAlias != 'ALL' ? ` AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
       ${
     filterId === FILTER.INCREASE_CREATED_DATE
-      ? 'ORDER BY created_date ASC'
+      ? 'ORDER BY p.created_date ASC'
       : filterId === FILTER.DECREASE_CREATED_DATE
-        ? 'ORDER BY created_date DESC'
+        ? 'ORDER BY p.created_date DESC'
         : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? 'ORDER BY published_date ASC'
-          : 'ORDER BY published_date DESC'
+          ? 'ORDER BY p.published_date ASC'
+          : 'ORDER BY p.published_date DESC'
     }
-      LIMIT ${(pageNum - 1) * limit}, ${limit}`
-
+      LIMIT ${ (pageNum - 1) * limit}, ${limit} `
+  console.log('query', query)
   let dbConn = new DBConnection()
   await dbConn
     .loadRequest(query)
     .then(rets => {
+      console.log('rets', rets.length)
       let posts = rets.map(ret => {
         let post = new Post()
         post.postId = ret.post_id
@@ -87,6 +77,7 @@ const getDraftPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) =>
         post.alias = ret.post_alias
         post.createdDate = ret.created_date
         post.publishedDate = ret.published_date
+        post.premium = ret.premium === 1 ? true : false
 
         let category = new Category()
         category.categoryId = ret.category_id
@@ -112,51 +103,38 @@ const getDraftPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) =>
 
 const getCountDraftPostsFilterBy = (pageNum, categoryAlias, filterId, user) => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
-    c.category_id, c.category_name, c.category_alias,
-    u.user_account, u.user_fullname, w.pseudonym
-    FROM (
-      (
-        (
-          (
-            posts p 
-            JOIN 
-            categories c 
-            ON p.category=c.category_id
-          ) 
-          JOIN 
-          users u 
-          ON p.author=u.user_account
-        )
-        JOIN
-        writers w
-        ON w.user_account=u.user_account
-      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
+    `SELECT COUNT(*) count
+    FROM
+      posts p JOIN categories c ON p.category = c.category_id
+      JOIN users u ON p.author = u.user_account
+      JOIN writers w ON w.user_account = u.user_account
+      LEFT JOIN categories cp ON cp.category_id = c.parent_category
     ${
-    user.role === 'EDITOR'
-      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id`
+    user.role === USER_ROLES.EDITOR
+      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
       : ''
     }
-    )
     WHERE
-      p.published_date IS NULL 
-      ${user.role === 'WRITER' ? `AND p.author='${user.account}' ` : ''} 
-      AND p.checked=0 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+      p.checked=0
+      ${ user.role === USER_ROLES.EDITOR ? ` AND ac.user_account='${user.account}' ` : ''}
+      ${ user.role === USER_ROLES.WRITER ? `AND p.author='${user.account}' ` : ''}
+      ${ categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
     ${
     filterId === FILTER.INCREASE_CREATED_DATE
-      ? 'ORDER BY created_date ASC'
+      ? 'ORDER BY p.created_date ASC'
       : filterId === FILTER.DECREASE_CREATED_DATE
-        ? 'ORDER BY created_date DESC'
+        ? 'ORDER BY p.created_date DESC'
         : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? 'ORDER BY published_date ASC'
-          : 'ORDER BY published_date DESC'
-    }`
-
+          ? 'ORDER BY p.published_date ASC'
+          : 'ORDER BY p.published_date DESC'
+    } `
+  console.log('query', query)
   let dbConn = new DBConnection()
   await dbConn
     .loadRequest(query)
     .then(rets => {
-      resolve(rets.length)
+      console.log('rets count', rets)
+      resolve(rets[0].count)
     })
     .catch(err => {
       reject(err)
@@ -165,41 +143,35 @@ const getCountDraftPostsFilterBy = (pageNum, categoryAlias, filterId, user) => n
 
 const getRejectPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
-    c.category_id, c.category_name, c.category_alias,
-    u.user_account, u.user_fullname, w.pseudonym
-    FROM (
-      (
-        (
-          (
-            posts p 
-            JOIN 
-            categories c 
-            ON p.category=c.category_id
-          ) 
-          JOIN 
-          users u 
-          ON p.author=u.user_account
-        )
-        JOIN
-        writers w
-        ON w.user_account=u.user_account
-      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
-    )
-    WHERE
-      p.published_date IS NULL 
-      ${user.role === 'WRITER' ? ` AND p.author='${user.account}' ` : ''}
-      AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
-    ${
-    filterId === FILTER.INCREASE_CREATED_DATE
-      ? 'ORDER BY created_date ASC'
-      : filterId === FILTER.DECREASE_CREATED_DATE
-        ? 'ORDER BY created_date DESC'
-        : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? 'ORDER BY published_date ASC'
-          : 'ORDER BY published_date DESC'
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date, p.premium,
+        c.category_id, c.category_name, c.category_alias,
+        u.user_account, u.user_fullname, w.pseudonym
+      FROM
+        posts p JOIN categories c ON p.category = c.category_id
+        JOIN users u ON p.author = u.user_account
+        JOIN writers w ON w.user_account = u.user_account
+        LEFT JOIN categories cp ON cp.category_id = c.parent_category
+        ${
+    user.role === USER_ROLES.EDITOR
+      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
+      : ''
     }
-    LIMIT ${(pageNum - 1) * limit}, ${limit}`
+      WHERE
+      p.checked=1
+      AND p.published_date IS NULL
+      ${ user.role === USER_ROLES.EDITOR ? ` AND ac.user_account='${user.account}' AND p.browse_user='${user.account}' ` : ''}
+      ${ user.role === USER_ROLES.WRITER ? ` AND p.author='${user.account}' ` : ''}
+      ${ categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+      ${
+    filterId === FILTER.INCREASE_CREATED_DATE
+      ? 'ORDER BY p.created_date ASC'
+      : filterId === FILTER.DECREASE_CREATED_DATE
+        ? 'ORDER BY p.created_date DESC'
+        : filterId === FILTER.INCREASE_PUBLISHED_DATE
+          ? 'ORDER BY p.published_date ASC'
+          : 'ORDER BY p.published_date DESC'
+    }
+      LIMIT ${ (pageNum - 1) * limit}, ${limit} `
 
   let dbConn = new DBConnection()
   await dbConn
@@ -212,6 +184,7 @@ const getRejectPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) =
         post.alias = ret.post_alias
         post.createdDate = ret.created_date
         post.publishedDate = ret.published_date
+        post.premium = ret.premium === 1 ? true : false
 
         let category = new Category()
         category.categoryId = ret.category_id
@@ -237,46 +210,38 @@ const getRejectPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) =
 
 const getCountRejectPostsFilterBy = (pageNum, categoryAlias, filterId, user) => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
-    c.category_id, c.category_name, c.category_alias,
-    u.user_account, u.user_fullname, w.pseudonym
-    FROM (
-      (
-        (
-          (
-            posts p 
-            JOIN 
-            categories c 
-            ON p.category=c.category_id
-          ) 
-          JOIN 
-          users u 
-          ON p.author=u.user_account
-        )
-        JOIN
-        writers w
-        ON w.user_account=u.user_account
-      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
-    )
+    `SELECT COUNT(*) count
+    FROM
+      posts p JOIN categories c ON p.category = c.category_id
+      JOIN users u ON p.author = u.user_account
+      JOIN writers w ON w.user_account = u.user_account
+      LEFT JOIN categories cp ON cp.category_id = c.parent_category
+    ${
+    user.role === USER_ROLES.EDITOR
+      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
+      : ''
+    }
     WHERE
-      p.published_date IS NULL 
-      ${user.role === 'WRITER' ? ` AND p.author='${user.account}' ` : ''}
-      AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+      p.checked=1
+      AND p.published_date IS NULL
+      ${ user.role === USER_ROLES.EDITOR ? ` AND ac.user_account='${user.account}' AND p.browse_user='${user.account}' ` : ''}
+      ${ user.role === USER_ROLES.WRITER ? ` AND p.author='${user.account}' ` : ''}
+      ${ categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
     ${
     filterId === FILTER.INCREASE_CREATED_DATE
-      ? 'ORDER BY created_date ASC'
+      ? 'ORDER BY p.created_date ASC'
       : filterId === FILTER.DECREASE_CREATED_DATE
-        ? 'ORDER BY created_date DESC'
+        ? 'ORDER BY p.created_date DESC'
         : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? 'ORDER BY published_date ASC'
-          : 'ORDER BY published_date DESC'
-    }`
+          ? 'ORDER BY p.published_date ASC'
+          : 'ORDER BY p.published_date DESC'
+    } `
 
   let dbConn = new DBConnection()
   await dbConn
     .loadRequest(query)
     .then(rets => {
-      resolve(rets.length)
+      resolve(rets[0].count)
     })
     .catch(err => {
       reject(err)
@@ -285,41 +250,36 @@ const getCountRejectPostsFilterBy = (pageNum, categoryAlias, filterId, user) => 
 
 const getPublishedPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
-    c.category_id, c.category_name, c.category_alias,
-    u.user_account, u.user_fullname, w.pseudonym
-    FROM (
-      (
-        (
-          (
-            posts p 
-            JOIN 
-            categories c 
-            ON p.category=c.category_id
-          ) 
-          JOIN 
-          users u 
-          ON p.author=u.user_account
-        )
-        JOIN
-        writers w
-        ON w.user_account=u.user_account
-      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
-    )
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date, p.premium,
+      c.category_id, c.category_name, c.category_alias,
+      u.user_account, u.user_fullname, w.pseudonym
+    FROM
+      posts p JOIN categories c ON p.category = c.category_id
+      JOIN users u ON p.author = u.user_account
+      JOIN writers w ON w.user_account = u.user_account
+      LEFT JOIN categories cp ON cp.category_id = c.parent_category
+    ${
+    user.role === USER_ROLES.EDITOR
+      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
+      : ''
+    }
     WHERE
-      p.published_date IS NOT NULL 
-      ${user.role === 'WRITER' ? ` AND p.author='${user.account}' ` : ''}
-      AND DATEDIFF(NOW(), p.published_date) >= 0 AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+      p.checked=1
+      AND p.published_date IS NOT NULL
+      AND DATEDIFF(NOW(), p.published_date) >= 0
+      ${ user.role === USER_ROLES.EDITOR ? ` AND ac.user_account='${user.account}' AND p.browse_user='${user.account}' ` : ''}
+      ${ user.role === USER_ROLES.WRITER ? ` AND p.author='${user.account}' ` : ''}
+      ${ categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
     ${
     filterId === FILTER.INCREASE_CREATED_DATE
-      ? 'ORDER BY created_date ASC'
+      ? 'ORDER BY p.created_date ASC'
       : filterId === FILTER.DECREASE_CREATED_DATE
-        ? 'ORDER BY created_date DESC'
+        ? 'ORDER BY p.created_date DESC'
         : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? 'ORDER BY published_date ASC'
-          : 'ORDER BY published_date DESC'
+          ? 'ORDER BY p.published_date ASC'
+          : 'ORDER BY p.published_date DESC'
     }
-    LIMIT ${(pageNum - 1) * limit}, ${limit}`
+    LIMIT ${ (pageNum - 1) * limit}, ${limit} `
 
   let dbConn = new DBConnection()
   await dbConn
@@ -332,6 +292,7 @@ const getPublishedPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user
         post.alias = ret.post_alias
         post.createdDate = ret.created_date
         post.publishedDate = ret.published_date
+        post.premium = ret.premium === 1 ? true : false
 
         let category = new Category()
         category.categoryId = ret.category_id
@@ -357,46 +318,39 @@ const getPublishedPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user
 
 const getCountPublishedPostsFilterBy = (pageNum, categoryAlias, filterId, user) => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
-    c.category_id, c.category_name, c.category_alias,
-    u.user_account, u.user_fullname, w.pseudonym
-    FROM (
-      (
-        (
-          (
-            posts p 
-            JOIN 
-            categories c 
-            ON p.category=c.category_id
-          ) 
-          JOIN 
-          users u 
-          ON p.author=u.user_account
-        )
-        JOIN
-        writers w
-        ON w.user_account=u.user_account
-      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
-    )
+    `SELECT COUNT(*) count
+    FROM
+      posts p JOIN categories c ON p.category = c.category_id
+      JOIN users u ON p.author = u.user_account
+      JOIN writers w ON w.user_account = u.user_account
+      LEFT JOIN categories cp ON cp.category_id = c.parent_category
+    ${
+    user.role === USER_ROLES.EDITOR
+      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
+      : ''
+    }
     WHERE
-      p.published_date IS NOT NULL 
-      ${user.role === 'WRITER' ? ` AND p.author='${user.account}' ` : ''}
-      AND DATEDIFF(NOW(), p.published_date) >= 0 AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+      p.checked=1
+      AND p.published_date IS NOT NULL
+      AND DATEDIFF(NOW(), p.published_date) >= 0
+      ${ user.role === USER_ROLES.EDITOR ? ` AND ac.user_account='${user.account}' AND p.browse_user='${user.account}' ` : ''}
+      ${ user.role === USER_ROLES.WRITER ? ` AND p.author='${user.account}' ` : ''}
+      ${ categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
     ${
     filterId === FILTER.INCREASE_CREATED_DATE
-      ? 'ORDER BY created_date ASC'
+      ? 'ORDER BY p.created_date ASC'
       : filterId === FILTER.DECREASE_CREATED_DATE
-        ? 'ORDER BY created_date DESC'
+        ? 'ORDER BY p.created_date DESC'
         : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? 'ORDER BY published_date ASC'
-          : 'ORDER BY published_date DESC'
-    }`
+          ? 'ORDER BY p.published_date ASC'
+          : 'ORDER BY p.published_date DESC'
+    } `
 
   let dbConn = new DBConnection()
   await dbConn
     .loadRequest(query)
     .then(rets => {
-      resolve(rets.length)
+      resolve(rets[0].count)
     })
     .catch(err => {
       reject(err)
@@ -405,41 +359,36 @@ const getCountPublishedPostsFilterBy = (pageNum, categoryAlias, filterId, user) 
 
 const getWaitingPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
-    c.category_id, c.category_name, c.category_alias,
-    u.user_account, u.user_fullname, w.pseudonym
-    FROM (
-      (
-        (
-          (
-            posts p 
-            JOIN 
-            categories c 
-            ON p.category=c.category_id
-          ) 
-          JOIN 
-          users u 
-          ON p.author=u.user_account
-        )
-        JOIN
-        writers w
-        ON w.user_account=u.user_account
-      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
-    )
+    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date, p.premium,
+      c.category_id, c.category_name, c.category_alias,
+      u.user_account, u.user_fullname, w.pseudonym
+    FROM
+      posts p JOIN categories c ON p.category = c.category_id
+      JOIN users u ON p.author = u.user_account
+      JOIN writers w ON w.user_account = u.user_account
+      LEFT JOIN categories cp ON cp.category_id = c.parent_category
+    ${
+    user.role === USER_ROLES.EDITOR
+      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
+      : ''
+    }
     WHERE
-      p.published_date IS NOT NULL 
-      ${user.role === 'WRITER' ? ` AND p.author='${user.account}' ` : ''}
-      AND DATEDIFF(NOW(), p.published_date) < 0 AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+      p.checked=1
+      AND p.published_date IS NOT NULL
+      AND DATEDIFF(NOW(), p.published_date) < 0
+      ${ user.role === USER_ROLES.EDITOR ? ` AND ac.user_account='${user.account}' AND p.browse_user='${user.account}' ` : ''}
+      ${ user.role === USER_ROLES.WRITER ? ` AND p.author='${user.account}' ` : ''}
+      ${ categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
     ${
     filterId === FILTER.INCREASE_CREATED_DATE
-      ? 'ORDER BY created_date ASC'
+      ? 'ORDER BY p.created_date ASC'
       : filterId === FILTER.DECREASE_CREATED_DATE
-        ? 'ORDER BY created_date DESC'
+        ? 'ORDER BY p.created_date DESC'
         : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? 'ORDER BY published_date ASC'
-          : 'ORDER BY published_date DESC'
+          ? 'ORDER BY p.published_date ASC'
+          : 'ORDER BY p.published_date DESC'
     }
-    LIMIT ${(pageNum - 1) * limit}, ${limit}`
+    LIMIT ${ (pageNum - 1) * limit}, ${limit} `
 
   let dbConn = new DBConnection()
   await dbConn
@@ -452,6 +401,7 @@ const getWaitingPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) 
         post.alias = ret.post_alias
         post.createdDate = ret.created_date
         post.publishedDate = ret.published_date
+        post.premium = ret.premium === 1 ? true : false
 
         let category = new Category()
         category.categoryId = ret.category_id
@@ -477,46 +427,39 @@ const getWaitingPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) 
 
 const getCountWaitingPostsFilterBy = (pageNum, categoryAlias, filterId, user) => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT p.post_id, p.post_title, p.post_alias, p.created_date, p.published_date,
-    c.category_id, c.category_name, c.category_alias,
-    u.user_account, u.user_fullname, w.pseudonym
-    FROM (
-      (
-        (
-          (
-            posts p 
-            JOIN 
-            categories c 
-            ON p.category=c.category_id
-          ) 
-          JOIN 
-          users u 
-          ON p.author=u.user_account
-        )
-        JOIN
-        writers w
-        ON w.user_account=u.user_account
-      ) LEFT JOIN categories cp ON cp.category_id=c.parent_category
-    )
+    `SELECT COUNT(*) count
+    FROM
+      posts p JOIN categories c ON p.category = c.category_id
+      JOIN users u ON p.author = u.user_account
+      JOIN writers w ON w.user_account = u.user_account
+      LEFT JOIN categories cp ON cp.category_id = c.parent_category
+    ${
+    user.role === USER_ROLES.EDITOR
+      ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
+      : ''
+    }
     WHERE
-      p.published_date IS NOT NULL 
-      ${user.role === 'WRITER' ? ` AND p.author='${user.account}' ` : ''}
-      AND DATEDIFF(NOW(), p.published_date) < 0 AND p.checked=1 ${categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
+      p.checked=1
+      AND DATEDIFF(NOW(), p.published_date) < 0
+      AND p.published_date IS NOT NULL
+      ${ user.role === USER_ROLES.EDITOR ? ` AND ac.user_account='${user.account}' AND p.browse_user='${user.account}' ` : ''}
+      ${ user.role === USER_ROLES.WRITER ? ` AND p.author='${user.account}' ` : ''}
+      ${ categoryAlias != 'ALL' ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'` : ''}
     ${
     filterId === FILTER.INCREASE_CREATED_DATE
-      ? 'ORDER BY created_date ASC'
+      ? 'ORDER BY p.created_date ASC'
       : filterId === FILTER.DECREASE_CREATED_DATE
-        ? 'ORDER BY created_date DESC'
+        ? 'ORDER BY p.created_date DESC'
         : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? 'ORDER BY published_date ASC'
-          : 'ORDER BY published_date DESC'
-    }`
+          ? 'ORDER BY p.published_date ASC'
+          : 'ORDER BY p.published_date DESC'
+    } `
 
   let dbConn = new DBConnection()
   await dbConn
     .loadRequest(query)
     .then(rets => {
-      resolve(rets.length)
+      resolve(rets[0].count)
     })
     .catch(err => {
       reject(err)
@@ -525,13 +468,19 @@ const getCountWaitingPostsFilterBy = (pageNum, categoryAlias, filterId, user) =>
 
 const getOneByAlias = alias => new Promise(async (resolve, reject) => {
   let query =
-    `SELECT 
-      p.post_id, p.post_title, p.post_summary, p.post_avatar_image, p.youtube_url, p.post_content, p.created_date, p.published_date, p.checked, p.reason_reject,
+    `SELECT
+      p.post_id, p.post_title, p.post_summary, p.post_avatar_image, p.youtube_url, p.post_content, p.created_date, p.published_date, p.checked, p.reason_reject, p.premium, p.browse_user,
       c.category_id, c.category_name, c.category_alias,
       u.user_account, u.user_fullname, u.user_avatar,
-      w.pseudonym
-   FROM posts p JOIN categories c ON p.category=c.category_id JOIN users u ON p.author=u.user_account JOIN writers w ON u.user_account=w.user_account
-   WHERE p.post_alias='${alias}'`
+      w.pseudonym,
+      bu.user_account bu_account, bu.user_fullname bu_fullname
+    FROM
+      posts p JOIN categories c ON p.category = c.category_id
+      JOIN users u ON p.author = u.user_account
+      JOIN writers w ON u.user_account = w.user_account
+      LEFT JOIN users bu ON bu.user_account = p.browse_user
+    WHERE p.post_alias = '${alias}'`
+
   let dbConn = new DBConnection()
 
   await dbConn
@@ -551,6 +500,7 @@ const getOneByAlias = alias => new Promise(async (resolve, reject) => {
         post.publishedDate = rets[0].published_date
         post.checked = rets[0].checked > 0 ? true : false
         post.reasonReject = unescape(rets[0].reason_reject)
+        post.premium = rets[0].premium === 1 ? true : false
 
         let category = new Category()
         category.categoryId = rets[0].category_id
@@ -564,17 +514,22 @@ const getOneByAlias = alias => new Promise(async (resolve, reject) => {
         author.pseudonym = rets[0].pseudonym
         author.avatar = rets[0].user_avatar
         post.author = author
+
+        let browseUser = new User()
+        browseUser.account = rets[0].bu_account
+        browseUser.fullname = rets[0].bu_fullname
+        post.browseUser = browseUser
       }
 
       let query =
         `SELECT t.tag_id, t.tag_name, t.tag_alias
-        FROM tags t JOIN post_tags pt ON t.tag_id=pt.tag_id
-        WHERE pt.post_id='${post.postId}'`
+        FROM tags t JOIN post_tags pt ON t.tag_id = pt.tag_id
+        WHERE pt.post_id = '${post.postId}'`
+
       let dbConn = new DBConnection()
       await dbConn
         .loadRequest(query)
         .then(rets => {
-          console.log('rets', rets.length)
           post.tags = rets.map(ret => {
             let t = new Tag()
             t.tagId = ret.tag_id
@@ -595,12 +550,12 @@ const getOneByAlias = alias => new Promise(async (resolve, reject) => {
     })
 })
 
-const browse = (alias, checking, publishedDate, reasonReject) => new Promise(async (resolve, reject) => {
+const browse = (alias, checking, publishedDate, reasonReject, account) => new Promise(async (resolve, reject) => {
   let query = ''
 
   checking
-    ? query = `UPDATE posts SET checked=1, published_date='${publishedDate}' WHERE post_alias='${alias}'`
-    : query = `UPDATE posts SET checked=1, reason_reject='${escape(reasonReject)}' WHERE post_alias='${alias}'`
+    ? query = `UPDATE posts SET checked = 1, published_date = '${publishedDate}', browse_user = '${account}' WHERE post_alias = '${alias}'`
+    : query = `UPDATE posts SET checked = 1, reason_reject = '${escape(reasonReject)}', browse_user = '${account}' WHERE post_alias = '${alias}'`
 
   let dbConn = new DBConnection()
 
@@ -616,15 +571,20 @@ const browse = (alias, checking, publishedDate, reasonReject) => new Promise(asy
 
 const updatePost = post => new Promise(async (resolve, reject) => {
   let query =
-    `UPDATE posts SET post_title='${post.postTitle}',
-      post_alias='${post.alias}',
-      category='${post.category.categoryId}',
-      post_summary='${escape(post.postSummary)}',
-      post_content='${escape(post.postContent)}',
-      youtube_url='${post.youtubeUrl}',
-      author='${post.author.account}'
-      ${post.postAvatarImage ? `, post_avatar_image='${post.postAvatarImage}'` : ''}
-    WHERE post_id='${post.postId}'`
+    `UPDATE posts SET post_title = '${post.postTitle}',
+  post_alias = '${post.alias}',
+  category = '${post.category.categoryId}',
+  post_summary = '${escape(post.postSummary)}',
+  post_content = '${escape(post.postContent)}',
+  youtube_url = ${ post.youtubeUrl === null ? null : `'${post.youtubeUrl}'`},
+author = '${post.author.account}',
+  premium = ${ post.premium ? 1 : 0},
+checked = 0,
+  published_date = null,
+  reason_reject = null,
+  browse_user = null
+${ post.postAvatarImage ? `, post_avatar_image='${post.postAvatarImage}'` : ''}
+WHERE post_id = '${post.postId}'`
 
   let dbConn = new DBConnection()
 
@@ -651,7 +611,7 @@ const deletePosts = postIds => new Promise(async (resolve, reject) => {
     filename && fs.unlinkSync(path.join(__dirname, '/../../../statics/media/images/posts/', filename))
 
     // Delete post
-    let query = `DELETE FROM posts WHERE post_id='${postId}'`
+    let query = `DELETE FROM posts WHERE post_id = '${postId}'`
     let dbConn = new DBConnection()
     await dbConn
       .deleteRequest(query)
@@ -666,7 +626,21 @@ const deletePosts = postIds => new Promise(async (resolve, reject) => {
 })
 
 const checkIsRejectedOrDraftByAlias = alias => new Promise((resolve, reject) => {
-  let query = `SELECT post_id FROM posts WHERE post_alias='${alias}' AND (checked=0 OR (checked=1 AND published_date IS NULL))`
+  let query = `SELECT post_id FROM posts WHERE post_alias = '${alias}' AND(checked = 0 OR(checked = 1 AND published_date IS NULL))`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length > 0)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const checkIsRejectedOrDraftById = id => new Promise((resolve, reject) => {
+  let query = `SELECT post_id FROM posts WHERE post_id = '${id}' AND(checked = 0 OR(checked = 1 AND published_date IS NULL))`
   let dbConn = new DBConnection()
 
   dbConn
@@ -694,4 +668,5 @@ module.exports = {
   browse,
   deletePosts,
   checkIsRejectedOrDraftByAlias,
+  checkIsRejectedOrDraftById,
 }

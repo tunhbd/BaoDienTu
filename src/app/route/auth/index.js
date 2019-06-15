@@ -11,6 +11,7 @@ module.exports = {
     '/auth/facebook': [authHandlers.signInByFacebook],
     '/auth/facebook/callback': [authHandlers.signInByFacebookAgain],
     '/reset-password/:token': [authHandlers.resetPasswordGetRequest],
+    '/check-not-exists-user-account': [authHandlers.checkNotExistsUserAccount],
   },
   'post': {
     '/sign-in': [authHandlers.signIn],
