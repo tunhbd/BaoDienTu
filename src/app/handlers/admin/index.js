@@ -1,4 +1,4 @@
-const { tagBus, postTagBus, postBus, categoryBus } = require('../../business')
+const { tagBus, postTagBus, postBus, categoryBus, authBus } = require('../../business')
 const mockData = require('../../mockData')
 const config = require('../../config')
 const moment = require('moment')
@@ -324,7 +324,43 @@ const renderWaitingPostsPage = (req, res) => {
 }
 
 const renderUsersPage = (req, res) => {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
+    res.redirect('/admin/dashboard')
+  }
+  else {
+    let pageNum = req.query.page ? req.query.page : 1
+    let role = req.query.role ? req.query.role : 'ALL'
 
+    Promise
+      .all([
+        authBus.getCountAllUserFilterBy(role),
+        authBus.getAllDetailUserFilterBy(role, pageNum)
+      ])
+      .then(([usersCount, users]) => {
+        console.log('users', users)
+        let pages = []
+
+        for (let index = 1; index <= Math.ceil(usersCount / config.LIMIT_USERS); index++) {
+          pages.push({ pageNum: index })
+        }
+
+        res.render('admin/userList', {
+          data: {
+            title: 'Users Management',
+            user: req.user,
+            pageId: 'USER',
+            thisPage: pageNum,
+            users,
+            pages,
+          },
+          layout: 'dashboardLayout'
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        res.send('error')
+      })
+  }
 }
 
 const renderTagsPage = (req, res) => {
@@ -751,6 +787,35 @@ const browsePost = (req, res) => {
   }
 }
 
+// const getUserInfo = (req, res) => {
+//   if (req.user.role !== config.USER_ROLES.ADMIN) {
+//     res.json({
+//       error: true,
+//       data: {}
+//     })
+//   }
+//   else {
+//     let account = req.params.account
+
+//     authBus
+//       .getDetailUserByAccount(account)
+//       .then(user => {
+//         res.json({
+//           error: undefined,
+//           data: {
+//             user
+//           }
+//         })
+//       })
+//       .catch(err => {
+//         res.json({
+//           error: true,
+//           data: {}
+//         })
+//       })
+//   }
+// }
+
 module.exports = {
   renderDashboardPage,
   renderCreatePostPage,
@@ -775,4 +840,5 @@ module.exports = {
   deleteTag,
   deleteUser,
   browsePost,
+  // getUserInfo,
 }
