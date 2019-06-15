@@ -64,19 +64,16 @@
             <li class="user-menu__item">
               <a href="/profile" class="user-menu__item__content">
                 Your Profile <i class="fas fa-id-card-alt user-menu__item-icon"></i>
-                {{!-- <i class="user-menu__item__icon user-menu__item__icon-profile"></i> --}}
               </a>
             </li>
             <li class="user-menu__item">
               <a href="/change-password" class="user-menu__item__content">
                 Change Password <i class="fas fa-user-lock user-menu__item-icon"></i>
-                {{!-- <i class="user-menu__item__icon user-menu__item__icon-change-password"></i> --}}
               </a>
             </li>
             <li class="user-menu__item">
               <a href="/sign-out" class="user-menu__item__content">
                 Sign Out <i class="fas fa-sign-out-alt user-menu__item-icon"></i>
-                {{!-- <i class="user-menu__item__icon user-menu__item__icon-sign-out"></i> --}}
               </a>
             </li>
           </ul>
@@ -129,7 +126,7 @@
             </a>
             {{/if}}
 
-            {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
+            {{!-- {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}} --}}
             {{#if (opt data.pageId '===' 'REJECT')}}
             <a href="/admin/dashboard/reject-posts" menu-id="REJECT"
               class="menu-item-group__item menu-item-group__item__activing">
@@ -142,9 +139,9 @@
               <span class="menu-item-group__item__title">Rejects</span>
             </a>
             {{/if}}
-            {{/if}}
+            {{!-- {{/if}} --}}
           </div>
-          {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}}
+          {{!-- {{#if (opt (opt data.user.role '===' 'ADMIN' opt) '||' (opt data.user.role '===' 'WRITER' opt) opt)}} --}}
           <div class="menu-item-group w-100">
             {{#if (opt data.pageId '===' 'WAITING')}}
             <a href="/admin/dashboard/waiting-posts" menu-id="WAITING"
@@ -173,7 +170,7 @@
             {{/if}}
 
           </div>
-          {{/if}}
+          {{!-- {{/if}} --}}
 
           {{#if (opt data.user.role '===' 'ADMIN')}}
           <div class="menu-item-group w-100">

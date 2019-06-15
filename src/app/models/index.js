@@ -4,5 +4,7 @@ module.exports = {
   PostTag: require("./postTag"),
   Category: require("./category"),
   User: require("./user"),
-  Writer: require("./writer")
+  Writer: require("./writer"),
+  Subscriber: require("./subscriber"),
+  Editor: require("./editor")
 };

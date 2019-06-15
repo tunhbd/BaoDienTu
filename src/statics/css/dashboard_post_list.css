@@ -214,13 +214,3 @@
 .filter-sort {
   width: 300px !important;
 }
-
-.page.page-active:hover,
-.page-active {
-  background: #e91e63;
-  color: #fff;
-}
-
-.page:not(.page-active):hover {
-  background: rgba(233, 30, 99, 0.5);
-}

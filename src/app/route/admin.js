@@ -14,6 +14,7 @@ module.exports = {
     '/admin/dashboard/tags': [adminHandlers.renderTagsPage],
     '/admin/dashboard/categories': [adminHandlers.renderCategoriesPage],
     '/admin/dashboard/preview-post/:postAlias': [adminHandlers.renderPreviewPostAndCheckPage],
+    // '/admin/dashboard/user/:account': [adminHandlers.getUserInfo],
     // '/dashboard/dashboard-ui/edit-post': adminHandlers.getEditPostUIGetRequest,
     // '/dashboard/dashboard-ui/edit-user/:userRule': adminHandlers.getEditUserUIByRoleGetRequest,
     // '/dashboard/dashboard-ui/:pageId': adminHandlers.getPageContentUIByPageIdGetRequest,

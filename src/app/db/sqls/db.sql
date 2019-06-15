@@ -94,6 +94,7 @@ CREATE TABLE posts
   published_date DATETIME,
   post_summary TEXT NOT NULL,
   post_content LONGTEXT NOT NULL,
+  
 
   PRIMARY KEY(post_id),
   FULLTEXT(post_title),

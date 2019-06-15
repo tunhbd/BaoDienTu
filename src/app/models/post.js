@@ -3,17 +3,19 @@ class Post {
     this.postId = ''
     this.postTitle = ''
     this.alias = ''
-    this.author = ''
+    this.author = null
     this.category = null
     this.tags = null
-    this.youtubeUrl = ''
+    this.youtubeUrl = null
     this.postAvatarImage = ''
     this.postSummary = ''
     this.postContent = ''
     this.createdDate = ''
-    this.publishedDate = ''
+    this.publishedDate = null
     this.checked = false
-    this.reasonReject = ''
+    this.reasonReject = null
+    this.premium = false
+    this.browseUser = null
   }
 
   get PostId() { return this.postId }

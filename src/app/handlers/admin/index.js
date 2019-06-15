@@ -1,4 +1,4 @@
-const { tagBus, postTagBus, postBus, categoryBus } = require('../../business')
+const { tagBus, postTagBus, postBus, categoryBus, authBus } = require('../../business')
 const mockData = require('../../mockData')
 const config = require('../../config')
 const moment = require('moment')
@@ -146,11 +146,14 @@ const renderDraftPostsPage = (req, res) => {
   else {
     Promise
       .all([
-        req.user.role === 'EDITOR' ? categoryBus.getLessInfoCategories(req.user.account) : categoryBus.getLessInfoCategories(),
+        req.user.role === config.USER_ROLES.EDITOR ? categoryBus.getLessInfoCategories(req.user.account) : categoryBus.getLessInfoCategories(),
         postBus.getDraftPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS, req.user),
         postBus.getCountDraftPostsFilterBy(pageNum, categoryAlias, filterId, req.user),
       ])
       .then(([categories, posts, countPosts]) => {
+        console.log('categories', categories)
+        console.log('posts', posts)
+        console.log('countPosts', countPosts)
         let pages = []
         let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
         for (let index = 1; index <= pageCount; index++) {
@@ -182,146 +185,182 @@ const renderDraftPostsPage = (req, res) => {
 }
 
 const renderRejectPostsPage = (req, res) => {
-  if (req.user.role === 'EDITOR') {
-    res.redirect('/admin/dashboard')
-  }
-  else {
-    let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
-    let categoryAlias = !req.query.category ? 'ALL' : req.query.category
-    let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
+  // if (req.user.role === 'EDITOR') {
+  //   res.redirect('/admin/dashboard')
+  // }
+  // else {
+  let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
+  let categoryAlias = !req.query.category ? 'ALL' : req.query.category
+  let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
 
-    Promise
-      .all([
-        categoryBus.getLessInfoCategories(),
-        postBus.getRejectPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS, req.user),
-        postBus.getCountRejectPostsFilterBy(pageNum, categoryAlias, filterId, req.user),
-      ])
-      .then(([categories, posts, countPosts]) => {
-        let pages = []
-        let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
-        for (let index = 1; index <= pageCount; index++) {
-          pages.push({ pageNum: index })
-        }
+  Promise
+    .all([
+      categoryBus.getLessInfoCategories(),
+      postBus.getRejectPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS, req.user),
+      postBus.getCountRejectPostsFilterBy(pageNum, categoryAlias, filterId, req.user),
+    ])
+    .then(([categories, posts, countPosts]) => {
+      let pages = []
+      let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
+      for (let index = 1; index <= pageCount; index++) {
+        pages.push({ pageNum: index })
+      }
 
-        res.render('admin/postList', {
-          data: {
-            title: 'Reject posts',
-            user: req.user,
-            selectedCategory: categoryAlias,
-            selectedFilter: filterId,
-            pages,
-            pageCount,
-            pageId: 'REJECT',
-            thisPage: pageNum,
-            categories,
-            posts,
-            status: false,
-            postType: 'REJECT',
-          },
-          layout: 'dashboardLayout'
-        })
+      res.render('admin/postList', {
+        data: {
+          title: 'Reject posts',
+          user: req.user,
+          selectedCategory: categoryAlias,
+          selectedFilter: filterId,
+          pages,
+          pageCount,
+          pageId: 'REJECT',
+          thisPage: pageNum,
+          categories,
+          posts,
+          status: false,
+          postType: 'REJECT',
+        },
+        layout: 'dashboardLayout'
       })
-      .catch(err => {
+    })
+    .catch(err => {
 
-      })
-  }
+    })
+  // }
 }
 
 const renderPublishedPostsPage = (req, res) => {
-  if (req.user.role === 'EDITOR') {
-    res.redirect('/admin/dashboard')
-  }
-  else {
-    let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
-    let categoryAlias = !req.query.category ? 'ALL' : req.query.category
-    let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
+  // if (req.user.role === 'EDITOR') {
+  //   res.redirect('/admin/dashboard')
+  // }
+  // else {
+  let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
+  let categoryAlias = !req.query.category ? 'ALL' : req.query.category
+  let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
 
-    Promise
-      .all([
-        categoryBus.getLessInfoCategories(),
-        postBus.getPublishedPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS, req.user),
-        postBus.getCountPublishedPostsFilterBy(pageNum, categoryAlias, filterId, req.user),
-      ])
-      .then(([categories, posts, countPosts]) => {
-        let pages = []
-        let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
-        for (let index = 1; index <= pageCount; index++) {
-          pages.push({ pageNum: index })
-        }
+  Promise
+    .all([
+      categoryBus.getLessInfoCategories(),
+      postBus.getPublishedPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS, req.user),
+      postBus.getCountPublishedPostsFilterBy(pageNum, categoryAlias, filterId, req.user),
+    ])
+    .then(([categories, posts, countPosts]) => {
+      let pages = []
+      let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
+      for (let index = 1; index <= pageCount; index++) {
+        pages.push({ pageNum: index })
+      }
 
-        res.render('admin/postList', {
-          data: {
-            title: 'Published posts',
-            user: req.user,
-            selectedCategory: categoryAlias,
-            selectedFilter: filterId,
-            pages,
-            pageCount,
-            pageId: 'PUBLISHED',
-            thisPage: pageNum,
-            categories,
-            posts,
-            status: true,
-            postType: 'PUBLISHED',
-          },
-          layout: 'dashboardLayout'
-        })
+      res.render('admin/postList', {
+        data: {
+          title: 'Published posts',
+          user: req.user,
+          selectedCategory: categoryAlias,
+          selectedFilter: filterId,
+          pages,
+          pageCount,
+          pageId: 'PUBLISHED',
+          thisPage: pageNum,
+          categories,
+          posts,
+          status: true,
+          postType: 'PUBLISHED',
+        },
+        layout: 'dashboardLayout'
       })
-      .catch(err => {
+    })
+    .catch(err => {
 
-      })
-  }
+    })
+  // }
 }
 
 const renderWaitingPostsPage = (req, res) => {
-  if (req.user.role === 'EDITOR') {
+  // if (req.user.role === 'EDITOR') {
+  //   res.redirect('/admin/dashboard')
+  // }
+  // else {
+  let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
+  let categoryAlias = !req.query.category ? 'ALL' : req.query.category
+  let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
+
+  Promise
+    .all([
+      categoryBus.getLessInfoCategories(),
+      postBus.getWaitingPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS, req.user),
+      postBus.getCountWaitingPostsFilterBy(pageNum, categoryAlias, filterId, req.user),
+    ])
+    .then(([categories, posts, countPosts]) => {
+      console.log('count', countPosts)
+      let pages = []
+      let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
+      for (let index = 1; index <= pageCount; index++) {
+        pages.push({ pageNum: index })
+      }
+
+      res.render('admin/postList', {
+        data: {
+          title: 'Waiting posts',
+          user: req.user,
+          selectedCategory: categoryAlias,
+          selectedFilter: filterId,
+          pages,
+          pageCount,
+          pageId: 'WAITING',
+          thisPage: pageNum,
+          categories,
+          posts,
+          status: true,
+          postType: 'WAITING',
+        },
+        layout: 'dashboardLayout'
+      })
+    })
+    .catch(err => {
+
+    })
+  // }
+}
+
+const renderUsersPage = (req, res) => {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.redirect('/admin/dashboard')
   }
   else {
-    let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
-    let categoryAlias = !req.query.category ? 'ALL' : req.query.category
-    let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
+    let pageNum = req.query.page ? req.query.page : 1
+    let role = req.query.role ? req.query.role : 'ALL'
 
     Promise
       .all([
-        categoryBus.getLessInfoCategories(),
-        postBus.getWaitingPostsFilterBy(pageNum, categoryAlias, filterId, config.LIMIT_POSTS, req.user),
-        postBus.getCountWaitingPostsFilterBy(pageNum, categoryAlias, filterId, req.user),
+        authBus.getCountAllUserFilterBy(role),
+        authBus.getAllDetailUserFilterBy(role, pageNum)
       ])
-      .then(([categories, posts, countPosts]) => {
-        console.log('count', countPosts)
+      .then(([usersCount, users]) => {
+        console.log('users', users)
         let pages = []
-        let pageCount = Math.ceil(countPosts / config.LIMIT_POSTS)
-        for (let index = 1; index <= pageCount; index++) {
+
+        for (let index = 1; index <= Math.ceil(usersCount / config.LIMIT_USERS); index++) {
           pages.push({ pageNum: index })
         }
 
-        res.render('admin/postList', {
+        res.render('admin/userList', {
           data: {
-            title: 'Waiting posts',
+            title: 'Users Management',
             user: req.user,
-            selectedCategory: categoryAlias,
-            selectedFilter: filterId,
-            pages,
-            pageCount,
-            pageId: 'WAITING',
+            pageId: 'USER',
             thisPage: pageNum,
-            categories,
-            posts,
-            status: true,
-            postType: 'WAITING',
+            users,
+            pages,
           },
           layout: 'dashboardLayout'
         })
       })
       .catch(err => {
-
+        console.log(err)
+        res.send('error')
       })
   }
-}
-
-const renderUsersPage = (req, res) => {
-
 }
 
 const renderTagsPage = (req, res) => {
@@ -362,7 +401,8 @@ const createCategory = (req, res) => {
   else {
     let category = new Category()
     category.categoryName = req.body.categoryName
-    category.parent = req.body.parentCategory ? req.body.parentCategory : null
+    category.parent = req.body.parentCategory === '' ? null : req.body.parentCategory
+    console.log('new category', category)
 
     categoryBus
       .addCategory(category)
@@ -394,6 +434,7 @@ const updateCategory = (req, res) => {
     let category = new Category()
     category.categoryId = req.body.categoryId
     category.categoryName = req.body.categoryName
+    category.parent = req.body.parentCategory === '' ? null : req.body.parentCategory
 
     categoryBus
       .updateCategory(category)
@@ -460,15 +501,14 @@ const editPost = (req, res) => {
           post.postId = req.generation.postId
           post.postTitle = trim(req.body.title)
           post.alias = convertToAlias(post.postTitle)
-          // post.author = req.user.account
-          let author = new User()
-          author.account = 'admin'
+          post.premium = req.body.premium
+          let author = req.user
           post.author = author
 
           let category = new Category()
           category.categoryId = req.body.category
           post.category = category
-          console.log('tags', req.body.tags)
+
           post.tags = JSON.parse(req.body.tags).map(t => {
             let tag = new Tag()
             tag.tagId = t.tagId
@@ -479,7 +519,7 @@ const editPost = (req, res) => {
           post.postSummary = trim(req.body.summary)
           post.postContent = req.body['content']
           post.postAvatarImage = req.generation.postAvatarImage
-          post.youtubeUrl = trim(req.body.youtubeUrl)
+          post.youtubeUrl = trim(req.body.youtubeUrl) === '' ? null : trim(req.body.youtubeUrl)
 
           postBus
             .updatePost(post)
@@ -534,7 +574,7 @@ const updateUser = (req, res) => {
 }
 
 const deletePosts = (req, res) => {
-  if (req.user.role !== 'ADMIN') {
+  if (req.user.role === config.USER_ROLES.EDITOR) {
     res.json({
       error: true,
       data: {}
@@ -634,9 +674,9 @@ const createPost = (req, res) => {
     post.postId = req.generation.postId
     post.postTitle = trim(req.body.title)
     post.alias = convertToAlias(post.postTitle)
-    // post.author = req.user.account
-    let author = new User()
-    author.account = 'admin'
+    post.premium = req.body.premium
+
+    let author = req.user
     post.author = author
 
     let category = new Category()
@@ -652,7 +692,7 @@ const createPost = (req, res) => {
     post.postSummary = trim(req.body.summary)
     post.postContent = req.body['content']
     post.postAvatarImage = req.generation.postAvatarImage
-    post.youtubeUrl = trim(req.body.youtubeUrl)
+    post.youtubeUrl = trim(req.body.youtubeUrl) === '' ? null : trim(req.body.youtubeUrl)
 
     postBus
       .createPost(post)
@@ -671,7 +711,7 @@ const createPost = (req, res) => {
                 let postTag = new PostTag()
                 postTag.postId = post.postId
                 postTag.tagId = tag.tagId
-                postTagBus.createPostTag(postTag)
+                await postTagBus.createPostTag(postTag)
               })
               .catch(err => {
 
@@ -737,7 +777,7 @@ const browsePost = (req, res) => {
     }
 
     postBus
-      .browse(alias, checking, publishedDate, reasonReject)
+      .browse(alias, checking, publishedDate, reasonReject, req.user.account)
       .then(ret => {
         res.redirect('/admin/dashboard/draft-posts')
       })
@@ -746,6 +786,35 @@ const browsePost = (req, res) => {
       })
   }
 }
+
+// const getUserInfo = (req, res) => {
+//   if (req.user.role !== config.USER_ROLES.ADMIN) {
+//     res.json({
+//       error: true,
+//       data: {}
+//     })
+//   }
+//   else {
+//     let account = req.params.account
+
+//     authBus
+//       .getDetailUserByAccount(account)
+//       .then(user => {
+//         res.json({
+//           error: undefined,
+//           data: {
+//             user
+//           }
+//         })
+//       })
+//       .catch(err => {
+//         res.json({
+//           error: true,
+//           data: {}
+//         })
+//       })
+//   }
+// }
 
 module.exports = {
   renderDashboardPage,
@@ -771,4 +840,5 @@ module.exports = {
   deleteTag,
   deleteUser,
   browsePost,
+  // getUserInfo,
 }
