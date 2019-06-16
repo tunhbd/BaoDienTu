@@ -5,7 +5,7 @@ function closeDialog() {
 function showBaoDienTuDialog(container, dialogType = 'small', dialogTitle, dialogContent, dialogActions = [], dialogInitedCallback = null) {
   const DIALOG_UI =
     `<div class="modal d-block bao-dien-tu-dialog bao-dien-tu-scrollbar" aria-hidden="true">
-      <div class="modal-dialog bao-dien-tu-dialog-style-zoom  bao-dien-tu-dialog-${dialogType}" role="document">
+      <div class="modal-dialog h-100 d-flex align-items-center bao-dien-tu-dialog-style-zoom bao-dien-tu-dialog-${dialogType}" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title bao-dien-tu-dialog__title">${dialogTitle}</h5>
@@ -13,7 +13,7 @@ function showBaoDienTuDialog(container, dialogType = 'small', dialogTitle, dialo
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body bao-dien-tu-dialog__content">
+          <div class="modal-body bao-dien-tu-dialog__content" style="max-height: 500px;">
             ${dialogContent}
           </div>
           <div class="modal-footer bao-dien-tu-dialog__actions">

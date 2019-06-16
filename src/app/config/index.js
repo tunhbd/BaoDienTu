@@ -42,5 +42,6 @@ module.exports = {
     }
   },
   LIMIT_POSTS: 2,
-  LIMIT_USERS: 10,
+  LIMIT_USERS: 15,
+  LIMIT_TAGS: 10,
 }

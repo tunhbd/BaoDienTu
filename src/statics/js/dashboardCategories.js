@@ -311,7 +311,7 @@ function showAddCategoryForm(parent) {
           //     }
           //   }
           // });
-          console.log(form.parentCategory)
+
           $.ajax({
             type: 'POST',
             url: '/admin/dashboard/create-category',
@@ -324,10 +324,13 @@ function showAddCategoryForm(parent) {
               closeDialog()
 
               if (res.error) {
-                showBaoDienTuDialog($('body'), 'small', 'Error', 'There is some error on server. You can try this in other time.')
+                swal.fire({
+                  type: 'error',
+                  title: 'Oops!',
+                  text: 'There is some error on server. You can try this in other time.',
+                })
               }
               else {
-                console.log(res.data.category)
                 showNewCategoryIntoUI(res.data.category)
               }
             }
@@ -403,7 +406,11 @@ function showEditCategoryForm(category, parent = null) {
               closeDialog()
 
               if (res.error) {
-                showBaoDienTuDialog($('body'), 'small', 'Error', 'There is some error on server. You can try this in other time.')
+                swal.fire({
+                  type: 'error',
+                  title: 'Oops!',
+                  text: 'There is some error on server. You can try this in other time.',
+                })
               }
               else {
                 updateCategoryIntoUI(res.data.category)
@@ -533,7 +540,11 @@ function deleteCategory(categoryId, parentId = null) {
             success: function (res) {
               hideLoading(loading)
               if (res.error) {
-                showBaoDienTuDialog($('body'), 'small', 'Error', 'There is some error on server. You can try this in other time.')
+                swal.fire({
+                  type: 'error',
+                  title: 'Oops!',
+                  text: 'There is some error on server. You can try this in other time.',
+                })
               }
               else {
                 item.fadeOut(300)
@@ -552,5 +563,4 @@ function deleteCategory(categoryId, parentId = null) {
       }
     ]
   )
-
 }

@@ -328,7 +328,7 @@ const renderUsersPage = (req, res) => {
     res.redirect('/admin/dashboard')
   }
   else {
-    let pageNum = req.query.page ? req.query.page : 1
+    let pageNum = req.query.page ? parseInt(req.query.page) : 1
     let role = req.query.role ? req.query.role : 'ALL'
 
     Promise
@@ -337,7 +337,6 @@ const renderUsersPage = (req, res) => {
         authBus.getAllDetailUserFilterBy(role, pageNum)
       ])
       .then(([usersCount, users]) => {
-        console.log('users', users)
         let pages = []
 
         for (let index = 1; index <= Math.ceil(usersCount / config.LIMIT_USERS); index++) {
@@ -352,6 +351,7 @@ const renderUsersPage = (req, res) => {
             thisPage: pageNum,
             users,
             pages,
+            selectedRole: role,
           },
           layout: 'dashboardLayout'
         })
@@ -364,7 +364,38 @@ const renderUsersPage = (req, res) => {
 }
 
 const renderTagsPage = (req, res) => {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
+    res.redirect('/admin/dashboard')
+  }
+  else {
+    let pageNum = req.query.page ? parseInt(req.query.page) : 1
+    Promise
+      .all([
+        tagBus.getCountTags(),
+        tagBus.getFullInfoTagsFilterBy(pageNum)
+      ])
+      .then(([tagsCount, tags]) => {
+        let pages = []
 
+        for (let index = 1; index <= Math.ceil(tagsCount / config.LIMIT_TAGS); index++) {
+          pages.push({ pageNum: index })
+        }
+        res.render('admin/tagList', {
+          data: {
+            title: 'Tags Management',
+            user: req.user,
+            pageId: 'TAG',
+            thisPage: pageNum,
+            tags,
+            pages,
+          },
+          layout: 'dashboardLayout'
+        })
+      })
+      .catch(err => {
+        res.send('error')
+      })
+  }
 }
 
 const renderCategoriesPage = (req, res) => {
@@ -402,7 +433,6 @@ const createCategory = (req, res) => {
     let category = new Category()
     category.categoryName = req.body.categoryName
     category.parent = req.body.parentCategory === '' ? null : req.body.parentCategory
-    console.log('new category', category)
 
     categoryBus
       .addCategory(category)
@@ -566,7 +596,35 @@ const editPost = (req, res) => {
 }
 
 const updateTag = (req, res) => {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
+    res.json({
+      error: true,
+      data: {}
+    })
+  }
+  else {
+    let tag = new Tag()
 
+    tag.tagId = req.body.tagId
+    tag.tagName = req.body.tagName
+
+    tagBus
+      .updateTag(tag)
+      .then(t => {
+        res.json({
+          error: undefined,
+          data: {
+            tag: t
+          }
+        })
+      })
+      .catch(err => {
+        res.json({
+          error: true,
+          data: {}
+        })
+      })
+  }
 }
 
 const updateUser = (req, res) => {
@@ -602,8 +660,34 @@ const deletePosts = (req, res) => {
   }
 }
 
-const deleteTag = (req, res) => {
+const deleteTags = (req, res) => {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
+    res.json({
+      error: true,
+      data: {}
+    })
+  }
+  else {
+    let tagIds = req.body.tagIds
 
+    tagBus
+      .deleteTags(tagIds)
+      .then(tIds => {
+        res.json({
+          error: undefined,
+          data: {
+            tagIds: tIds
+          }
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        res.json({
+          error: true,
+          data: {}
+        })
+      })
+  }
 }
 
 const deleteUser = (req, res) => {
@@ -673,7 +757,6 @@ const createPost = (req, res) => {
     let post = new Post()
     post.postId = req.generation.postId
     post.postTitle = trim(req.body.title)
-    post.alias = convertToAlias(post.postTitle)
     post.premium = req.body.premium
 
     let author = req.user
@@ -693,6 +776,7 @@ const createPost = (req, res) => {
     post.postContent = req.body['content']
     post.postAvatarImage = req.generation.postAvatarImage
     post.youtubeUrl = trim(req.body.youtubeUrl) === '' ? null : trim(req.body.youtubeUrl)
+    post.generateAlias()
 
     postBus
       .createPost(post)
@@ -734,8 +818,8 @@ const createPost = (req, res) => {
 const createTag = (req, res) => {
   let tag = new Tag()
 
-  tag.TagName = req.body.tagName
-  tag.TagActive = req.body.tagActive ? 1 : 0
+  tag.tagName = req.body.tagName
+  tag.tagActive = 1
 
   tagBus
     .createTag(tag)
@@ -787,34 +871,93 @@ const browsePost = (req, res) => {
   }
 }
 
-// const getUserInfo = (req, res) => {
-//   if (req.user.role !== config.USER_ROLES.ADMIN) {
-//     res.json({
-//       error: true,
-//       data: {}
-//     })
-//   }
-//   else {
-//     let account = req.params.account
+const getCategories = (req, res) => {
+  if (req.user.role !== 'ADMIN') {
+    res.json({
+      error: true,
+      data: {}
+    })
+  }
+  else {
+    categoryBus
+      .getAllWithLevel()
+      .then(categories => {
+        res.json({
+          error: undefined,
+          data: {
+            categories
+          }
+        })
+      })
+      .catch(err => {
+        res.json({
+          error: true,
+          data: {}
+        })
+      })
+  }
+}
 
-//     authBus
-//       .getDetailUserByAccount(account)
-//       .then(user => {
-//         res.json({
-//           error: undefined,
-//           data: {
-//             user
-//           }
-//         })
-//       })
-//       .catch(err => {
-//         res.json({
-//           error: true,
-//           data: {}
-//         })
-//       })
-//   }
-// }
+const updateAssignedCategories = (req, res) => {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
+    res.json({
+      error: true,
+      data: {}
+    })
+  }
+  else {
+    let account = req.body.account
+    let categoryIds = req.body.categoryIds
+
+    authBus
+      .updateAssignedCategories(account, categoryIds)
+      .then(categories => {
+        res.json({
+          error: undefined,
+          data: {
+            categories
+          }
+        })
+          .catch(err => {
+            res.json({
+              error: true,
+              data: {}
+            })
+          })
+      })
+  }
+}
+
+const extendExpirationDate = (req, res) => {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
+    res.json({
+      error: true,
+      data: {}
+    })
+  }
+  else {
+    let account = req.body.account
+    let expirationDate = req.body.expirationDate
+    let extendDate = req.body.extendDate
+
+    authBus
+      .extendExpirationDate(account, moment(expirationDate).add(extendDate, 'days').format('YYYY/MM/DD'))
+      .then(expDate => {
+        res.json({
+          error: undefined,
+          data: {
+            expirationDate: expDate
+          }
+        })
+      })
+      .catch(err => {
+        res.json({
+          error: true,
+          data: {}
+        })
+      })
+  }
+}
 
 module.exports = {
   renderDashboardPage,
@@ -837,8 +980,10 @@ module.exports = {
   updateUser,
   deletePosts,
   deleteCategory,
-  deleteTag,
+  deleteTags,
   deleteUser,
   browsePost,
-  // getUserInfo,
+  getCategories,
+  updateAssignedCategories,
+  extendExpirationDate,
 }

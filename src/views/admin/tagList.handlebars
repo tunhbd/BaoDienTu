@@ -1,0 +1,117 @@
+{{#section 'moreCss'}}
+<link rel="stylesheet" href="/css/dashboardTags.css">
+<link rel="stylesheet" href="/css/pagination.css">
+<link rel="stylesheet" href="/css/loading/loading.css">
+<link rel="stylesheet" href="/css/spinjs/spin.css">
+<link rel="stylesheet" href="/css/dialog.css">
+{{/section}}
+
+{{#section 'moreJs'}}
+<script>
+  var pageCount = {{ data.pages.length }}
+  var currentPage = {{ data.thisPage }}
+  var tags = '{{#jsonStringify data.tags}}{{/jsonStringify}}'
+  tags = JSON.parse(tags)
+  console.log(tags)
+</script>
+<script src="/js/dialog.js"></script>
+<script src="/js/loading/loading.js"></script>
+<script src="/js/spinjs/spin.js"></script>
+<script src="/js/dashboardTags.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="/js/moment.min.js"></script>
+{{/section}}
+
+<div style="padding: 20px;">
+  <div class="w-table-wrapper">
+    <div class="w-table-title mb-4">
+      <button type="button" id="addButton" class=" btn btn-outline-primary" onclick="addOrEditTag()">
+        <i class="fas fa-plus align-baseline"></i>&nbsp;Add new
+      </button>
+      <button type="button" class="btn btn-outline-danger ml-2" disabled id="deleteButton" onclick="deleteTags()">
+        <i class="fas fa-times align-baseline"></i>&nbsp;Delete
+      </button>
+    </div>
+
+    <div class="w-table-body">
+      <div class="table-responsive-sm">
+        <table class="table table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <td scope="col" style=" width: 1%;"></td>
+              <td scope="col" style=" width: 20%;">Tag</td>
+              <td scope="col" style=" width: 20%;">Status</td>
+              <td scope="col" class="text-center" style=" width: 10%;">
+                Created Date
+              </td>
+              <td scope="col" style=" width: 8%;"></td>
+            </tr>
+          </thead>
+          <tbody id="data-container">
+            {{#each data.tags}}
+            <tr class="tagItem" tag-id=${item.tag_id}>
+              <td scope="row">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input tagSelection" id="{{this.tagId}}"
+                    value="{{this.tagId}}" onclick="changeDeleteStatus()">
+                  <label class="custom-control-label" for="{{this.tagId}}"></label>
+                </div>
+              </td>
+              <td scope="row">
+                <span>{{this.tagName}}</span>
+              </td>
+              <td scope="row">
+                {{#if this.tagActive}}
+                <span class="badge badge-success p-2">Active</span>
+                {{else}}
+                <span class="badge badge-danger p-2">Disabled</span>
+                {{/if}}
+              </td>
+              <td class="text-center" scope="row">
+                {{#viDate this.createdDate}}{{/viDate}}
+              </td>
+              <td scope="row">
+                <div class="w-table-actions">
+                  <button type="button" class="btn btn-primary" onclick="addOrEditTag('{{this.tagId}}')">
+                    <i class="fas fa-pen"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <div id="pagination-container"></div>
+      </div>
+    </div>
+  </div>
+  {{#if data.pages.length}}
+  <div class="pagination">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" onclick="goToPreviousPage()">
+          <a class="page-link" href="javascript:;" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        {{#each data.pages}}
+        <li class="page-item" onclick="goToPage(this)">
+          <a class="page-link page{{#if (opt this.pageNum '===' ../data.thisPage opt)}} page-active{{/if}}"
+            href="javascript:;">{{this.pageNum}}</a></li>
+        {{/each}}
+        <li class="page-item" onclick="goToNextPage()">
+          <a class="page-link" href="javascript:;" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  {{else}}
+  <h6 class="text-center font-italicc text-secondary p-1">No any tag</h6>
+  {{/if}}
+</div>
