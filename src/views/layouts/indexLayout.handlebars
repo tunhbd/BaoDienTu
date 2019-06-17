@@ -93,7 +93,7 @@
                 class="fas fa-search search-icon"></i>
 
               <div class="form-group wrap-input">
-                <input style="padding: 0 !important;height: auto;" value="" type="text" class="form-control"
+                <input style="padding: 0 !important;height: auto;" value="" type="text" id="search" class="form-control"
                   name="search" placeholder="Tìm kiếm..." />
                 <span class="w-input"></span>
               </div>
@@ -103,7 +103,6 @@
           <div class="logo">
             <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
           </div>
-          {{#if user}}
           <!-- <img width="40px" height="40px" id="homepage-avatar-user"
             class="rounded-circle overflow-hidden homepage-user-menu-is-collapse" src="{{user.avatar}}" alt="" />
           {{user.fullname}}
@@ -129,6 +128,8 @@
           </li>
           </ul>
         </div> -->
+          {{#if user}}
+
           <div class="position-relative d-flex" style="align-items: flex-end;padding-bottom: 6px;">
             <a href="#" id="avatar-user" class="user-menu-is-collapse login">{{user.fullname}}</a>
             <div class="user-menu">
@@ -208,7 +209,7 @@
 
 
 
-    <section id="section-body" style="margin-top: 160px">
+    <section id="section-body" style="min-height:360px; margin-top: 160px">
       {{{ body }}}
 
       {{posts}}

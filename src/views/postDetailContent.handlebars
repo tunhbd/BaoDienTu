@@ -8,7 +8,7 @@
 
                 <p style="line-height: 125%;"><span style="transform: translateY(-4px);"
                         class="mr-3 d-inline-block detail-category">
-                        <a href="">
+                        <a href="/category/{{post.category_id}}">
                             <span>{{post.category_name}}</span>
                         </a>
                     </span>{{post.post_title}}</p>
@@ -16,8 +16,9 @@
             <div class="header-post-detail">
 
                 <div class="detail-tag align-self-center">#Tags:
-                    <a href=""><span>nông nghiệp</span></a>
-                    <a href=""><span>gỗ</span></a>
+                    {{#each tags}}
+                    <a href="/tag/{{this.tag_id}}"><span>{{this.tag_name}}</span></a>
+                    {{/each}}
                 </div>
                 <div class="mt-4 align-self-center"><b>Ngày đăng:</b>
                     <span style="opacity: 0.7;">{{post.published_date}}</span>
@@ -40,9 +41,9 @@
                 <form class=" clearfix">
                     <div class="form-group">
                         <label class="title-relative" for="txtComment">Ý kiến của bạn</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <textarea id="cmt" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary float-right">Bình luận</button>
+                    <button id="commentBtn" type="submit" class="btn btn-primary float-right">Bình luận</button>
                 </form>
 
 
@@ -50,44 +51,55 @@
 
             </div>
             <div class="list-comment mt-5">
-                <label class="title-relative" for="txtComment">Bình luận (1)</label>
-                <div class="mt-3">
-                    <div class="comment-title d-flex justify-content-between">
-                        <div class="comment-author">Viet</div>
-                        <div class="comment-day">14-9-2019</div>
-                    </div>
-                    <div class="comment ml-3 mt-2">
+                <label class="title-relative" for="txtComment">Bình luận</label>
+                <div id="comment-list">
+                    {{#each comments}}
+                    <div class="mt-3">
+                        <div class="comment-title d-flex justify-content-between">
+                            <div class="comment-author">{{this.user_fullname}}</div>
+                            <div class="comment-day">{{this.comment_date}}</div>
+                        </div>
+                        <div class="comment ml-3 mt-2">
 
-                        <div class="comment-content">
-                            <p>Ổn</p>
+                            <div class="comment-content">
+                                <p>{{this.comment_content}}</p>
+                            </div>
                         </div>
                     </div>
+                    {{/each}}
                 </div>
-                <hr>
-                <div class="mt-3">
-                    <div class="comment-title d-flex justify-content-between">
-                        <div class="comment-author">Viet</div>
-                        <div class="comment-day">14-9-2019</div>
-                    </div>
-                    <div class="comment ml-3 mt-2">
-
-                        <div class="comment-content">
-                            <p style="line-height: 125%;">internal/process/next_tick.js:81:5)
-                                (node:11493) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error
-                                originated either by throwing inside of an async function without a catch block, or by
-                                rejecting a promise which was not handled with .catch(). (rejection id: 1)
-                                (node:11493) [DEP0018] DeprecationWarning: Unhandled prom</p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
         <div id="right-cont" style="overflow: hidden;" class="col-lg-4 col-md-4 post-relative pr-4">
             <div style="margin-left: 0px !important;" class="row title-relative">
                 <span>Cùng chuyên mục</span>
             </div>
+            {{#each tenPostsFromCatId}}
             <div class="item-top-10">
+                <a href="/post/{{this.post_id}}">
+                    <div class=" row">
+                        <div class="col-md-6">
+                            <div class="image-item">
+                                <img src="/media/images/posts/{{this.post_avatar_image}}" alt="{{post_title}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="item-topic">
+                                <span class="topic">{{this.category_name}}</span>
+                            </div>
+                            <div class="item-title">
+                                <span class="title">{{this.post_title}}</span>
+                            </div>
+                            <div class="item-day">
+                                <span class="day"><strong>Ngày đăng:</strong> <i
+                                        class="date-post">{{this.published_date}}</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {{/each}}
+            {{!-- <div class="item-top-10">
                 <a href="/post/post_sample">
                     <div class=" row">
                         <div class="col-md-6">
@@ -108,12 +120,59 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div> --}}
 
         </div>
     </div>
 
-    <script>
-        console.log('{{post.post_title}}')
-    </script>
 </div>
+<script>
+
+    document.getElementById('commentBtn').addEventListener('click', function comment(e) {
+        e.preventDefault();
+
+        let content = document.getElementById('cmt').value
+        let post_id = window.location.pathname.split('/')[2];
+        var http = new XMLHttpRequest();
+        var url = '/comment/insert';
+        var params = `content=${content}&post_id="${post_id}"`;
+        http.open('POST', url, true);
+
+        //Send the proper header information along with the request
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        http.onreadystatechange = function () {//Call a function when the state changes.
+            if (http.readyState == 4 && http.status == 200) {
+                let user = http.response.user
+                let date = new Date();
+                let html = `<div class="mt-3">
+                    <div class="comment-title d-flex justify-content-between">
+                        <div class="comment-author">${JSON.parse(http.response).user}</div>
+                        <div class="comment-day">${date.getDate()}-${date.getMonth()}-${date.getFullYear()}</div>
+                    </div>
+                    <div class="comment ml-3 mt-2">
+
+                        <div class="comment-content">
+                            <p>${content}</p>
+                        </div>
+                    </div>
+                </div>`
+                document.getElementById('comment-list').insertAdjacentHTML("afterbegin", html);
+                document.getElementById('cmt').value = ""
+            } else if (http.status == 500) {
+                swal.fire({
+                    type: 'error',
+                    title: 'Oops!',
+                    text: JSON.parse(http.response).error,
+
+                }).then((res) => {
+                    if (res.value) {
+                        window.location.href = "/sign-in";
+                    }
+                })
+            }
+        }
+        http.send(params);
+    })
+
+</script>

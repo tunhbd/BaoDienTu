@@ -6,7 +6,8 @@ module.exports = {
     "/category/:catId": [userHandlers.showPostsListByCategoryGetRequest],
     "/tag/:tagId": [userHandlers.showPostsListByTagGetRequest],
     "/post/:postId": [userHandlers.showPostDetailGetRequest],
+
     "/search/result": [userHandlers.getSearchResultsGetRequest]
   },
-  post: {}
+  post: { "/comment/insert": [userHandlers.insertCommentPostRequest] }
 };

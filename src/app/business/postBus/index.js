@@ -793,9 +793,14 @@ const checkIsRejectedOrDraftById = id =>
       });
   });
 
-const getTenLatestPosts = () =>
+// có thể có categoryId để trả ra 10 bài mới nhất của cat đó
+const getTenLatestPosts = categoryId =>
   new Promise((resolve, reject) => {
-    let query = `SELECT *  FROM posts join categories on posts.category = categories.category_id WHERE published_date  ORDER BY published_date DESC LIMIT 10`;
+    let query = `SELECT *  FROM posts join categories on posts.category = categories.category_id WHERE posts.published_date  ORDER BY posts.published_date DESC LIMIT 10`;
+
+    if (categoryId)
+      query = `SELECT *  FROM posts join categories on posts.category = categories.category_id WHERE posts.category = '${categoryId}' AND posts.published_date  ORDER BY published_date DESC LIMIT 10`;
+
     let dbConn = new DBConnection();
 
     dbConn
@@ -840,7 +845,8 @@ const getPostsFromCategoryId = (id, from, limit) =>
 
 const getPostsFromId = id =>
   new Promise((resolve, reject) => {
-    let query = `SELECT * FROM posts join categories on posts.category = categories.category_id where posts.post_id = '${id}' and posts.published_date`;
+    let query = `SELECT * FROM posts join categories on posts.category = categories.category_id
+      where posts.post_id = '${id}' and posts.published_date`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -852,6 +858,68 @@ const getPostsFromId = id =>
         reject(err);
       });
   });
+const getTagsFromPostId = id =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM post_tags join tags on post_tags.tag_id = tags.tag_id where post_tags.post_id = '${id}'`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getNameTagById = id =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM tags WHERE tag_id = '${id}'`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rows => {
+        resolve(rows[0]);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getPostsFromTagId = (id, from, limit) =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM  post_tags join posts on post_tags.post_id = posts.post_id
+    join tags on tags.tag_id = post_tags.tag_id where tags.tag_id = '${id}' and posts.published_date ORDER BY posts.published_date LIMIT ${limit} OFFSET ${from}`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const ftSearch = (searchStr, from, limit) =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM  posts where MATCH (post_title) AGAINST ('${searchStr}' IN NATURAL LANGUAGE MODE) LIMIT ${limit} OFFSET ${from}`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        console.log(query, rets.length);
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
 module.exports = {
   createPost,
   updatePost,
@@ -871,5 +939,9 @@ module.exports = {
   getTenLatestPosts,
   getPostsFromCategoryId,
   getNameCatById,
-  getPostsFromId
+  getPostsFromId,
+  getTagsFromPostId,
+  getPostsFromTagId,
+  getNameTagById,
+  ftSearch
 };

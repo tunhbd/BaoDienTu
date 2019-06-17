@@ -1,26 +1,25 @@
-const authBus = require("../../business/authBus")
-const config = require("../../config")
-const crypto = require("crypto")
-const passport = require("passport")
-const db = require("../../db")
-const bcrypt = require("bcrypt")
-const sgMail = require("@sendgrid/mail")
+const authBus = require("../../business/authBus");
+const config = require("../../config");
+const crypto = require("crypto");
+const passport = require("passport");
+const db = require("../../db");
+const bcrypt = require("bcrypt");
+const sgMail = require("@sendgrid/mail");
 
 const renderSignInPage = (req, res) => {
   if (req.user) {
     switch (req.user.userRole) {
-      case 'SUBSCRIBER':
-        res.redirect('/')
+      case "SUBSCRIBER":
+        res.redirect("/");
         break;
-      case 'WRITER':
-      case 'EDITOR':
-      case 'ADMIN':
-        res.redirect('/admin/dashboard')
-        break
+      case "WRITER":
+      case "EDITOR":
+      case "ADMIN":
+        res.redirect("/admin/dashboard");
+        break;
     }
-  }
-  else {
-    res.render('user/signIn', {
+  } else {
+    res.render("user/signIn", {
       layout: false,
       message: { success: req.flash("suc") }
     });
@@ -38,16 +37,14 @@ const signIn = (req, res, next) => {
         ov: info,
         message: { error: req.flash("mes") }
       });
-    }
-    else {
+    } else {
       req.logIn(user, err => {
-        if (err) return next(err)
+        if (err) return next(err);
 
-        if (user.role === 'SUBSCRIBER') {
-          res.redirect("/")
-        }
-        else {
-          res.redirect("/admin/dashboard")
+        if (user.role === "SUBSCRIBER") {
+          res.redirect("/");
+        } else {
+          res.redirect("/admin/dashboard");
         }
       });
     }
@@ -74,18 +71,18 @@ const signUp = (req, res) => {
 };
 
 const checkNotExistsUserAccount = (req, res) => {
-  let account = req.query.username
+  let account = req.query.username;
   authBus
     .checkExistsUserAccount(account)
     .then(ret => {
-      console.log(ret ? false : true)
-      res.json(ret ? false : true)
+      console.log(ret ? false : true);
+      res.json(ret ? false : true);
     })
     .catch(err => {
-      console.log(err)
-      res.json(false)
-    })
-}
+      console.log(err);
+      res.json(false);
+    });
+};
 
 const changePasswordGetRequest = (req, res) => {
   // let signinedUser = authBus.getSigninedUser(req.cookies.signined_user);
@@ -144,17 +141,16 @@ const profileGetRequest = (req, res) => {
 const profilePostRequest = (req, res) => {
   res.render("profile", { layout: false });
 };
-const authFacebookGetRequest = function () {
+const authFacebookGetRequest = function() {
   passport.authenticate("facebook", { scope: "email" });
 };
-const authFacebookCallbackGetRequest = function () {
+const authFacebookCallbackGetRequest = function() {
   passport.authenticate("facebook", {
     successRedirect: "/",
     failureRedirect: "/sign-in"
   });
 };
 const forgotPasswordPostRequest = (req, res) => {
-  console.log(req);
   let q = `SELECT * FROM users WHERE user_email='${req.body.emailReset}';`;
 
   new db.DBConnection()
@@ -168,7 +164,7 @@ const forgotPasswordPostRequest = (req, res) => {
       token = crypto.randomBytes(32).toString("hex");
       let saveTokQuery = `INSERT INTO user_reset(ur_email, ur_token) VALUES ('${
         user.user_email
-        }', '${token}')`;
+      }', '${token}')`;
       new db.DBConnection().loadRequest(saveTokQuery).then(() => {
         const msg = {
           to: "letuthptnguyendueduvn@gmail.com",
@@ -235,15 +231,15 @@ const resetPasswordPostRequest = (req, res) => {
 };
 
 const signInByFacebook = (req, res) => {
-  passport.authenticate("facebook")
-}
+  passport.authenticate("facebook");
+};
 
 const signInByFacebookAgain = (req, res) => {
   passport.authenticate("facebook", {
     successRedirect: "/",
     failureRedirect: "/sign-in"
-  })
-}
+  });
+};
 
 module.exports = {
   renderSignInPage,
@@ -263,5 +259,5 @@ module.exports = {
   resetPasswordPostRequest,
   signInByFacebook,
   signInByFacebookAgain,
-  checkNotExistsUserAccount,
+  checkNotExistsUserAccount
 };
