@@ -130,13 +130,18 @@
       <textarea id="create-post-editor" name="content"
         {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}value="{{data.post.postContent}}" {{/if}}></textarea>
     </div>
+    <div class="custom-control custom-switch mt-2 mb-2">
+      <input type="checkbox" class="custom-control-input" id="premium" name="premium"
+        {{#if data.post.premium}}checked{{/if}}>
+      <label class="custom-control-label" for="premium">Premium</label>
+    </div>
     <div class="form-group">
       {{#if (opt data.pageId '===' 'EDIT_POST' opt)}}
-      <a href="{{data.backLink}}" class="btn btn-primary w-button" type="button">
+      <a href="{{data.backLink}}" class="btn btn-secondary w-button">
         Cancel
       </a>
       {{/if}}
-      <button class="btn btn-primary w-button" type="submit">
+      <button class="btn btn-success w-button" type="submit">
         Done
       </button>
     </div>

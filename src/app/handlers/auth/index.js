@@ -74,6 +74,20 @@ const signUp = (req, res, next) => {
     .catch(err => next(err));
 };
 
+const checkNotExistsUserAccount = (req, res) => {
+  let account = req.query.username;
+  authBus
+    .checkExistsUserAccount(account)
+    .then(ret => {
+      console.log(ret ? false : true);
+      res.json(ret ? false : true);
+    })
+    .catch(err => {
+      console.log(err);
+      res.json(false);
+    });
+};
+
 const changePasswordGetRequest = (req, res) => {
   // let signinedUser = authBus.getSigninedUser(req.cookies.signined_user);
 
@@ -260,5 +274,6 @@ module.exports = {
   resetPasswordGetRequest,
   resetPasswordPostRequest,
   signInByFacebook,
-  signInByFacebookAgain
+  signInByFacebookAgain,
+  checkNotExistsUserAccount
 };

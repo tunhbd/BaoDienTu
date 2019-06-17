@@ -244,6 +244,20 @@ function addCategory(parentId = null) {
   showAddCategoryForm(parent)
 }
 
+function editCategory(categoryId, parentId = null) {
+  let category = null
+  let parent = null
+  if (parentId === null) {
+    category = categories.filter(categ => categ.categoryId === categoryId)[0]
+  }
+  else {
+    parent = categories.filter(categ => categ.categoryId === parentId)[0]
+    category = parent.subCategories.filter(categ => categ.categoryId === categoryId)[0]
+  }
+
+  showEditCategoryForm(category, parent)
+}
+
 function showAddCategoryForm(parent) {
   let form =
     `<form id="addCategoryForm" method="POST" action="/admin/dashboard/create-category">
@@ -274,48 +288,53 @@ function showAddCategoryForm(parent) {
         form: 'addCategoryForm',
         class: 'btn-success',
         title: 'Add',
-        callback: function () {
-
-        }
+        callback: null
       }
     ],
     function () {
       $('#addCategoryForm').validate({
-        submitHandler: function (form) {
-          $(form).ajaxSubmit({
-            error: function (xhr) {
-              closeDialog()
-              showBaoDienTuDialog($('body'), 'small', 'Error', 'There is some error on server. You can try this in other time.')
-            },
-            success: function (res) {
-              closeDialog()
-              if (res.error) {
-                showBaoDienTuDialog($('body'), 'small', 'Error', 'There is some error on server. You can try this in other time.')
-              }
-              else {
-                showNewCategoryIntoUI(res.data.category)
-              }
-            }
-          });
-          // $.ajax({
-          //   type: 'POST',
-          //   url: '/admin/dashboard/create-category',
-          //   data: {
-          //     categoryName: form.categoryName.value,
-          //     parentCategory: form.parentCategory.value
+        submitHandler: function (form, e) {
+          e.preventDefault()
+          let loading = showLoading($('.modal-content'))
+          // $(form).ajaxSubmit({
+          //   error: function (xhr) {
+          //     closeDialog()
+          //     showBaoDienTuDialog($('body'), 'small', 'Error', 'There is some error on server. You can try this in other time.')
           //   },
           //   success: function (res) {
           //     closeDialog()
-          //     if (error) {
+          //     if (res.error) {
           //       showBaoDienTuDialog($('body'), 'small', 'Error', 'There is some error on server. You can try this in other time.')
           //     }
           //     else {
           //       showNewCategoryIntoUI(res.data.category)
           //     }
           //   }
-          // })
+          // });
 
-          // return false;
+          $.ajax({
+            type: 'POST',
+            url: '/admin/dashboard/create-category',
+            data: {
+              categoryName: form.categoryName.value,
+              parentCategory: form.parentCategory ? form.parentCategory.value : null
+            },
+            success: function (res) {
+              hideLoading(loading)
+              closeDialog()
+
+              if (res.error) {
+                swal.fire({
+                  type: 'error',
+                  title: 'Oops!',
+                  text: 'There is some error on server. You can try this in other time.',
+                })
+              }
+              else {
+                showNewCategoryIntoUI(res.data.category)
+              }
+            }
+          })
         },
         rules: {
           categoryName: 'required'
@@ -335,25 +354,114 @@ function showAddCategoryForm(parent) {
     })
 }
 
+function showEditCategoryForm(category, parent = null) {
+  let form =
+    `<form id="editCategoryForm" method="POST" action="/admin/dashboard/update-category">
+      <div class="form-group">
+        <label for="categoryName">Category Name</label>
+        <input type="text" class="form-control" id="categoryName" name="categoryName" aria-describedby="categoryNameHelp" placeholder="Enter category name" value="${category.categoryName}">
+        <small id="categoryNameHelp" class="form-text text-muted">Example: Kinh tế</small>
+      </div>
+      ${
+    parent !== null
+      ? `<div class="form-group" >
+            <label for="parentCategory">Parent Category</label>
+            <select class="custom-select" id="parentCategory" name="parentCategory">
+              <option value="${parent.categoryId}" selected>${parent.categoryName}</option>
+            </select>
+          </div>`
+      : ''}
+    </form>`
+
+  showBaoDienTuDialog(
+    $('body'),
+    'small',
+    'Edit Category',
+    form,
+    [
+      {
+        type: 'submit',
+        form: 'editCategoryForm',
+        class: 'btn-success',
+        title: 'Update',
+        callback: null
+      }
+    ],
+    function () {
+      $('#editCategoryForm').validate({
+        submitHandler: function (form, e) {
+          e.preventDefault()
+          let loading = showLoading($('.modal-content'))
+
+          $.ajax({
+            type: 'POST',
+            url: '/admin/dashboard/update-category',
+            data: {
+              categoryId: category.categoryId,
+              categoryName: form.categoryName.value,
+              parentCategory: category.parent
+            },
+            success: function (res) {
+              hideLoading(loading)
+              closeDialog()
+
+              if (res.error) {
+                swal.fire({
+                  type: 'error',
+                  title: 'Oops!',
+                  text: 'There is some error on server. You can try this in other time.',
+                })
+              }
+              else {
+                updateCategoryIntoUI(res.data.category)
+              }
+            }
+          })
+        },
+        rules: {
+          categoryName: 'required'
+        },
+        messages: {
+          categoryName: 'You forgot to enter category name'
+        },
+        errorElement: 'small',
+        errorClass: 'd-block help-block text-danger',
+        highlight: function (e) {
+          $(e).removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function (e) {
+          $(e).removeClass('is-invalid').addClass('is-valid');
+        }
+      })
+    })
+}
+
+function updateCategoryIntoUI(category) {
+  console.log(category)
+  if (category.parent === null) {
+    $(`[category-id="${category.categoryId}"] .rootCategory .rootCategory__content`).text(category.categoryName)
+  }
+  else {
+    $(`[category-id="${category.categoryId}"] .subCategory__content`).text(category.categoryName)
+  }
+}
+
 function showNewCategoryIntoUI(category) {
   let container = null
 
   if (category.parent === null) {
     container = $('#rootCategoryList')
     let item = $(
-      `<div class="rootCategoryContainer w-100 border rounded mt-1 mb-1" category-id="${category.categoryId}">
-        <div class="rootCategory w-100 d-flex justify-content-between align-items-center p-2">
+      `<div class="rootCategoryContainer w-100 border rounded mt-1 mb-1" category-id="${category.categoryId}" style="display: none;">
+        <div class="rootCategory w-100 justify-content-between align-items-center p-2">
           <div class="rootCategory__content">${category.categoryName}</div>
           <div class="controls d-flex align-content-center">
             <div class="functionButtons d-flex align-content-center">
-              <button type="button" class="btn btn-info info-btn">
-                <i class="fas fa-info"></i>
-              </button>
               <button type="button" class="btn btn-secondary edit-btn" edit-for="${category.categoryId}"
                 onclick="editCategory('${category.categoryId}')">
                 <i class="fas fa-pencil-alt"></i>
               </button>
-              <button type="button" class="btn btn-danger delete-btn" delete-for="${category.categoryId}
+              <button type="button" class="btn btn-danger delete-btn" delete-for="${category.categoryId}"
                 onclick="deleteCategory('${category.categoryId}')">
                 <i class="fas fa-trash-alt"></i>
               </button>
@@ -377,18 +485,16 @@ function showNewCategoryIntoUI(category) {
     )
 
     container.append(item)
+    item.slideDown(300)
     categories.push(category)
   }
   else {
     container = $(`.subCategoryList[of-category="${category.parent}"] .subCategoryList__content`)
     let item = $(
-      `<div class="subCategory w-100 p-2 pl-3 pr-3 d-flex justify-content-between align-items-center" category-id="${category.categoryId}">
+      `<div class="subCategory border rounded w-100 p-2 pl-3 pr-3 justify-content-between align-items-center" category-id="${category.categoryId}" style="display: none;">
         <div class="subCategory__content">${category.categoryName}</div>
         <div class="controls d-flex clign-content-center">
           <div class="functionButtons d-flex align-content-center">
-            <button type="button" class="btn btn-info info-btn">
-              <i class="fas fa-info"></i>
-            </button>
             <button type="button" class="btn btn-secondary edit-btn" edit-for="${category.categoryId}"
               onclick="editCategory('${category.categoryId}', true)">
               <i class="fas fa-pencil-alt"></i>
@@ -403,6 +509,7 @@ function showNewCategoryIntoUI(category) {
     )
 
     container.append(item)
+    item.fadeIn(300)
     categories.filter(function (categ) {
       return categ.categoryId === category.parent
     })[0].subCategories.push(category)
@@ -421,6 +528,8 @@ function deleteCategory(categoryId, parentId = null) {
         class: 'btn-success',
         callback: function () {
           closeDialog()
+          let item = $(`[category-id="${categoryId}"]`)
+          let loading = showLoading(item)
           $.ajax({
             type: 'POST',
             url: '/admin/dashboard/delete-category',
@@ -429,11 +538,16 @@ function deleteCategory(categoryId, parentId = null) {
               isParent: parentId === null
             },
             success: function (res) {
+              hideLoading(loading)
               if (res.error) {
-                showBaoDienTuDialog($('body'), 'small', 'Error', 'There is some error on server. You can try this in other time.')
+                swal.fire({
+                  type: 'error',
+                  title: 'Oops!',
+                  text: 'There is some error on server. You can try this in other time.',
+                })
               }
               else {
-                $(`[category-id="${categoryId}"]`).slideUp(500)
+                item.fadeOut(300)
 
                 if (parentId === null) {
                   categories = categories.filter(categ => categ.categoryId !== categoryId)
@@ -449,5 +563,4 @@ function deleteCategory(categoryId, parentId = null) {
       }
     ]
   )
-
 }

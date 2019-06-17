@@ -41,5 +41,7 @@ module.exports = {
       DATABASE_NAME: 'baodientu'
     }
   },
-  LIMIT_POSTS: 2
+  LIMIT_POSTS: 2,
+  LIMIT_USERS: 15,
+  LIMIT_TAGS: 10,
 }

@@ -1,5 +1,6 @@
 {{#section 'moreCss'}}
 <link rel="stylesheet" href="/css/dashboardCategories.css">
+<link rel="stylesheet" href="/css/loading/loading.css">
 <link rel="stylesheet" href="/css/dialog.css">
 {{/section}}
 
@@ -13,19 +14,22 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="/js/spinjs/spin.js"></script>
+<script src="/js/loading/loading.js"></script>
 {{/section}}
 
 <div id="categoryListContainer" class="w-100 p-2">
   <div id="rootCategoryList">
     {{#each data.categories}}
     <div class="rootCategoryContainer w-100 border rounded mt-1 mb-1" category-id="{{this.categoryId}}">
-      <div class="rootCategory w-100 d-flex justify-content-between align-items-center p-2">
+      <div class="rootCategory w-100 justify-content-between align-items-center p-2">
         <div class="rootCategory__content">{{this.categoryName}}</div>
         <div class="controls d-flex align-content-center">
           <div class="functionButtons d-flex align-content-center">
-            <button type="button" class="btn btn-info info-btn">
+            {{!-- <button type="button" class="btn btn-info info-btn">
               <i class="fas fa-info"></i>
-            </button>
+            </button> --}}
             <button type="button" class="btn btn-secondary edit-btn" edit-for="{{this.categoryId}}"
               onclick="editCategory('{{this.categoryId}}')">
               <i class="fas fa-pencil-alt"></i>
@@ -41,17 +45,18 @@
           </button>
         </div>
       </div>
-      <div class="subCategoryList w-100" style="display: none;" of-category="{{this.categoryId}}">
+      <div class="subCategoryList w-100 p-1" style="display: none;" of-category="{{this.categoryId}}">
         <div class="subCategoryList__content">
           {{#each this.subCategories}}
-          <div class="subCategory w-100 p-2 pl-3 pr-3 d-flex justify-content-between align-items-center"
+          <div
+            class="subCategory border rounded mt-1 mb-1 w-100 p-2 pl-3 pr-3 justify-content-between align-items-center"
             category-id="{{this.categoryId}}">
             <div class="subCategory__content">{{this.categoryName}}</div>
             <div class="controls d-flex clign-content-center">
               <div class="functionButtons d-flex align-content-center">
-                <button type="button" class="btn btn-info info-btn">
+                {{!-- <button type="button" class="btn btn-info info-btn">
                   <i class="fas fa-info"></i>
-                </button>
+                </button> --}}
                 <button type="button" class="btn btn-secondary edit-btn" edit-for="{{this.categoryId}}"
                   onclick="editCategory('{{this.categoryId}}', true)">
                   <i class="fas fa-pencil-alt"></i>

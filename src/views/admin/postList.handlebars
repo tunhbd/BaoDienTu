@@ -14,16 +14,20 @@
 {{/section}}
 <div class="post-list-container">
   <div class="filters-container mb-2">
+    {{#if (opt (opt data.user.role '===' 'WRITER' opt) '||' (opt data.user.role '===' 'ADMIN' opt) opt)}}
     <button type="button" class="btn btn-danger delete-button font-weight-bold mt-1 mb-1" disabled
       onclick="deletePosts()">
       <i class="fas fa-trash-alt"></i>
     </button>
+    {{/if}}
     <div class="input-group filter-item filter-category mt-1 mb-1">
       <div class="input-group-prepend">
         <label class="input-group-text" for="filterCategory">Category</label>
       </div>
       <select class="custom-select" id="filterCategory" onchange="filterPostsByCategory()">
+        {{#if (opt data.selectedCategory '!==' 'NONE' opt)}}
         <option value="ALL" {{#if (opt data.selectedCategory '===' 'ALL' opt)}} selected {{/if}}>All</option>
+        {{/if}}
         {{#each data.categories}}
 
         <option value="{{this.alias}}" {{#if (opt ../data.selectedCategory '===' this.alias opt)}} selected{{/if}}>
@@ -66,6 +70,7 @@
         <th class="post-list__cell">Title</th>
         <th class="post-list__cell">Category</th>
         <th class="post-list__cell">Author</th>
+        <th class="post-list__cell">Type</th>
         <th class="post-list__cell">Created Date</th>
         {{#if data.status}}
         <th class="post-list__cell">Published Date</th>
@@ -93,6 +98,10 @@
           {{else}}
           {{this.author.pseudonym}}
           {{/if}}
+        </td>
+        <td class="post-list__cell">
+          <span
+            class="badge badge-pill badge-{{#if this.premium}}warning{{else}}secondary{{/if}} p-2">{{#if this.premium}}Premium{{else}}Normal{{/if}}</span>
         </td>
         <td class="post-list__cell">{{#viDate}} {{this.createdDate}} {{/viDate}}</td>
         {{#if ../data.status}}
