@@ -14,14 +14,7 @@ module.exports = {
     '/admin/dashboard/tags': [adminHandlers.renderTagsPage],
     '/admin/dashboard/categories': [adminHandlers.renderCategoriesPage],
     '/admin/dashboard/preview-post/:postAlias': [adminHandlers.renderPreviewPostAndCheckPage],
-    // '/admin/dashboard/user/:account': [adminHandlers.getUserInfo],
-    // '/dashboard/dashboard-ui/edit-post': adminHandlers.getEditPostUIGetRequest,
-    // '/dashboard/dashboard-ui/edit-user/:userRule': adminHandlers.getEditUserUIByRoleGetRequest,
-    // '/dashboard/dashboard-ui/:pageId': adminHandlers.getPageContentUIByPageIdGetRequest,
-    // '/dashboard/posts-list/:pageId': adminHandlers.getPostsListByPageIdGetRequest,
-    // '/dashboard/categories-list': adminHandlers.getFullCategoriesListGetRequest,
-    // '/dashboard/tags-list': adminHandlers.getFullTagsListGetRequest,
-    // '/dashboard/users-list': adminHandlers.getFullUsersListGetRequest,
+    '/admin/dashboard/data/categories': [adminHandlers.getCategories]
   },
   'post': {
     '/admin/dashboard/create-post': [gereratePostIdMiddleware, multerMiddlewares.postImageMulterMiddleware, adminHandlers.createPost],
@@ -30,18 +23,22 @@ module.exports = {
     '/admin/dashboard/update-category': [adminHandlers.updateCategory],
     '/admin/dashboard/delete-category': [adminHandlers.deleteCategory],
     '/admin/dashboard/create-tag': [adminHandlers.createTag],
+    '/admin/dashboard/update-tag': [adminHandlers.updateTag],
+    '/admin/dashboard/delete-tags': [adminHandlers.deleteTags],
     '/admin/dashboard/preview-post/:postAlias/browse': [adminHandlers.browsePost],
     '/admin/dashboard/delete-posts': [adminHandlers.deletePosts],
+    '/admin/dashboard/editor/update-assigned-categories': [adminHandlers.updateAssignedCategories],
+    '/admin/dashboard/subscriber/extend-expiration-date': [adminHandlers.extendExpirationDate],
   },
-  'put': {
-    '/admin/dashboard/update-tag': [adminHandlers.updateTag],
-    '/admin/dashboard/update-category': [adminHandlers.updateCategory],
-    '/admin/dashboard/update-user': [adminHandlers.updateUser],
-  },
-  'delete': {
+  // 'put': {
+  //   '/admin/dashboard/update-tag': [adminHandlers.updateTag],
+  //   '/admin/dashboard/update-category': [adminHandlers.updateCategory],
+  //   '/admin/dashboard/update-user': [adminHandlers.updateUser],
+  // },
+  // 'delete': {
 
-    '/admin/dashboard/delete-tag/:tagId': [adminHandlers.deleteTag],
-    '/admin/dashboard/delete-user/:account': [adminHandlers.deleteUser],
-    '/admin/dashboard/delete-category/:categoryId': [adminHandlers.deleteCategory],
-  }
+  //   '/admin/dashboard/delete-tag/:tagId': [adminHandlers.deleteTag],
+  //   '/admin/dashboard/delete-user/:account': [adminHandlers.deleteUser],
+  //   '/admin/dashboard/delete-category/:categoryId': [adminHandlers.deleteCategory],
+  // }
 }

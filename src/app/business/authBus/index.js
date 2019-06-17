@@ -136,7 +136,13 @@ const getAllDetailUserFilterBy = (role, pageNum) => new Promise((resolve, reject
       for (let index = 0; index < users.length; index++) {
         switch (users[index].role) {
           case USER_ROLES.WRITER:
-
+            await getPseudonymOfWriter(users[index].account)
+              .then(pseudonym => {
+                users[index].pseudonym = pseudonym
+              })
+              .catch(err => {
+                reject(err)
+              })
             break
           case USER_ROLES.EDITOR:
             await getAssignedCategoriesOfEditor(users[index].account)
@@ -174,6 +180,20 @@ const getCountAllUserFilterBy = (role) => new Promise((resolve, reject) => {
     .loadRequest(query)
     .then(rets => {
       resolve(rets[0].count)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const getPseudonymOfWriter = account => new Promise((resolve, reject) => {
+  let query = `SELECT pseudonym FROM writers WHERE user_account='${account}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length > 0 ? rets[0].pseudonym : null)
     })
     .catch(err => {
       reject(err)
@@ -219,6 +239,64 @@ const getAssignedCategoriesOfEditor = account => new Promise((resolve, reject) =
     })
 })
 
+const deleteAllAssignedCategories = account => new Promise((resolve, reject) => {
+  let query = `DELETE FROM assigned_categories WHERE user_account='${account}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .deleteRequest(query)
+    .then(ret => {
+      resolve(true)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const updateAssignedCategories = (account, categoryIds) => new Promise((resolve, reject) => {
+  deleteAllAssignedCategories(account)
+    .then(ret => {
+      let query =
+        `INSERT INTO assigned_categories(user_account, category_id) VALUES
+        ${categoryIds.map(id => `('${account}','${id}')`).join(',')}`
+      let dbConn = new DBConnection()
+
+      dbConn
+        .insertRequest(query)
+        .then(ret => {
+          if (ret) {
+            getAssignedCategoriesOfEditor(account)
+              .then(categories => {
+                resolve(categories)
+              })
+              .catch(err => {
+                resolve([])
+              })
+          }
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const extendExpirationDate = (account, date) => new Promise((resolve, reject) => {
+  let query = `UPDATE subscribers SET expiration_date='${date}' WHERE user_account='${account}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .updateRequest(query)
+    .then(ret => {
+      resolve(date)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 module.exports = {
   getSigninedUser,
   checkSignInedUser,
@@ -227,4 +305,6 @@ module.exports = {
   checkExistsUserAccount,
   getAllDetailUserFilterBy,
   getCountAllUserFilterBy,
+  updateAssignedCategories,
+  extendExpirationDate,
 };

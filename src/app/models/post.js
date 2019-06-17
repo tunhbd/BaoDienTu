@@ -1,3 +1,4 @@
+const { convertToAlias } = require('../utils')
 class Post {
   constructor() {
     this.postId = ''
@@ -16,6 +17,10 @@ class Post {
     this.reasonReject = null
     this.premium = false
     this.browseUser = null
+  }
+
+  generateAlias() {
+    this.alias = convertToAlias(this.title)
   }
 
   get PostId() { return this.postId }

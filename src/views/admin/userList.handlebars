@@ -1,25 +1,35 @@
 {{#section 'moreCss'}}
 <link rel="stylesheet" href="/css/dashboardUsers.css">
 <link rel="stylesheet" href="/css/pagination.css">
+<link rel="stylesheet" href="/css/loading/loading.css">
+<link rel="stylesheet" href="/css/spinjs/spin.css">
+<link rel="stylesheet" href="/css/dialog.css">
 {{/section}}
 
 {{#section 'moreJs'}}
 <script>
+  var pageCount = {{ data.pages.length }}
+  var currentPage = {{ data.thisPage }}
   var users = '{{#jsonStringify data.users}}{{/jsonStringify}}'
   users = JSON.parse(users)
-  console.log('users', users)
 </script>
+<script src="/js/dialog.js"></script>
+<script src="/js/loading/loading.js"></script>
+<script src="/js/spinjs/spin.js"></script>
 <script src="/js/dashboardUsers.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="/js/moment.min.js"></script>
 {{/section}}
 
 <div id="userListContainer" class="w-100 p-2">
   <div id="filters" class="w-100">
-    <select class="custom-select" id="roleSelection">
-      <option value="ALL" selected>All</option>
-      <option value="ADMIN">Admin</option>
-      <option value="EDITOR">Editor</option>
-      <option value="SUBSCRIBER">Subscriber</option>
-      <option value="WRITER">Writer</option>
+    <select class="custom-select" id="roleSelection" style="width: 200px;" onchange="filterUsersByRole()">
+      <option value="ALL" {{#if (opt data.selectedRole '===' 'ALL' opt)}}selected{{/if}}>Role: All</option>
+      <option value="ADMIN" {{#if (opt data.selectedRole '===' 'ADMIN' opt)}}selected{{/if}}>Role: Admin</option>
+      <option value="EDITOR" {{#if (opt data.selectedRole '===' 'EDITOR' opt)}}selected{{/if}}>Role:Editor</option>
+      <option value="SUBSCRIBER" {{#if (opt data.selectedRole '===' 'SUBSCRIBER' opt)}}selected{{/if}}>Role:Subscriber
+      </option>
+      <option value="WRITER" {{#if (opt data.selectedRole '===' 'WRITER' opt)}}selected{{/if}}>Role:Writer</option>
     </select>
   </div>
   <div id="usersList" class="w-100 d-flex flex-wrap">
@@ -54,9 +64,15 @@
         </div>
       </div>
       <div class="userItem__info pl-1 pr-1">
-        <div class="userItem__info__account">{{this.account}}</div>
-        <div class="userItem__info__fullname">{{this.fullname}}</div>
-        <div class="userItem__info__email">{{this.email}}</div>
+        <div class="userItem__info__account">
+          <b>{{this.account}}</b>
+        </div>
+        <div class="userItem__info__fullname">
+          <i>{{this.fullname}}</i>
+        </div>
+        <div class="userItem__info__email">
+          <i>{{this.email}}</i>
+        </div>
       </div>
       <button type="button" class="userItem__controls__icon btn btn-secondary">
         <i class="fas fa-angle-double-down"></i>
@@ -64,9 +80,11 @@
       <div class="userItem__controls__buttons">
         <button type="button" class="btn btn-info" onclick="showUserInfo('{{this.account}}')"><i
             class="fas fa-info"></i></button>
-        <button type="button" class="btn btn-warning" onclick="showEditUser('{{this.account}}')"><i
+        {{#if (opt (opt this.role '!==' 'ADMIN' opt) '&&' (opt this.role '!==' 'WRITER' opt) opt)}}
+        <button type="button" class="btn btn-warning" onclick="editUser('{{this.account}}')"><i
             class="fas fa-pen"></i></button>
-        <button type="button" class="btn btn-danger" onclick="showDeleteUser('{{this.account}}')"><i
+        {{/if}}
+        <button type="button" class="btn btn-danger" onclick="deleteUser('{{this.account}}')"><i
             class="fas fa-trash-alt"></i></button>
       </div>
     </div>
@@ -97,7 +115,7 @@
     </nav>
   </div>
   {{else}}
-  <h6 class="text-center font-italicc text-secondary p-1">No any posts</h6>
+  <h6 class="text-center font-italicc text-secondary p-1">No any user</h6>
   {{/if}}
 </div>
 
