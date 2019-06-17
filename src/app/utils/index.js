@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 
 const convertToAlias = text => {
-  var alias = text.trim();
+  console.log('text', text)
+  var alias = text.trim()
   alias = alias.toLowerCase();
   alias = alias.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
   alias = alias.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -44,10 +45,15 @@ let checkPermis = (req, res, permis = null) => {
   return true;
 };
 
+const formatValidSqlStringSyntax = text => {
+  return text.replace(/\'/img, `\\\'`)
+}
+
 module.exports = {
   convertToAlias,
   testPwd,
   testUsn,
   hashPwd,
-  checkPermis
+  checkPermis,
+  formatValidSqlStringSyntax,
 };

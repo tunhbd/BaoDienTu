@@ -20,7 +20,7 @@ class Post {
   }
 
   generateAlias() {
-    this.alias = convertToAlias(this.title)
+    this.alias = convertToAlias(this.postTitle)
   }
 
   get PostId() { return this.postId }

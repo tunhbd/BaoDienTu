@@ -18,7 +18,7 @@ const renderDashboardPage = (req, res) => {
 }
 
 const renderCreatePostPage = (req, res) => {
-  if (req.user.role === 'EDITOR') {
+  if (req.user.role === config.USER_ROLES.EDITOR) {
     res.redirect('/admin/dashboard')
   }
   else {
@@ -70,7 +70,7 @@ const renderPreviewPostAndCheckPage = (req, res) => {
 }
 
 const renderEditPostPage = async (req, res) => {
-  if (req.user.role === 'EDITOR') {
+  if (req.user.role === config.USER_ROLES.EDITOR) {
     res.redirect('/admin/dashboard')
   }
   else {
@@ -185,10 +185,6 @@ const renderDraftPostsPage = (req, res) => {
 }
 
 const renderRejectPostsPage = (req, res) => {
-  // if (req.user.role === 'EDITOR') {
-  //   res.redirect('/admin/dashboard')
-  // }
-  // else {
   let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
   let categoryAlias = !req.query.category ? 'ALL' : req.query.category
   let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
@@ -227,14 +223,9 @@ const renderRejectPostsPage = (req, res) => {
     .catch(err => {
 
     })
-  // }
 }
 
 const renderPublishedPostsPage = (req, res) => {
-  // if (req.user.role === 'EDITOR') {
-  //   res.redirect('/admin/dashboard')
-  // }
-  // else {
   let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
   let categoryAlias = !req.query.category ? 'ALL' : req.query.category
   let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
@@ -273,14 +264,9 @@ const renderPublishedPostsPage = (req, res) => {
     .catch(err => {
 
     })
-  // }
 }
 
 const renderWaitingPostsPage = (req, res) => {
-  // if (req.user.role === 'EDITOR') {
-  //   res.redirect('/admin/dashboard')
-  // }
-  // else {
   let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
   let categoryAlias = !req.query.category ? 'ALL' : req.query.category
   let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
@@ -320,7 +306,6 @@ const renderWaitingPostsPage = (req, res) => {
     .catch(err => {
 
     })
-  // }
 }
 
 const renderUsersPage = (req, res) => {
@@ -399,7 +384,7 @@ const renderTagsPage = (req, res) => {
 }
 
 const renderCategoriesPage = (req, res) => {
-  if (req.user.role !== 'ADMIN') {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.redirect('/admin/dashboard')
   }
   else {
@@ -423,7 +408,7 @@ const renderCategoriesPage = (req, res) => {
 }
 
 const createCategory = (req, res) => {
-  if (req.user.role !== 'ADMIN') {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.json({
       error: true,
       data: {}
@@ -454,7 +439,7 @@ const createCategory = (req, res) => {
 }
 
 const updateCategory = (req, res) => {
-  if (req.user.role !== 'ADMIN') {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.json({
       error: true,
       data: {}
@@ -486,7 +471,7 @@ const updateCategory = (req, res) => {
 }
 
 const deleteCategory = (req, res) => {
-  if (req.user.role !== 'ADMIN') {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.json({
       error: true,
       data: {}
@@ -516,7 +501,7 @@ const deleteCategory = (req, res) => {
 }
 
 const editPost = (req, res) => {
-  if (req.user.role === 'EDITOR') {
+  if (req.user.role === config.USER_ROLES.EDITOR) {
     res.redirect('/admin/dashboard')
   }
   else {
@@ -694,66 +679,12 @@ const deleteUser = (req, res) => {
 
 }
 
-// const getPageContentUIByPageIdGetRequest = (req, res) => {
-//   if (req.error) {
-//     res.send('error')
-//   } else {
-//     if (!req.isSignIn) {
-//       res.send('error')
-//     } else {
-//       console.log('LOADING')
-//       switch (req.params.pageId) {
-//         case config.PAGES.CREATE_POST:
-//           Promise
-//             .all([
-//               categoryBus.getLessInfoCategories(),
-//               tagBus.getLessInfoTags()
-//             ])
-//             .then(([categories, tags]) => {
-//               console.log('DONE')
-//               res.render('templates/dashboard-uis/createPostUI', { categories, tags, layout: false })
-//             })
-//             .catch(err => {
-//               console.log('GET LESS INFO CATEGORIES ERROR: ', err)
-//               res.send(false)
-//             })
-//           break;
-//         case config.PAGES.DRAFT:
-//           res.render('templates/dashboard-uis/postsListUI', { categories: mockData.CATEGORIES_LIST, status: false, layout: false })
-//           break;
-//         case config.PAGES.REJECT:
-//           res.render('templates/dashboard-uis/postsListUI', { categories: mockData.CATEGORIES_LIST, status: false, layout: false })
-//           break;
-//         case config.PAGES.WAITING:
-//           res.render('templates/dashboard-uis/postsListUI', { categories: mockData.CATEGORIES_LIST, status: true, layout: false })
-//           break;
-//         case config.PAGES.PUBLISHED:
-//           res.render('templates/dashboard-uis/postsListUI', { categories: mockData.CATEGORIES_LIST, status: true, layout: false })
-//           break;
-//         case config.PAGES.USER:
-//           res.render('templates/dashboard-uis/usersListUI', { layout: false })
-//           break;
-//         case config.PAGES.CATEGORY:
-//           res.render('templates/dashboard-uis/categoriesListUI', { layout: false })
-//           break;
-//         case config.PAGES.TAG:
-//           res.render('templates/dashboard-uis/tagsListUI', { layout: false })
-//           break;
-//         default:
-//           res.send('not found page')
-//       }
-//     }
-//   }
-
-// }
-
-// const uploadPostImageFile = multerMiddlewares.getPostImageMulterMiddleware()
-
 const createPost = (req, res) => {
-  if (req.user.role !== 'WRITER') {
+  if (req.user.role === config.USER_ROLES.EDITOR) {
     res.redirect('/admin/dashboard')
   }
   else {
+    console.log('body', req.body)
     let post = new Post()
     post.postId = req.generation.postId
     post.postTitle = trim(req.body.title)
@@ -773,7 +704,7 @@ const createPost = (req, res) => {
       return tag
     })
     post.postSummary = trim(req.body.summary)
-    post.postContent = req.body['content']
+    post.postContent = req.body.content
     post.postAvatarImage = req.generation.postAvatarImage
     post.youtubeUrl = trim(req.body.youtubeUrl) === '' ? null : trim(req.body.youtubeUrl)
     post.generateAlias()
@@ -847,7 +778,7 @@ const createTag = (req, res) => {
 }
 
 const browsePost = (req, res) => {
-  if (req.user.role === 'WRITER') {
+  if (req.user.role === config.USER_ROLES.WRITER) {
     res.redirect('/admin/dashboard')
   }
   else {
@@ -872,7 +803,7 @@ const browsePost = (req, res) => {
 }
 
 const getCategories = (req, res) => {
-  if (req.user.role !== 'ADMIN') {
+  if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.json({
       error: true,
       data: {}

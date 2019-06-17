@@ -1,6 +1,6 @@
 const { Post, Category, User, Writer, Tag } = require('../../models')
 const { DBConnection } = require('../../db')
-const { convertToAlias } = require('../../utils')
+const { convertToAlias, formatValidSqlStringSyntax } = require('../../utils')
 const { FILTER, USER_ROLES } = require('../../config')
 const commentBus = require('../commentBus')
 const postTagBus = require('../postTagBus')
@@ -13,14 +13,14 @@ const createPost = post => new Promise(async (resolve, reject) => {
     posts(post_id, post_title, post_alias, post_avatar_image, category, youtube_url, author, post_summary, post_content, premium)
     VALUES(
       '${post.postId}',
-      '${escape(post.postTitle)}',
+      '${formatValidSqlStringSyntax(post.postTitle)}',
       '${post.alias}',
       '${post.postAvatarImage}',
       '${post.category.categoryId}',
       ${post.youtubeUrl === null ? null : `'${post.youtubeUrl}'`},
       '${post.author.account}',
-      '${escape(post.postSummary)}',
-      '${escape(post.postContent)}',
+      '${formatValidSqlStringSyntax(post.postSummary)}',
+      '${formatValidSqlStringSyntax(post.postContent)}',
       ${post.premium ? 1 : 0})`
 
   let dbConnect = new DBConnection()
@@ -64,7 +64,7 @@ const getDraftPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) =>
           : 'ORDER BY p.published_date DESC'
     }
       LIMIT ${ (pageNum - 1) * limit}, ${limit} `
-  console.log('query', query)
+
   let dbConn = new DBConnection()
   await dbConn
     .loadRequest(query)
@@ -73,7 +73,7 @@ const getDraftPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) =>
       let posts = rets.map(ret => {
         let post = new Post()
         post.postId = ret.post_id
-        post.postTitle = unescape(ret.post_title)
+        post.postTitle = ret.post_title
         post.alias = ret.post_alias
         post.createdDate = ret.created_date
         post.publishedDate = ret.published_date
@@ -128,12 +128,11 @@ const getCountDraftPostsFilterBy = (pageNum, categoryAlias, filterId, user) => n
           ? 'ORDER BY p.published_date ASC'
           : 'ORDER BY p.published_date DESC'
     } `
-  console.log('query', query)
+
   let dbConn = new DBConnection()
   await dbConn
     .loadRequest(query)
     .then(rets => {
-      console.log('rets count', rets)
       resolve(rets[0].count)
     })
     .catch(err => {
@@ -180,7 +179,7 @@ const getRejectPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) =
       let posts = rets.map(ret => {
         let post = new Post()
         post.postId = ret.post_id
-        post.postTitle = unescape(ret.post_title)
+        post.postTitle = ret.post_title
         post.alias = ret.post_alias
         post.createdDate = ret.created_date
         post.publishedDate = ret.published_date
@@ -288,7 +287,7 @@ const getPublishedPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user
       let posts = rets.map(ret => {
         let post = new Post()
         post.postId = ret.post_id
-        post.postTitle = unescape(ret.post_title)
+        post.postTitle = ret.post_title
         post.alias = ret.post_alias
         post.createdDate = ret.created_date
         post.publishedDate = ret.published_date
@@ -397,7 +396,7 @@ const getWaitingPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) 
       let posts = rets.map(ret => {
         let post = new Post()
         post.postId = ret.post_id
-        post.postTitle = unescape(ret.post_title)
+        post.postTitle = ret.post_title
         post.alias = ret.post_alias
         post.createdDate = ret.created_date
         post.publishedDate = ret.published_date
@@ -490,16 +489,16 @@ const getOneByAlias = alias => new Promise(async (resolve, reject) => {
 
       if (rets.length > 0) {
         post.postId = rets[0].post_id
-        post.postTitle = unescape(rets[0].post_title)
+        post.postTitle = rets[0].post_title
         post.postAvatarImage = rets[0].post_avatar_image
-        post.postSummary = unescape(rets[0].post_summary)
-        post.postContent = unescape(rets[0].post_content)
+        post.postSummary = rets[0].post_summary
+        post.postContent = rets[0].post_content
         post.alias = alias
         post.youtubeUrl = rets[0].youtube_url
         post.createdDate = rets[0].created_date
         post.publishedDate = rets[0].published_date
         post.checked = rets[0].checked > 0 ? true : false
-        post.reasonReject = unescape(rets[0].reason_reject)
+        post.reasonReject = rets[0].reason_reject
         post.premium = rets[0].premium === 1 ? true : false
 
         let category = new Category()
@@ -571,11 +570,11 @@ const browse = (alias, checking, publishedDate, reasonReject, account) => new Pr
 
 const updatePost = post => new Promise(async (resolve, reject) => {
   let query =
-    `UPDATE posts SET post_title = '${post.postTitle}',
+    `UPDATE posts SET post_title = '${formatValidSqlStringSyntax(post.postTitle)}',
   post_alias = '${post.alias}',
   category = '${post.category.categoryId}',
-  post_summary = '${escape(post.postSummary)}',
-  post_content = '${escape(post.postContent)}',
+  post_summary = '${formatValidSqlStringSyntax(post.postSummary)}',
+  post_content = '${formatValidSqlStringSyntax(post.postContent)}',
   youtube_url = ${ post.youtubeUrl === null ? null : `'${post.youtubeUrl}'`},
 author = '${post.author.account}',
   premium = ${ post.premium ? 1 : 0},
