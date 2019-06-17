@@ -24,7 +24,7 @@ CREATE TABLE users
   user_avatar VARCHAR(60),
   user_status TINYINT DEFAULT 1 NOT NULL,
   user_role VARCHAR(11) NOT NULL,  
-  -- user_token VARCHAR(32),
+  user_token VARCHAR(100),
   PRIMARY KEY(user_account)
 );
 

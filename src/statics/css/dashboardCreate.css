@@ -83,23 +83,8 @@
 
 .form-item-content:focus {
   outline: none;
-  /* border: none; */
   box-shadow: none !important;
 }
-
-/* .title-input {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.7);
-  position: relative;
-}
-.title-input:before {
-  content: "";
-  position: absolute;
-}
-.title-input:focus:before {
-
-} */
 
 .title-input-focus,
 .title-input:focus {
@@ -199,8 +184,6 @@
 .avatar-image-preview-container {
   width: 500px;
   height: 300px;
-  /* display: none; */
-  ;
   padding: 10px;
   margin: 10px auto;
   box-sizing: border-box;

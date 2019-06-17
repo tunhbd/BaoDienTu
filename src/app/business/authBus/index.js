@@ -1,8 +1,9 @@
-const { DBConnection } = require("../../db");
-const bcrypt = require("bcrypt");
+const { DBConnection } = require('../../db');
+const bcrypt = require('bcrypt');
 const moment = require('moment')
 const { User, Subscriber, Category, Editor, Writer } = require('../../models')
 const { USER_ROLES, LIMIT_USERS } = require('../../config')
+const { testPwd, testUsn, hashPwd } = require('../../utils');
 
 const getSigninedUser = json => {
   return json === undefined ? undefined : JSON.parse(json);
@@ -14,32 +15,60 @@ const checkSignInedUser = userToken => {
   return new DBConnection().loadRequest(checkQuery);
 };
 
-const registryUser = userInfo => new Promise((resolve, reject) => {
-  const rounds = 10;
-  const plain = userInfo.password;
+const checkOldPassword = (account, oldPassword) => new Promise((resolve, reject) => {
+  let query = `SELECT user_password FROM users WHERE user_account='${account}'`
+  let dbConn = new DBConnection()
 
-  var salt = bcrypt.genSaltSync(rounds);
-  var hash = bcrypt.hashSync(plain, salt);
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let isMatched = bcrypt.compareSync(oldPassword, rets[0].user_password);
 
-  let q =
-    `INSERT INTO users(user_account, user_password, user_fullname, user_email, user_birthday, user_avatar, user_role) VALUES ( 
+      resolve(isMatched)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const changePassword = (account, password) => new Promise((resolve, reject) => {
+  let hash = hashPwd(password)
+  let query = `UPDATE users SET user_password='${hash}' WHERE user_account='${account}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .updateRequest(query)
+    .then(ret => {
+      resolve(ret)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const registerUser = userInfo => new Promise((resolve, reject) => {
+  // if (!testPwd(userInfo.password) || !testUsn(userInfo.username))
+  //   throw "Username or Password is invalid!";
+
+  var hash = hashPwd(userInfo.password);
+
+  let query = `INSERT INTO users(user_account, user_password, user_fullname, user_email, user_birthday, user_avatar, user_role) VALUES ( 
       '${userInfo.username}',
       '${hash}',
       '${userInfo.fullname}',
       '${userInfo.email}',
-      '${moment(userInfo.birthday, 'DD/MM/YYYY').format('YYYY/MM/DD')}', \
+      '${moment(userInfo.birthday, "DD/MM/YYYY").format("YYYY/MM/DD")}', \
       null, \
       '${userInfo.role}');`;
 
   let dbConn = new DBConnection()
   dbConn
-    .insertRequest(q)
+    .insertRequest(query)
     .then(ret => {
       if (ret) {
         let query = ''
         let dbConn = null
         switch (userInfo.role) {
-
           case USER_ROLES.SUBSCRIBER:
             query = `INSERT INTO subscribers(user_account, expiration_date) VALUES('${userInfo.username}','${moment().add(7, 'days').format('YYYY/MM/DD')}')`
             dbConn = new DBConnection()
@@ -64,6 +93,8 @@ const registryUser = userInfo => new Promise((resolve, reject) => {
                 reject(err)
               })
             break;
+          default:
+            resolve(true)
         }
       }
     })
@@ -72,27 +103,28 @@ const registryUser = userInfo => new Promise((resolve, reject) => {
     })
 });
 
-const getUserInfoWithNoPassword = account => new Promise((resolve, reject) => {
-  let query = `SELECT user_account, user_role, user_email, user_birthday, user_fullname, user_avatar FROM users WHERE user_account='${account}'`
-  let dbConn = new DBConnection()
+const getUserInfoWithNoPassword = account =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT user_account, user_role, user_email, user_birthday, user_fullname, user_avatar FROM users WHERE user_account='${account}'`;
+    let dbConn = new DBConnection();
 
-  dbConn
-    .loadRequest(query)
-    .then(rets => {
-      let user = new User()
-      user.account = rets[0].user_account
-      user.avatar = rets[0].user_avatar
-      user.birthday = rets[0].user_birthday
-      user.role = rets[0].user_role
-      user.email = rets[0].user_email
-      user.fullname = rets[0].user_fullname
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        let user = new User();
+        user.account = rets[0].user_account;
+        user.avatar = rets[0].user_avatar;
+        user.birthday = rets[0].user_birthday;
+        user.role = rets[0].user_role;
+        user.email = rets[0].user_email;
+        user.fullname = rets[0].user_fullname;
 
-      resolve(user)
-    })
-    .catch(err => {
-      reject(err)
-    })
-})
+        resolve(user);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
 
 const checkExistsUserAccount = account => new Promise((resolve, reject) => {
   let query = `SELECT user_fullname FROM users WHERE user_account='${account}'`
@@ -297,14 +329,134 @@ const extendExpirationDate = (account, date) => new Promise((resolve, reject) =>
     })
 })
 
+const checkExistsEmailInSystem = (email, originEmail = null) => new Promise((resolve, reject) => {
+  let query = `SELECT user_email FROM users WHERE user_email='${email}' ${originEmail !== null ? `AND user_email<>'${originEmail}'` : ''}`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length > 0)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const checkUserToken = token => new Promise((resolve, reject) => {
+  let query = `SELECT user_token FROM users WHERE user_token='${token}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length > 0)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const resetPassword = (token, password) => new Promise((resolve, reject) => {
+  let query = `UPDATE users SET user_password='${hashPwd(password)}', user_token=null WHERE user_token='${token}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .updateRequest(query)
+    .then(ret => {
+      resolve(ret)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const saveUserToken = (email, token) => new Promise((resolve, reject) => {
+  let query = `UPDATE users SET user_token='${token}' WHERE user_email='${email}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .updateRequest(query)
+    .then(ret => {
+      resolve(ret)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const updatePseudonymOfWriter = (account, pseudonym) => new Promise((resolve, reject) => {
+  let query = `UPDATE writers SET pseudonym='${pseudonym}' WHERE user_account='${account}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .updateRequest(query)
+    .then(ret => {
+      resolve(ret)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const updateProfile = user => new Promise((resolve, reject) => {
+  let query = `UPDATE users SET user_fullname='${user.fullname}', user_birthday='${user.birthday}', user_email='${user.email}' WHERE user_account='${user.account}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .updateRequest(query)
+    .then(ret => {
+      if (ret) {
+        user.role === USER_ROLES.WRITER
+          ? updatePseudonymOfWriter(user.account, user.pseudonym)
+            .then(ret => {
+              resolve(ret)
+            })
+            .catch(err => {
+              reject(err)
+            })
+          : null
+      }
+      else {
+        resolve(false)
+      }
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const updateUserAvatar = user => new Promise((resolve, reject) => {
+  let query = `UPDATE users SET user_avatar='${user.avatar}' WHERE user_account='${user.account}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .updateRequest(query)
+    .then(ret => {
+      resolve(ret)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 module.exports = {
   getSigninedUser,
   checkSignInedUser,
-  registryUser,
+  registerUser,
   getUserInfoWithNoPassword,
   checkExistsUserAccount,
   getAllDetailUserFilterBy,
   getCountAllUserFilterBy,
   updateAssignedCategories,
+  changePassword,
   extendExpirationDate,
+  checkOldPassword,
+  checkExistsEmailInSystem,
+  checkUserToken,
+  resetPassword,
+  saveUserToken,
+  getPseudonymOfWriter,
+  updateProfile,
+  updateUserAvatar,
 };

@@ -13,24 +13,11 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
   <link rel="stylesheet" href="/css/spinjs/spin.css">
 
-  <!-- paginationjs css -->
-  {{!-- <link rel="stylesheet" href="/css/paginationjs/paginationjs.css" /> --}}
-
-
   <!-- Custom css -->
   <link rel="stylesheet" href="/css/dashboard.css" />
   <link rel="stylesheet" href="/css/user_menu.css" />
   <link rel="stylesheet" href="/css/bao_dien_tu_scrollbar.css">
-
-  {{!-- <link rel="stylesheet" href="/css/dashboard_user_list.css"> --}}
-  {{!-- <link rel="stylesheet" href="/css/dashboardTags.css" /> --}}
-  {{!-- <link rel="stylesheet" href="/css/pagination.css"> --}}
-  {{!-- <link rel="stylesheet" href="/css/dialog.css"> --}}
-  {{!-- <link rel="stylesheet" href="/css/toast.css"> --}}
-  {{!-- <link rel="stylesheet" href="/css/loading/loading.css"> --}}
   {{{_sections.moreCss}}}
-  <!-- CND javascript libraries -->
-
   <title>{{data.title}}</title>
 </head>
 
@@ -327,7 +314,7 @@
         </a>
         {{/if}}
 
-        {{#if (opt data.pageId '===' 'CATGORY')}}
+        {{#if (opt data.pageId '===' 'CATEGORY')}}
         <a href="/admin/dashboard/categories" menu-id="CATEGORY"
           class="menu-item-group__item item-of-mobile-menu menu-item-group__item__activing">
           <i class="menu-item-group__item__icon fas fa-list"></i>
@@ -357,29 +344,7 @@
       {{/if}}
     </div>
   </div>
-  <!-- Modal -->
-  {{!-- <div class="modal fade postDetailModal bao-dien-tu-scrollbar" id="postDetail" tabindex="-1" role="dialog"
-    aria-labelledby="postDetailLabel" aria-hidden="true">
-    <div class="modal-dialog postDetailModal-dialog" role="document">
-      <div class="modal-content postDetailModal-dialog-content">
-        <div class="modal-header postDetailModal-dialog-content-header">
-          <h5 class="modal-title" id="postDetailLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body postDetailModal-dialog-content-body bao-dien-tu-scrollbar"></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success save-btn" data-dismiss="modal">
-            Save
-          </button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> --}}
+
   <!-- Script References -->
   <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
   <script src="/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
@@ -391,26 +356,9 @@
   <script src="/js/utils.js"></script>
   <script src="/js/user_menu.js"></script>
   <script src="/js/dashboard.js"></script>
-  {{!-- <script src="/js/spinjs/spin.js"></script> --}}
-  {{!-- <script src="/js/popper/popper.js"></script> --}}
 
-  <!-- paginationjs -->
-  {{!-- <script src="/js/paginationjs/paginationjs.js"></script> --}}
-
-  <!-- custom table -->
-  {{!-- <script src="/js/data.js"></script> --}}
-
-  {{!-- <script src="/js/dialog.js"></script> --}}
-  {{!-- <script src="/js/loading/loading.js"></script> --}}
-
-
-  {{!-- <script src="/js/dashboard_post_list.js"></script> --}}
-  {{!-- <script src="/js/dashboard_user_list.js"></script> --}}
-  {{!-- <script src="/js/dashboardCategories.js"></script> --}}
-  {{!-- <script src="/js/dashboardTags.js"></script> --}}
   <script>
-    userRole = '{{data.user.role}}'
-    console.log(userRole)
+    var userRole = '{{data.user.role}}'
   </script>
   {{{_sections.moreJs}}}
 </body>

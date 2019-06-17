@@ -44,4 +44,5 @@ module.exports = {
   LIMIT_POSTS: 2,
   LIMIT_USERS: 15,
   LIMIT_TAGS: 10,
+  SENDGRID_API_KEY: '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',
 }

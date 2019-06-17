@@ -12,10 +12,10 @@ const renderHomePage = (req, res) => {
   res.render("indexContent", {
     user: req.user,
     layout: "indexLayout",
-    message: {
-      error: req.flash("mes"),
-      success: req.flash("suc")
-    }
+    // message: {
+    //   error: req.flash("mes"),
+    //   success: req.flash("suc")
+    // }
   });
 };
 

@@ -1,80 +1,4 @@
 /**
- * GLOBAL VARIABLES
- */
-const PAGES = {
-  GENERAL: {
-    id: 'GENERAL',
-    url: ''
-  },
-  CREATE_POST: {
-    id: 'CREATE_POST',
-    urlUI: '/dashboard/dashboard-ui/CREATE_POST',
-    url: '',
-  },
-  DRAFT: {
-    id: 'DRAFT',
-    urlUI: '/dashboard/dashboard-ui/DRAFT',
-    url: '/dashboard/posts-list/DRAFT',
-    status: false,
-  },
-  WAITING: {
-    id: 'WAITING',
-    urlUI: '/dashboard/dashboard-ui/WAITING',
-    url: '/dashboard/posts-list/WAITING',
-    status: true,
-  },
-  REJECT: {
-    id: 'REJECT',
-    urlUI: '/dashboard/dashboard-ui/REJECT',
-    url: '/dashboard/posts-list/REJECT',
-    status: false,
-  },
-  PUBLISHED: {
-    id: 'PUBLISHED',
-    urlUI: '/dashboard/dashboard-ui/PUBLISHED',
-    url: '/dashboard/posts-list/PUBLISHED',
-    status: true,
-  },
-  USER: {
-    id: 'USER',
-    urlUI: '/dashboard/dashboard-ui/USER',
-    url: '/dashboard/users-list',
-  },
-  CATEGORY: {
-    id: 'CATEGORY',
-    urlUI: '/dashboard/dashboard-ui/CATEGORY',
-    url: '/dashboard/categories-list',
-  },
-  TAG: {
-    id: 'TAG',
-    urlUI: '/dashboard/dashboard-ui/TAG',
-    url: '/dashboard/tags-list',
-  },
-}
-const USERS = {
-  ADMIN: 'ADMIN',
-  SUBSCRIBER: 'SUBSCRIBER',
-  WRITER: 'WRITER',
-  EDITOR: 'EDITOR'
-}
-const postCountPerPage = 10
-const userCountPerPage = 10
-
-var currentDashboardPage = null
-var userRule = null
-var currentPost = null
-var postsList = []
-var usersList = []
-var tagsList = []
-var categoriesList = []
-var originPostsList = []
-var pageCount = 0
-var currentPage = 1
-var mainContent = $('#dashboard-main__right-sidebar__content')
-var paginationObj = null
-var oldHtmlCode = ''
-
-/**
  * FUNCTIONS
  */
 // function setEventsForMenu() {
@@ -368,9 +292,6 @@ function setEventForToggleMenuIcon() {
         leftSideBar.removeClass('collapse-menu')
         leftSideBar.addClass('expand-menu')
 
-        // setTimeout(function () {
-        //   $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').removeClass('is-collapse-menu')
-        // }, 200)
         setTimeout(function () {
           $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').fadeIn(200)
           $(':root').css('--dashboard-main-content-left-sidebar-width', '200px')
@@ -379,7 +300,6 @@ function setEventForToggleMenuIcon() {
         leftSideBar.addClass('collapse-menu')
         leftSideBar.removeClass('expand-menu')
         $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').fadeOut(200)
-        // $('#dashboard-main__left-sidebar__menu .menu-item-group__item__title').addClass('is-collapse-menu')
         setTimeout(function () {
           $(':root').css('--dashboard-main-content-left-sidebar-width', '75px')
         }, 200)
@@ -388,26 +308,5 @@ function setEventForToggleMenuIcon() {
   })
 }
 
-/**
- * MAIN SCRIPT
- */
-
-// setEventsForMenu()
-// setEventsForMobileMenu()
-// setEventsForCommonMenu()
 setEventForAvatarUser()
 setEventForToggleMenuIcon()
-
-// $(document).ready(() => {
-//   let params = new URLSearchParams(window.location.search)
-//   let pageId = params.get('page_id')
-//   console.log('pageId', pageId)
-
-//   if (pageId === null) {
-//     pageId = PAGES.GENERAL.id
-//   }
-//   // currentDashboardPage = params.get('page_id')
-//   document.querySelector(`#dashboard-main__left-sidebar__menu .menu-item-group__item[menu-id="${pageId}"]`).click()
-// })
-
-// }

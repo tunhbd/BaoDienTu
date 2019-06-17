@@ -1,115 +1,115 @@
 /* user menu */
 
 .user-menu {
-    display: none;
-    position: absolute;
-    z-index: 10;
-    top: 100%;
-    right: 0px;
-    padding: 10px 0px;
-    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.2);
-    width: 250px!important;
-    border-radius: 4px!important;
-    background-color: #fff;
+  display: none;
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  right: 0px;
+  padding: 10px 0px;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.2);
+  width: 250px !important;
+  border-radius: 4px !important;
+  background-color: #fff;
 }
 
 .user-menu ul {
-    width: 100%;
-    height: auto;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  width: 100%;
+  height: auto;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .user-menu__item {
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    display: block;
-    cursor: pointer;
-    box-sizing: border-box;
-    padding: 0px 20px;
-    border: none!important;
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  display: block;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 0px 20px;
+  border: none !important;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .user-menu__item:hover {
-    border-left: 5px solid #E91E63!important;
+  border-left: 5px solid #E91E63 !important;
 }
 
 .user-menu__item .user-menu__item__content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    transition: ease 0.3s;
-    text-decoration: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  transition: ease 0.3s;
+  text-decoration: none;
 }
 
 .user-menu__item:last-child .user-menu__item__content {
-    border: none;
+  border: none;
 }
 
 .user-menu__item-icon {
-    color: rgba(0, 0, 0, 0.4);
-    font-size: 20px;
-    transition: ease 0.3s;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 20px;
+  transition: ease 0.3s;
 }
+
 .user-menu__item:hover .user-menu__item-icon {
-    color: #E91E63;
-    transition: ease 0.3s;
+  color: #E91E63;
+  transition: ease 0.3s;
 }
 
 .user-menu__item:hover .user-menu__item__content {
-    color: #E91E63;
-    font-weight: bold;
-    transition: ease 0.3s;
+  color: #E91E63;
+  font-weight: bold;
+  transition: ease 0.3s;
 }
 
 .user-menu:before {
-    content: "";
-    position: absolute;
-    top: -20px;
-    right: 5%;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent #EEEBEB transparent;
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: 5%;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent #EEEBEB transparent;
 }
 
 .user-menu__item__icon {
-    transition: 0.2s;
-    /* display: block; */
-    width: 24px!important;
-    height: 24px!important;
-    background-repeat: no-repeat!important;
-    background-size: contain!important;
+  transition: 0.2s;
+  width: 24px !important;
+  height: 24px !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
 }
 
 .user-menu__item__icon-profile {
-    background: url("../../../media/statics/images/ic_profile.png")
+  background: url("../../../media/statics/images/ic_profile.png")
 }
 
 .user-menu__item:hover .user-menu__item__icon-profile {
-    background: url("../../../media/statics/images/ic_profile_blue.png")
+  background: url("../../../media/statics/images/ic_profile_blue.png")
 }
 
 .user-menu__item__icon-change-password {
-    background: url("../../../media/statics/images/ic_lock.png")
+  background: url("../../../media/statics/images/ic_lock.png")
 }
 
 .user-menu__item:hover .user-menu__item__icon-change-password {
-    background: url("../../../media/statics/images/ic_lock_blue.png")
+  background: url("../../../media/statics/images/ic_lock_blue.png")
 }
 
 .user-menu__item__icon-sign-out {
-    background: url("../../../media/statics/images/ic_sign_out.png")
+  background: url("../../../media/statics/images/ic_sign_out.png")
 }
 
 .user-menu__item:hover .user-menu__item__icon-sign-out {
-    background: url("../../../media/statics/images/ic_sign_out_blue.png")
+  background: url("../../../media/statics/images/ic_sign_out_blue.png")
 }

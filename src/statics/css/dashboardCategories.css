@@ -1,5 +1,4 @@
 .functionButtons button {
-  /* background: none !important; */
   margin: 0px 5px;
 }
 
@@ -8,8 +7,4 @@
   cursor: pointer;
   display: flex;
   font-size: 1.8vh;
-}
-
-.subCategoryList {
-  /* transition: 0.3s; */
 }

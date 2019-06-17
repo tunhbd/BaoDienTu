@@ -1,0 +1,78 @@
+#avatarUploadContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes avatarUploadComp {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+#avatarUploadComponent {
+  width: 20vw;
+  height: 20vw;
+  position: relative;
+  margin: auto;
+  animation-name: avatarUploadComp;
+  animation-duration: 0.3s;
+  cursor: pointer;
+  margin-top: 200px;
+}
+
+@media screen and (max-width: 576px) {
+  #avatarUploadComponent {
+    width: 50vw;
+    height: 50vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #avatarUploadComponent {
+    width: 30vw;
+    height: 30vw;
+  }
+}
+
+#avatarUploadComponent__image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(233, 30, 99, 0.7);
+}
+
+#avatarUploadComponent__image img {
+  width: 100%;
+  height: 100%;
+}
+
+#avatarUploadComponent__controls {
+  width: 100%;
+  position: absolute;
+  top: 40%;
+  left: auto;
+  right: auto;
+}
+
+#uploadNewAvatarButton {
+  cursor: pointer;
+  display: block;
+  width: 100px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 30pt;
+  color: #ffffff;
+
+}

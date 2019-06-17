@@ -18,9 +18,9 @@ class DBConnection {
         if (err) {
           reject(err);
         } else {
-          let conn = this.connection
+          let conn = this.connection;
           this.connection.query(query, function (error, results, fields) {
-            conn.end()
+            conn.end();
             if (error) {
               reject(error);
             } else {

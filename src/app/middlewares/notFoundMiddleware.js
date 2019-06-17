@@ -1,6 +1,6 @@
 const registerMiddleware = server => {
   server.use((req, res) => {
-    res.render('notFound', { layout: false })
+    res.render('others/notFound', { layout: false })
   })
 }
 

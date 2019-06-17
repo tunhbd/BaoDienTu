@@ -40,6 +40,45 @@ const getPostImageMulterMiddleware = () => {
   return multer(multerConfig).single('avatarImage')
 }
 
+const getUserAvatarMulterMiddleware = () => {
+  const multerConfig = {
+    storage: multer.diskStorage({
+      //Setup where the user's file will go
+      destination: function (req, file, next) {
+        next(null, __dirname + '/../../statics/media/images/users');
+      },
+
+      //Then give the file a unique name
+      filename: function (req, file, next) {
+        const ext = file.mimetype.split('/')[1];
+        const filename = `${req.user.account}.${ext}`
+        req.user.avatar = filename
+        next(null, filename)
+      }
+    }),
+
+    //A means of ensuring only images are uploaded. 
+    fileFilter: function (req, file, next) {
+      if (!file) {
+        next();
+      }
+      const image = file.mimetype.startsWith('image/');
+      if (image) {
+        console.log('avatar uploaded');
+        next(null, true);
+      } else {
+        console.log("file not supported");
+
+        //TODO:  A better message response to user on failure.
+        return next();
+      }
+    }
+  }
+
+  return multer(multerConfig).single('avatar')
+}
+
 module.exports = {
   postImageMulterMiddleware: getPostImageMulterMiddleware(),
+  userAvatarMulterMiddleware: getUserAvatarMulterMiddleware(),
 }

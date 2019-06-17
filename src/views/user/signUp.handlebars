@@ -20,7 +20,7 @@
   <a href="/" class="go-home">
     <i class="fas fa-home"></i>
   </a>
-  <div class="mx-auto mt-5 col-lg-4 col-md-6 col-sm-8">
+  <div class="mx-auto mt-5 col-8 col-lg-4 col-md-6 col-sm-7">
     <!-- w-login start -->
     <div class="w-login">
       <!-- panel-signup start -->
@@ -32,24 +32,29 @@
             </div>
             <form name="signupForm" id="signupForm" class="signupForm" action="/sign-up" method="POST">
               <div class="form-group wrap-input">
-                <input type="text" class="form-control" name="fullname" placeholder="Họ và tên..." />
+                <input type="text" class="form-control" name="fullname" placeholder="Họ và tên..."
+                  value="{{data.info.fullname}}" />
                 <span class="w-input"></span>
               </div>
               <div class="form-group wrap-input">
-                <input type="text" class="form-control" name="birthday" placeholder="Ngày sinh..." />
+                <input type="text" class="form-control" name="birthday" placeholder="Ngày sinh..."
+                  value="{{data.info.birthday}}" />
                 <span class="w-input"></span>
               </div>
               <div class="form-group wrap-input">
-                <input type="text" class="form-control" name="username" placeholder="Tên đăng nhập..." />
+                <input type="text" class="form-control" name="username" placeholder="Tên đăng nhập..."
+                  value="{{data.info.username}}" />
                 <span class="w-input"></span>
               </div>
               <div class="form-group wrap-input">
-                <input type="email" class="form-control" name="email" placeholder="Email..." />
+                <input type="email" class="form-control" name="email" placeholder="Email..."
+                  value="{{data.info.email}}" />
                 <span class="w-input"></span>
               </div>
               <div class="form-group wrap-input">
                 <div class="pwd-mask">
-                  <input type="password" class="form-control" name="password" placeholder="Mật khẩu..." />
+                  <input type="password" class="form-control" name="password" placeholder="Mật khẩu..."
+                    value="{{data.info.password}}" />
                   <span class="w-input"></span>
                   <span class="fa fa-eye-slash pwd-toggle"></span>
                 </div>
@@ -60,16 +65,21 @@
                   Vai trò
                 </label>
                 <label for="reader" class="position-relative pl-3 checkbox-role text-left">
-                  <input type="radio" checked name="role" id="reader" value="SUBSCRIBER" /><span
-                    class="label-reader-text">Độc
+                  <input type="radio"
+                    {{#if data.info}}{{#if (opt data.info.role '===' 'SUBSCRIBER' opt)}}checked{{/if}}{{else}}checked{{/if}}
+                    name="role" id="reader" value="SUBSCRIBER" /><span class="label-reader-text">Độc
                     giả</span>
                 </label>
                 <label for="writer" class="position-relative pl-3 checkbox-role text-left">
-                  <input type="radio" name="role" id="writer" value="WRITER" /><span class="label-writer-text">Viết
+                  <input type="radio" name="role" id="writer"
+                    {{#if (opt data.info.role '===' 'WRITER' opt)}}checked{{/if}} value="WRITER" /><span
+                    class="label-writer-text">Viết
                     bài</span>
                 </label>
                 <label for="editor" class="position-relative pl-3 checkbox-role text-left">
-                  <input type="radio" name="role" id="editor" value="EDITOR" /><span class="label-editor-text">Biên
+                  <input type="radio" name="role" id="editor"
+                    {{#if (opt data.info.role '===' 'EDITOR' opt)}}checked{{/if}} value="EDITOR" /><span
+                    class="label-editor-text">Biên
                     tập</span>
                 </label>
               </div>
@@ -101,8 +111,27 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
   <script src="/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script src="/js/auth.js"></script>
   <script src="/js/signUp.js"></script>
+  {{#if data.message.success}}
+  <script>
+    swal.fire({
+      type: 'success',
+      title: 'Success!',
+      text: "{{data.message.success}}",
+    })
+  </script>
+  {{/if}}
+  {{#if data.message.error}}
+  <script>
+    swal.fire({
+      type: 'error',
+      title: 'Oops!',
+      text: "{{data.message.error}}",
+    })
+  </script>
+  {{/if}}
 </body>
 
 </html>

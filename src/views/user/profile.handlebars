@@ -8,27 +8,29 @@
   <title>Your Profile</title>
   <link rel="shortcut icon" href="/media/images/logo/logo.png" />
   <!-- Bootstrap 4 -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
   <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
+  <link rel="stylesheet" href="/js/jquery-ui-1.12.1/jquery-ui.min.css" />
+  <link rel="stylesheet" href="/avatarUpload/avatarUpload.css">
   <!-- custom css -->
+  <link rel="stylesheet" href="/css/loading/loading.css">
+  <link rel="stylesheet" href="/css/spinjs/spin.css">
   <link rel="stylesheet" href="/css/auth.css" />
   <link rel="stylesheet" href="/css/bao_dien_tu_scrollbar.css" />
 </head>
 
 <body class="bao-dien-tu-scrollbar">
-  {{#if (opt user.rule '===' 'SUBSCRIBER' opt)}}
+  {{#if (opt data.user.role '===' 'SUBSCRIBER' opt)}}
   <a href="/" class="go-home">
     <i class="fas fa-home"></i>
   </a>
   {{else}}
-  <a href="/dashboard" class="go-home">
+  <a href="/admin/dashboard" class="go-home">
     <i class="fas fa-home"></i>
   </a>
   {{/if}}
-  <div class="mx-auto mt-5 profile-container">
+  <div class="mx-auto mt-5 profile-container col-10 col-sm-8 col-md-7 col-lg-6">
     <!-- w-login start -->
     <div class="w-login">
       <!-- panel-login start -->
@@ -39,32 +41,23 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12">
             <div class="form-group">
-              <div class="position-relative text-center">
-                <img src="/media/images/users/{{user.avatar}}" class="avatar big-avatar" alt="avatar" />
+              <div class="position-relative text-center" onclick="showUpdateAvatarForm()">
+                <img
+                  src="/media/images/users/{{#if (opt data.user.avatar '===' null opt)}}avatar_sample.png{{else}}{{data.user.avatar}}{{/if}}"
+                  class="avatar big-avatar" alt="avatar" id="avatarUser" />
                 <button class="btn btn-change-avatar big-avatar avatar position-absolute">
                   <i style="color: white" class="fas fa-images"></i>
                 </button>
               </div>
             </div>
-            <form name="loginForm" class="loginForm" action="/profile" method="POST">
+            <form id="profileForm" name="profileForm" class="loginForm" action="/profile" method="POST">
               <div class="input-group mb-3 w-100">
                 <div class="input-group-prepend profile-item-title">
                   <span class="input-group-text" id="basic-addon1">Họ tên</span>
                 </div>
                 <div class="form-group wrap-input profile-item-content">
                   <input disabled type="text" class="form-control profile-item-input" name="fullname"
-                    value="{{user.fullname}}" placeholder="Tên người dùng..." />
-                  <span class="w-input"></span>
-                </div>
-              </div>
-
-              <div class="input-group mb-3 d-flex">
-                <div class="input-group-prepend profile-item-title">
-                  <span class="input-group-text" id="basic-addon1">Tài khoản</span>
-                </div>
-                <div class="form-group wrap-input profile-item-content">
-                  <input disabled type="text" class="form-control profile-item-input" name="username"
-                    value="{{user.account}}" placeholder="Tên đăng nhập..." />
+                    value="{{data.user.fullname}}" placeholder="Họ và tên" />
                   <span class="w-input"></span>
                 </div>
               </div>
@@ -74,20 +67,31 @@
                   <span class="input-group-text" id="basic-addon1">Email</span>
                 </div>
                 <div class="form-group wrap-input profile-item-content">
-                  <input disabled type="text" class="form-control profile-item-input" name="email"
-                    value="{{user.email}}" placeholder="Email..." />
+                  <input disabled type="email" class="form-control profile-item-input" name="email"
+                    value="{{data.user.email}}" placeholder="Email" />
                   <span class="w-input"></span>
                 </div>
               </div>
 
-              {{#if (opt user.rule '===' 'WRITER' opt)}}
+              <div class="input-group mb-3 d-flex">
+                <div class="input-group-prepend profile-item-title">
+                  <span class="input-group-text" id="basic-addon1">Ngày sinh</span>
+                </div>
+                <div class="form-group wrap-input profile-item-content">
+                  <input disabled type="text" class="form-control profile-item-input" name="birthday"
+                    value="{{#viDate data.user.birthday}}{{/viDate}}" id="birthday" placeholder="Ngày sinh" />
+                  <span class="w-input"></span>
+                </div>
+              </div>
+
+              {{#if (opt data.user.role '===' 'WRITER' opt)}}
               <div class="input-group mb-3 d-flex">
                 <div class="input-group-prepend profile-item-title">
                   <span class="input-group-text" id="basic-addon1">Bút danh</span>
                 </div>
                 <div class="form-group wrap-input profile-item-content">
-                  <input disabled type="text" class="form-control profile-item-input" name="email"
-                    value="{{user.pseudonym}}" placeholder="Bút danh..." />
+                  <input disabled type="text" class="form-control profile-item-input" name="pseudonym"
+                    value="{{data.user.pseudonym}}" placeholder="Bút danh" />
                   <span class="w-input"></span>
                 </div>
               </div>
@@ -110,7 +114,7 @@
                   <button class="btn w-btn-outline-danger" id="cancel" type="reset">
                     Hủy
                   </button>
-                  <button class="btn btn-success" type="submit">
+                  <button class="btn btn-primary" type="submit">
                     Hoàn tất
                   </button>
                 </div>
@@ -124,19 +128,49 @@
     <!-- end w-login -->
   </div>
   <!-- Bootstrap 4 -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
+  <script src="/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script src="/js/loading/loading.js"></script>
+  <script src="/js/spinjs/spin.js"></script>
+  <script src="/avatarUpload/avatarUpload.js"></script>
+  <script src="/js/auth.js"></script>
   <script src="/js/profile.js"></script>
+  <script>
+    var user = '{{#jsonStringify data.user}}{{/jsonStringify}}'
+    user = JSON.parse(user)
+  </script>
+
+  {{#if data.message.error}}
+  <script>
+    $('#edit').click()
+  </script>
+  {{/if}}
+
+  {{#if data.message.success}}
+  <script>
+    swal.fire({
+      type: 'success',
+      title: 'Success!',
+      text: "{{data.message.success}}",
+    })
+  </script>
+  {{/if}}
+  {{#if data.message.error}}
+  <script>
+    swal.fire({
+      type: 'error',
+      title: 'Oops!',
+      text: "{{data.message.error}}",
+    })
+  </script>
+  {{/if}}
 </body>
 
 </html>

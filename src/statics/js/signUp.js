@@ -9,7 +9,13 @@ $("#signupForm").validate({
         url: '/check-not-exists-user-account'
       }
     },
-    email: { required: true, email: true },
+    email: {
+      required: true,
+      email: true,
+      remote: {
+        url: '/check-not-exists-email'
+      }
+    },
     password: {
       required: true,
       minlength: 6,
@@ -25,7 +31,8 @@ $("#signupForm").validate({
     },
     email: {
       required: "Email phải được nhập",
-      email: "Vui lòng nhập một email đúng định dạng"
+      email: "Vui lòng nhập một email đúng định dạng",
+      remote: "Email này đã được đăng ký trong hệ thống"
     },
     password: {
       required: "Mật khẩu phải được nhập",
