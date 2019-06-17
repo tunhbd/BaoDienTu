@@ -27,7 +27,7 @@ $("#loginForm").validate({
     username: "required",
     password: {
       required: true,
-      minlength: 6,
+      minlength: 8,
       pwcheck: true
     }
   },
@@ -35,10 +35,103 @@ $("#loginForm").validate({
     username: "Tài khoản phải được nhập",
     password: {
       required: "Mật khẩu phải được nhập",
-      minlength: "Mật khẩu phải dài hơn 6 ký tự",
-      pwcheck: "Mật khẩu gồm ký tự in hoa, in thường và số"
+      minlength: "Mật khẩu phải dài hơn 8 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
     }
   }
+});
+
+$("#changePwdForm").validate({
+  errorClass: "small text-danger d-flex",
+  rules: {
+    oldPwd: {
+      required: true,
+      minlength: 8,
+      pwcheck: true
+    },
+    newPwd: {
+      required: true,
+      minlength: 8,
+      pwcheck: true
+    },
+    confirmNewPwd: {
+      equalTo: "#newPwd"
+    }
+  },
+  messages: {
+    oldPwd: {
+      required: "Mật khẩu phải được nhập",
+      minlength: "Mật khẩu phải dài hơn 8 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
+    },
+    newPwd: {
+      required: "Mật khẩu phải được nhập",
+      minlength: "Mật khẩu phải dài hơn 8 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
+    },
+    confirmNewPwd: {
+      equalTo: "Mật khẩu không khớp"
+    }
+  }
+});
+
+$("#resetForm").validate({
+  errorClass: "small text-danger d-flex",
+  rules: {
+    newPwd: {
+      required: true,
+      minlength: 8,
+      pwcheck: true
+    },
+    confirmNewPwd: {
+      equalTo: "#newPwd"
+    }
+  },
+  messages: {
+    newPwd: {
+      required: "Mật khẩu phải được nhập",
+      minlength: "Mật khẩu phải dài hơn 8 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
+    },
+    confirmNewPwd: {
+      equalTo: "Mật khẩu không khớp"
+    }
+  }
+});
+
+$("#signupForm").validate({
+  errorClass: "small text-danger d-flex",
+  rules: {
+    fullname: "required",
+    birthday: "required",
+    username: "required",
+    email: { required: true, email: true },
+    password: {
+      required: true,
+      minlength: 6,
+      pwcheck: true
+    }
+  },
+  messages: {
+    fullname: "Chưa nhập họ tên",
+    birthday: "Chưa nhập ngày sinh",
+    username: "Tài khoản phải được nhập",
+    email: {
+      required: "Email phải được nhập",
+      email: "Vui lòng nhập một email đúng định dạng"
+    },
+    password: {
+      required: "Mật khẩu phải được nhập",
+      minlength: "Mật khẩu phải dài hơn 6 ký tự",
+      pwcheck: "Ký tự in hoa, in thường, số và có ký tự đặc biệt"
+    }
+  }
+});
+
+$('input[name="birthday"]').datepicker({
+  defaultDate: new Date(),
+  minDate: new Date("1900/01/01"),
+  dateFormat: "d/mm/yy"
 });
 
 $("#forgetForm").validate({

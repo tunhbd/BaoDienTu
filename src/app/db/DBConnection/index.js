@@ -18,9 +18,9 @@ class DBConnection {
         if (err) {
           reject(err);
         } else {
-          let conn = this.connection
-          this.connection.query(query, function (error, results, fields) {
-            conn.end()
+          let conn = this.connection;
+          this.connection.query(query, function(error, results, fields) {
+            conn.end();
             if (error) {
               reject(error);
             } else {
@@ -40,7 +40,7 @@ class DBConnection {
         } else {
           let conn = this.connection;
 
-          this.connection.query(query, function (error, results, fields) {
+          this.connection.query(query, function(error, results, fields) {
             if (error) {
               reject(error);
             } else {
@@ -61,7 +61,7 @@ class DBConnection {
         } else {
           let conn = this.connection;
 
-          this.connection.query(query, function (error, results, fields) {
+          this.connection.query(query, function(error, results, fields) {
             if (error) {
               reject(error);
             } else {
@@ -82,7 +82,7 @@ class DBConnection {
         } else {
           let conn = this.connection;
 
-          this.connection.query(query, function (error, results, fields) {
+          this.connection.query(query, function(error, results, fields) {
             if (error) {
               reject(error);
             } else {

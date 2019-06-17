@@ -906,13 +906,12 @@ const getPostsFromTagId = (id, from, limit) =>
 
 const ftSearch = (searchStr, from, limit) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT * FROM  posts where MATCH (post_title) AGAINST ('${searchStr}' IN NATURAL LANGUAGE MODE) LIMIT ${limit} OFFSET ${from}`;
+    let query = `SELECT * FROM  posts join categories on posts.category = categories.category_id where MATCH (post_title) AGAINST ('${searchStr}' IN NATURAL LANGUAGE MODE) and posts.published_date LIMIT ${limit} OFFSET ${from}`;
     let dbConn = new DBConnection();
 
     dbConn
       .loadRequest(query)
       .then(rets => {
-        console.log(query, rets.length);
         resolve(rets);
       })
       .catch(err => {
