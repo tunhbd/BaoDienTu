@@ -1,4 +1,28 @@
-const business = require("../../business");
+const { getAllWithLevel } = require("../../business/categoryBus");
+const { getTenLatestPosts } = require("../../business/postBus");
+const moment = require("moment");
+
+let postList, tagList;
+Promise.all([getAllWithLevel(), getTenLatestPosts()])
+  .then(function([tags, posts]) {
+    postList = posts.map(
+      ({ post_title, post_avatar_image, published_date, category }) => ({
+        post_title: unescape(post_title),
+        post_avatar_image,
+        published_date: moment(published_date)
+          .startOf("hour")
+          .fromNow(),
+        category
+      })
+    );
+
+    tags.unshift({ categoryName: "Home", categoryId: "home" });
+    tags.push({ categoryName: "More", categoryId: "more" });
+    tagList = tags;
+  })
+  .catch(err => {
+    throw err;
+  });
 
 const getSearchResultsGetRequest = (req, res) => {
   res.render("searchPageContent", {
@@ -8,7 +32,7 @@ const getSearchResultsGetRequest = (req, res) => {
   });
 };
 
-const renderHomePage = (req, res) => {
+const renderHomePage = function(req, res) {
   res.render("indexContent", {
     user: req.user,
     layout: "indexLayout",
@@ -16,64 +40,34 @@ const renderHomePage = (req, res) => {
       error: req.flash("mes"),
       success: req.flash("suc")
     },
-    listParent: [
-      {
-        categoryName: "Hành tinh",
-        categoryId: "haha",
-        children: [{ categoryName: "hehe", categoryId: "hehe" }]
-      },
-      {
-        categoryName: "Truyện cười",
-        categoryId: "haha",
-        children: [
-          { categoryName: "hehe", categoryId: "hehe" },
-          { categoryName: "hehe", categoryId: "hehe" },
-          { categoryName: "hehe", categoryId: "hehe" }
-        ]
-      },
-      {
-        categoryName: "Cuộc sống",
-        categoryId: "hehe"
-      },
-      {
-        categoryName: "Thú cưng",
-        categoryId: "hehe"
-      },
-      {
-        categoryName: "Chăm sóc",
-        categoryId: "hehe"
-      },
-      {
-        categoryName: "Ngon bổ rẻ",
-        categoryId: "hehe"
-      },
-      {
-        categoryName: "Xe cộ",
-        categoryId: "hehe"
-      },
-      {
-        categoryName: "Đời sống",
-        categoryId: "hehe"
-      },
-      {
-        categoryName: "Học hành",
-        categoryId: "hehe"
-      }
-    ]
+    listParent: tagList,
+    posts: postList
   });
 };
 
 const showPostsListByCategoryGetRequest = (req, res) => {
-  res.render("listPostContent", { layout: "indexLayout" });
+  res.render("listPostContent", {
+    layout: "indexLayout",
+    listParent: tagList,
+    posts: postList
+  });
 };
 
 const showPostsListByTagGetRequest = (req, res) => {
-  res.render("listPostContent", { layout: "indexLayout" });
+  res.render("listPostContent", {
+    listParent: tagList,
+    posts: postList,
+    layout: "indexLayout"
+  });
 };
 
 const showPostDetailGetRequest = (req, res) => {
   let postId = req.params.postId;
-  res.render("postDetailContent", { layout: "indexLayout" });
+  res.render("postDetailContent", {
+    listParent: tagList,
+    posts: postList,
+    layout: "indexLayout"
+  });
 };
 
 module.exports = {

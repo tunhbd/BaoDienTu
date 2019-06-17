@@ -118,11 +118,16 @@
   transition: 0.15s;
   padding: 5px;
 }
+.item-top-10 .col-md-8 {
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+}
 
 .item-top-10 .image-item img {
   width: 100%;
-  border-radius: 5px;
-  box-shadow: 2px 5px 15px #bab8ba;
+  border-radius: 4px;
+  box-shadow: 0 0 8px #bab8ba;
   transition: 0.5s;
 }
 
@@ -150,6 +155,8 @@
 .item-top-10 .item-title {
   font-size: 16px;
   font-weight: 600;
+  margin-top: 16px;
+  line-height: 120%;
 }
 
 .item-top-10 .item-day {

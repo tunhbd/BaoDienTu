@@ -63,10 +63,51 @@
     </div>
     <div class="new-content col-lg-4 col-md-12 ">
       <div class="title-new"><span class="new-news">Tin mới nhất</span></div>
-      <!-- new news  -->
-      <div class="slick-new-image overflow-auto bao-dien-tu-scrollbar">
+
+
+
+      <div style="overflow: hidden auto" class="slick-new-image bao-dien-tu-scrollbar">
+        {{#each posts}}
+        {{!-- <div class="item-top-10">
+        <a href="/post/post_sample">
+          <div class=" row">
+            <div class="col-md-6">
+              <div class="image-item">
+                <img src="media/images/{{posts.post_avatar_image}}" alt="">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="item-topic">
+                <span class="topic">{{posts.category}}</span>
+              </div>
+              <div class="item-title">
+                <span class="title">{{posts.post_title}}</span>
+              </div>
+              <div class="item-day">
+                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{posts.published_date}}</i></span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div> --}}
+        <div class="new-post"
+          style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),  url(media/images/{{this.post_avatar_image}})">
+          <a href="/post/post_sample">
+            <div class="d-flex topic-post">
+              <p class="topic">{{this.category}}</p>
+
+            </div>
+            <p class="title-post">{{this.post_title}}</p>
+            <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post"></i>{{this.published_date}}</p>
+          </a>
+        </div>
+
+        {{/each}}
 
       </div>
+
+
+
     </div>
   </div>
 </section>
@@ -80,7 +121,7 @@
     </div>
     <div class="most-view-content container col-md-12 col-lg-8">
       <div class="most-view"><span>Xem nhiều nhất</span> </div>
-      <div class="list-mv row bao-dien-tu-scrollbar">
+      <div style="margin-top: 16px;" class="list-mv row bao-dien-tu-scrollbar">
         {{!-- List much view --}}
       </div>
     </div>
