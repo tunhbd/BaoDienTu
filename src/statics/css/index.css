@@ -190,6 +190,7 @@ body {
   .item-hightlight:active
   .title-post {
   color: #e91e63;
+  opacity: 1;
   transition: all 0.25s ease;
 }
 
@@ -316,7 +317,8 @@ body {
   .title-post {
   margin: 16px 0px;
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 550;
+  opacity: 0.7;
   line-height: 125%;
 }
 
@@ -835,4 +837,13 @@ nav#menu .menu-list-item:hover a {
 
 .dropdown-item:hover a {
   color: #9c27b0 !important;
+}
+
+.page-item.active .page-link {
+  background: #9c27b0;
+  color: white;
+  border-color: #9c27b0;
+}
+.page-link {
+  color: #9c27b0;
 }

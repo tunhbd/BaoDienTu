@@ -1,18 +1,30 @@
 const { getAllWithLevel } = require("../../business/categoryBus");
-const { getTenLatestPosts } = require("../../business/postBus");
+const {
+  getTenLatestPosts,
+  getPostsFromCategoryId,
+  getNameCatById,
+  getPostsFromId
+} = require("../../business/postBus");
 const moment = require("moment");
 
 let postList, tagList;
 Promise.all([getAllWithLevel(), getTenLatestPosts()])
   .then(function([tags, posts]) {
     postList = posts.map(
-      ({ post_title, post_avatar_image, published_date, category }) => ({
+      ({
+        post_id,
+        post_title,
+        post_avatar_image,
+        published_date,
+        category_name
+      }) => ({
         post_title: unescape(post_title),
         post_avatar_image,
         published_date: moment(published_date)
           .startOf("hour")
           .fromNow(),
-        category
+        category_name,
+        post_id
       })
     );
 
@@ -25,10 +37,12 @@ Promise.all([getAllWithLevel(), getTenLatestPosts()])
   });
 
 const getSearchResultsGetRequest = (req, res) => {
+  let searchStr = req.body.search;
+
+  console.log(searchStr);
   res.render("searchPageContent", {
-    results: [],
-    searchInput: req.query.searchInput,
-    layout: "indexLayout"
+    layout: "indexLayout",
+    listParent: tagList
   });
 };
 
@@ -46,11 +60,41 @@ const renderHomePage = function(req, res) {
 };
 
 const showPostsListByCategoryGetRequest = (req, res) => {
-  res.render("listPostContent", {
-    layout: "indexLayout",
-    listParent: tagList,
-    posts: postList
-  });
+  Promise.all([
+    getPostsFromCategoryId(req.params.catId, 0, 10),
+    getNameCatById(req.params.catId)
+  ])
+    .then(([postsFromCatId, catName]) => {
+      postsFromCatId = postsFromCatId.map(
+        ({
+          post_id,
+          post_title,
+          post_avatar_image,
+          published_date,
+          post_summary
+        }) => {
+          return {
+            post_title: unescape(post_title),
+            published_date: moment(published_date)
+              .startOf("hour")
+              .fromNow(),
+            post_avatar_image,
+            post_summary: unescape(post_summary),
+            post_id
+          };
+        }
+      );
+      res.render("listPostContent", {
+        layout: "indexLayout",
+        listParent: tagList,
+        posts: postsFromCatId,
+        catName: catName.category_name
+      });
+    })
+
+    .catch(err => {
+      throw err;
+    });
 };
 
 const showPostsListByTagGetRequest = (req, res) => {
@@ -63,11 +107,38 @@ const showPostsListByTagGetRequest = (req, res) => {
 
 const showPostDetailGetRequest = (req, res) => {
   let postId = req.params.postId;
-  res.render("postDetailContent", {
-    listParent: tagList,
-    posts: postList,
-    layout: "indexLayout"
-  });
+
+  Promise.all([getPostsFromId(postId)])
+    .then(([post]) => {
+      post = post.map(
+        ({
+          category_name,
+          post_title,
+          post_avatar_image,
+          published_date,
+          post_content
+        }) => {
+          return {
+            post_title: unescape(post_title),
+            published_date: moment(published_date)
+              .startOf("hour")
+              .fromNow(),
+            post_avatar_image,
+            post_content: unescape(post_content),
+            category_name
+          };
+        }
+      );
+      res.render("postDetailContent", {
+        listParent: tagList,
+        layout: "indexLayout",
+        post: post[0]
+      });
+    })
+
+    .catch(err => {
+      throw err;
+    });
 };
 
 module.exports = {

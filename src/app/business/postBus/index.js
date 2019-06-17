@@ -795,7 +795,7 @@ const checkIsRejectedOrDraftById = id =>
 
 const getTenLatestPosts = () =>
   new Promise((resolve, reject) => {
-    let query = `SELECT *  FROM posts WHERE published_date  ORDER BY published_date DESC LIMIT 10`;
+    let query = `SELECT *  FROM posts join categories on posts.category = categories.category_id WHERE published_date  ORDER BY published_date DESC LIMIT 10`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -808,6 +808,50 @@ const getTenLatestPosts = () =>
       });
   });
 
+const getNameCatById = id =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT category_name FROM categories WHERE categories.category_id = '${id}'`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rows => {
+        resolve(rows[0]);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getPostsFromCategoryId = (id, from, limit) =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM posts join categories on categories.category_id = posts.category where posts.category = '${id}' and posts.published_date ORDER BY posts.published_date LIMIT ${limit} OFFSET ${from}`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getPostsFromId = id =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM posts join categories on posts.category = categories.category_id where posts.post_id = '${id}' and posts.published_date`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
 module.exports = {
   createPost,
   updatePost,
@@ -824,5 +868,8 @@ module.exports = {
   deletePosts,
   checkIsRejectedOrDraftByAlias,
   checkIsRejectedOrDraftById,
-  getTenLatestPosts
+  getTenLatestPosts,
+  getPostsFromCategoryId,
+  getNameCatById,
+  getPostsFromId
 };

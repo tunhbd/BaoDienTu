@@ -68,33 +68,12 @@
 
       <div style="overflow: hidden auto" class="slick-new-image bao-dien-tu-scrollbar">
         {{#each posts}}
-        {{!-- <div class="item-top-10">
-        <a href="/post/post_sample">
-          <div class=" row">
-            <div class="col-md-6">
-              <div class="image-item">
-                <img src="media/images/{{posts.post_avatar_image}}" alt="">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="item-topic">
-                <span class="topic">{{posts.category}}</span>
-              </div>
-              <div class="item-title">
-                <span class="title">{{posts.post_title}}</span>
-              </div>
-              <div class="item-day">
-                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{posts.published_date}}</i></span>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div> --}}
+
         <div class="new-post"
-          style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),  url(media/images/{{this.post_avatar_image}})">
-          <a href="/post/post_sample">
+          style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),  url(/media/images/posts/{{this.post_avatar_image}})">
+          <a href="/post/{{this.post_id}}">
             <div class="d-flex topic-post">
-              <p class="topic">{{this.category}}</p>
+              <p class="topic">{{this.category_name}}</p>
 
             </div>
             <p class="title-post">{{this.post_title}}</p>

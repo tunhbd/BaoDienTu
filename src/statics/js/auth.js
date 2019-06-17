@@ -1,10 +1,10 @@
-!(function (a) {
+!(function(a) {
   "use strict";
   a("html, body");
   let frmCtrl = a(".pwd-mask > .form-control");
   let tglPwd = a(".pwd-toggle");
 
-  a(tglPwd).on("click", function (event) {
+  a(tglPwd).on("click", function(event) {
     event.preventDefault();
     a(this).toggleClass("fa-eye-slash fa-eye");
     a(this).hasClass("fa-eye")
@@ -13,7 +13,7 @@
   });
 })(jQuery);
 
-$.validator.addMethod("pwcheck", function (value) {
+$.validator.addMethod("pwcheck", function(value) {
   return (
     /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) && // consists of only these
     /[a-z]/.test(value) && // has a lowercase letter
@@ -40,8 +40,6 @@ $("#loginForm").validate({
     }
   }
 });
-
-
 
 $("#forgetForm").validate({
   errorClass: "small text-danger d-flex",
