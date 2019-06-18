@@ -8,7 +8,7 @@
 
         <p style="line-height: 125%;"><span style="transform: translateY(-4px);"
             class="mr-3 d-inline-block detail-category">
-            <a href="/category/{{data.post.category_id}}">
+            <a href="/category/{{data.post.category_alias}}">
               <span>{{data.post.category_name}}</span>
             </a>
           </span>{{data.post.post_title}}</p>
@@ -17,7 +17,7 @@
 
         <div class="detail-tag align-self-center">#Tags:
           {{#each data.tags}}
-          <a href="/tag/{{this.tag_id}}"><span>{{this.tag_name}}</span></a>
+          <a href="/tag/{{this.tag_alias}}"><span>{{this.tag_name}}</span></a>
           {{/each}}
         </div>
         <div class="mt-4 align-self-center"><b>Ngày đăng:</b>
@@ -76,7 +76,7 @@
       </div>
       {{#each data.tenPostsFromCatId}}
       <div class="item-top-10">
-        <a href="/post/{{this.post_id}}">
+        <a href="/post/{{this.post_alias}}">
           <div class=" row">
             <div class="col-md-6">
               <div class="image-item">
@@ -88,7 +88,8 @@
                 <span class="topic">{{this.category_name}}</span>
               </div>
               <div class="item-title">
-                <span class="title">{{this.post_title}}</span>
+                <span class="title">{{#if this.premium}}<i class="fa fa-star"
+                    aria-hidden="true"></i>{{/if}}{{this.post_title}}</span>
               </div>
               <div class="item-day">
                 <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{this.published_date}}</i></span>

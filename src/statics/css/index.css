@@ -616,15 +616,11 @@ nav#menu {
 }
 
 nav#menu .close-menu-button {
-  width: 40px;
-  height: 40px;
   box-sizing: border-box;
-  padding: 5px;
-  text-align: center;
+  padding: 16px;
   line-height: 30px;
-  font-size: 20pt;
+  font-size: 14pt;
   color: rgba(0, 0, 0, 0.5);
-  float: right;
   cursor: pointer;
 }
 
@@ -651,6 +647,8 @@ nav#menu .close-menu-button {
 nav#menu.expanded-main-menu {
   animation-name: expandedMainMenu;
   animation-duration: 0.5s;
+  z-index: 100000;
+  padding-top: 60px;
   animation-timing-function: ease;
   left: 0px;
 }
@@ -673,6 +671,8 @@ nav#menu .menu-list {
   margin-top: 40px;
   overflow: auto;
   padding: 0px;
+  display: flex;
+  flex-direction: column;
 }
 nav#menu .menu-list .menu-list-item {
   padding: 5px 20px;
@@ -846,4 +846,9 @@ nav#menu .menu-list-item:hover a {
 }
 .page-link {
   color: #9c27b0;
+}
+@media screen and (max-width: 768px) {
+  .menu-topic {
+    display: none !important;
+  }
 }

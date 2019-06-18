@@ -38,28 +38,31 @@
       <i class="fas fa-times"></i>
     </div>
     <ul class="menu-list bao-dien-tu-scrollbar">
-      <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li>
+      {{!-- <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li> --}}
 
-      {{!-- {{#each listParent}}
-      {{#if (opt this.children.length '>' 0 opt)}}
+
+
+      {{#each data.categories}}
+      {{!-- {{#if (opt this.children.length '>' 0 opt)}} --}}
+      {{#if this.subCategories}}
       <li class="menu-list-item">
-        <a href="/category/{{this.categoryId}}" class="menu-list-item-dropdown__content">
+        <a href="/category/{{this.alias}}" class="menu-list-item-dropdown__content">
           {{this.categoryName}}<i class="fas fa-caret-down expand-sub-menu-button"></i>
         </a>
-        <ul class="menu-list-item-dropdown__menu">
-          {{#each this.children}}
+        <ul class="menu-list-item dropdown__menu">
+          {{#each this.subCategories}}
           <li class="menu-list-item-dropdown__menu__item">
-            <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+            <a href="/category/{{this.alias}}">{{this.categoryName}}</a>
           </li>
           {{/each}}
         </ul>
       </li>
       {{else}}
-      <li class="menu-list-item-dropdown__menu__item">
-        <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+      <li class=" menu-list-item menu-list-item-dropdown__menu__item">
+        <a href="/category/{{this.alias}}">{{this.categoryName}}</a>
       </li>
       {{/if}}
-      {{/each}} --}}
+      {{/each}}
       <!-- <li class="menu-list-item menu-list-item-dropdown">
                 <a href="/category/category_sample" class="menu-list-item-dropdown__content">
                   Kinh tế <i class="fas fa-caret-down expand-sub-menu-button"></i>
@@ -101,38 +104,10 @@
               {{!-- <button class="btn btn-primary position-absolute" type="submit">Search</button> --}}
             </form>
           </div>
-          <div class="logo">
-            <!-- <a href="#"><img src="media/images/logo.png" alt="img"></a> -->
-          </div>
-          <!-- <img width="40px" height="40px" id="homepage-avatar-user"
-            class="rounded-circle overflow-hidden homepage-user-menu-is-collapse" src="{{user.avatar}}" alt="" />
-          {{user.fullname}}
-          <div class="homepage-user-menu">
-            <ul>
-              <li class="homepage-user-menu__item">
-                <a href="/profile" class="homepage-user-menu__item__content">
-                  Your Profile <i class="fas fa-id-card-alt homepage-user-menu__item-icon"></i>
-                  {{!-- <i class="user-menu__item__icon user-menu__item__icon-profile"></i> --}}
-          </a>
-          </li>
-          <li class="homepage-user-menu__item">
-            <a href="/change-password" class="homepage-user-menu__item__content">
-              Change Password <i class="fas fa-user-lock homepage-user-menu__item-icon"></i>
-              {{!-- <i class="user-menu__item__icon user-menu__item__icon-change-password"></i> --}}
-            </a>
-          </li>
-          <li class="homepage-user-menu__item">
-            <a href="/sign-out" class="homepage-user-menu__item__content">
-              Sign Out <i class="fas fa-sign-out-alt homepage-user-menu__item-icon"></i>
-              {{!-- <i class="user-menu__item__icon user-menu__item__icon-sign-out"></i> --}}
-            </a>
-          </li>
-          </ul>
-        </div> -->
-          {{#if data.user}}
 
+          {{#if data.user}}
           <div class="position-relative d-flex" style="align-items: flex-end;padding-bottom: 6px;">
-            <a href="#" id="avatar-user" class="user-menu-is-collapse login">{{user.fullname}}</a>
+            <a href="#" id="avatar-user" class="user-menu-is-collapse login">{{this.fullname}}</a>
             <div class="user-menu">
               <ul>
                 <li class="user-menu__item">
@@ -156,7 +131,8 @@
               </ul>
             </div>
           </div>
-          {{else}} <div class="login-form" style="font-size: 16px;">
+          {{else}}
+          <div class="login-form" style="font-size: 16px;">
 
             <a href="/sign-in" class="login">Đăng nhập</a> | <a href="/sign-up" class="sign-up"> Đăng kí</a>
             </span>
@@ -184,25 +160,25 @@
 
               <li class="menu-list-item dropdown">
                 {{#if this.subCategories}}
-                <a href="/category/{{this.categoryId}}" class="dropdown-toggle" data-toggle="dropdown">
+                <a href="/category/{{this.alias}}" class="dropdown-toggle" data-toggle="dropdown">
                   {{this.categoryName}}<b class="caret"></b>
                 </a>
                 {{else}}
-                <a href="/category/{{this.categoryId}}">
+                <a href="/category/{{this.alias}}">
                   {{this.categoryName}}<b></b>
                 </a>
                 {{/if}}
                 <ul class="dropdown-menu">
                   {{#each this.subCategories}}
                   <li class="dropdown-item">
-                    <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+                    <a href="/category/{{this.alias}}">{{this.categoryName}}</a>
                   </li>
                   {{/each}}
                 </ul>
               </li>
               {{!-- {{else}}
               <li class="menu-list-item">
-                <a href="/category/{{this.categoryId}}">{{this.categoryName}}</a>
+                <a href="/category/{{this.alias}}">{{this.categoryName}}</a>
               </li>
               {{/if}} --}}
               {{/each}}
@@ -278,6 +254,8 @@
       title: 'Oops!',
       text: "{{data.message.error}}",
     })
+
+    console.log("{{data.user}}")
   </script>
   {{/if}}
 </body>

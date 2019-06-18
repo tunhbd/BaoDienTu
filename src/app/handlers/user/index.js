@@ -3,24 +3,27 @@ const {
   getTenLatestPosts,
   getPostsFromCategoryId,
   getNameCatById,
-  getPostsFromId,
+  getPostFromId,
   getTagsFromPostId,
   getPostsFromTagId,
   getNameTagById,
-  getPostFromFTSearch
+  getPostFromFTSearch,
+  getCountPostFromFTSearch,
+  getCountPostsFromCategoryId,
+  getCountPostsFromTagId
 } = require("../../business/postBus");
 const { addComment, loadComment } = require("../../business/commentBus");
 const moment = require("moment");
 
-let categories = []
+let categories = [];
 Promise.all([categoryBus.getAllWithLevel()])
-  .then(function ([categs]) {
+  .then(function([categs]) {
     // categs.unshift({ categoryName: "Home", categoryId: "home" });
     categs.push({ categoryName: "More", categoryId: "more" });
     categories = categs;
   })
   .catch(err => {
-    console.log(err)
+    console.log(err);
   });
 
 let parseData = posts => {
@@ -33,7 +36,10 @@ let parseData = posts => {
       post_summary,
       post_content,
       category_name,
-      category_id
+      category_id,
+      category_alias,
+      post_alias,
+      premium
     }) => {
       return {
         post_title: post_title,
@@ -45,30 +51,48 @@ let parseData = posts => {
         post_content: post_content,
         post_id,
         category_name,
-        category_id
+        category_id,
+        category_alias,
+        post_alias,
+        premium
       };
     }
   ));
 };
 
 const getSearchResultsGetRequest = (req, res) => {
-  let searchStr = req.query.search;
+  let { search, page } = req.query;
+  page = Number(page) || 1;
+
   let sub = false;
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
 
-  Promise.all([getPostFromFTSearch(sub, searchStr, 0, 10)])
-    .then(([posts]) => {
+  Promise.all([
+    getCountPostFromFTSearch(sub, search),
+    getPostFromFTSearch(sub, search, (page - 1) * 10, 10)
+  ])
+    .then(([count, posts]) => {
       posts = parseData(posts);
+
+      count = count[0]["count(*)"];
+      let numpage = Math.floor(count / 10);
+      if (count % 10 != 0) numpage++;
+
+      let countObj = [];
+      countObj.push;
+      for (i = 0; i < numpage; i++) {
+        countObj.push({ data: i + 1 });
+      }
+
       res.render("searchPageContent", {
         data: {
           user: req.user,
           posts,
           categories,
-          search: searchStr
+          search: search,
+          count: countObj
         },
-        layout: "indexLayout",
-        //TODO: tenPostsMostView
-
+        layout: "indexLayout"
       });
     })
 
@@ -77,17 +101,15 @@ const getSearchResultsGetRequest = (req, res) => {
     });
 };
 
-const renderHomePage = function (req, res) {
+const renderHomePage = function(req, res) {
   let sub = false;
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
 
-  Promise.all([
-    getTenLatestPosts(sub),
-    postBus.getMuchViewPosts(sub),
-  ])
+  Promise.all([getTenLatestPosts(sub), postBus.getMuchViewPosts(sub)])
     .then(([latestPosts, muchViewPosts]) => {
-      let highlightPosts = postBus.filterHighlightPostsFrom(muchViewPosts)
+      let highlightPosts = postBus.filterHighlightPostsFrom(muchViewPosts);
       latestPosts = parseData(latestPosts);
+      console.log(req.user);
       res.render("user/indexContent", {
         data: {
           user: req.user,
@@ -101,8 +123,7 @@ const renderHomePage = function (req, res) {
           highlightPosts
         },
 
-        layout: "indexLayout",
-
+        layout: "indexLayout"
       });
     })
 
@@ -112,24 +133,38 @@ const renderHomePage = function (req, res) {
 };
 
 const showPostsListByCategoryGetRequest = (req, res) => {
+  let { page } = req.query;
+  page = Number(page) || 1;
+
   let sub = false;
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
   Promise.all([
-    getPostsFromCategoryId(sub, req.params.catId, 0, 10),
+    getCountPostsFromCategoryId(sub, req.params.catId),
+    getPostsFromCategoryId(sub, req.params.catId, (page - 1) * 10, 10),
     getNameCatById(req.params.catId)
   ])
-    .then(([postsFromCatId, catName]) => {
+    .then(([count, postsFromCatId, catName]) => {
       postsFromCatId = parseData(postsFromCatId);
+      count = count[0]["count(*)"];
+      let numpage = Math.floor(count / 10);
+      if (count % 10 != 0) numpage++;
 
+      let countObj = [];
+      countObj.push;
+      for (i = 0; i < numpage; i++) {
+        countObj.push({ data: i + 1 });
+      }
+      console.log(req.params.catId);
       res.render("listPostContent", {
         data: {
+          catId: req.params.catId,
           user: req.user,
           categories,
           posts: postsFromCatId,
-          catName: catName.category_name
+          catName: catName.category_name,
+          count: countObj
         },
-        layout: "indexLayout",
-        //TODO: tenPostsMostView
+        layout: "indexLayout"
       });
     })
 
@@ -139,22 +174,39 @@ const showPostsListByCategoryGetRequest = (req, res) => {
 };
 
 const showPostsListByTagGetRequest = (req, res) => {
+  let { page } = req.query;
+  page = Number(page) || 1;
+
   let sub = false;
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
   Promise.all([
-    getPostsFromTagId(sub, req.params.tagId, 0, 10),
+    getCountPostsFromTagId(sub, req.params.tagId),
+    getPostsFromTagId(sub, req.params.tagId, (page - 1) * 10, 10),
     getNameTagById(req.params.tagId)
   ])
-    .then(([postsFromTagId, tagName]) => {
+    .then(([count, postsFromTagId, tagName]) => {
       postsFromTagId = parseData(postsFromTagId);
+
+      count = count[0]["count(*)"];
+      let numpage = Math.floor(count / 10);
+      if (count % 10 != 0) numpage++;
+
+      let countObj = [];
+      countObj.push;
+      for (i = 0; i < numpage; i++) {
+        countObj.push({ data: i + 1 });
+      }
+
       res.render("listTagPostContent", {
         data: {
+          tagId: req.params.tagId,
           user: req.user,
           categories,
           posts: postsFromTagId,
-          tagName: tagName.tag_name
+          tagName: tagName.tag_name,
+          count: countObj
         },
-        layout: "indexLayout",
+        layout: "indexLayout"
         //TODO: tenPostsMostView
       });
     })
@@ -170,7 +222,7 @@ const showPostDetailGetRequest = (req, res) => {
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
   Promise.all([
     getTagsFromPostId(postId),
-    getPostsFromId(sub, postId),
+    getPostFromId(sub, postId),
     getTenLatestPosts(sub, req.params.caId),
     loadComment(postId)
   ])
@@ -190,7 +242,7 @@ const showPostDetailGetRequest = (req, res) => {
             return cmt;
           })
         },
-        layout: "indexLayout",
+        layout: "indexLayout"
       });
     })
 

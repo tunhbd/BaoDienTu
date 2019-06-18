@@ -38,7 +38,7 @@ const addComment = data =>
 
 const loadComment = post_id =>
   new Promise(async (resolve, reject) => {
-    let query = `select * from comments join users on users.user_account = comments.user_account where comments.post_id = '${post_id}' limit 10;`;
+    let query = `select * from comments join users on users.user_account = comments.user_account join posts on comments.post_id = posts.post_id where posts.post_alias = '${post_id}' limit 10;`;
     let dbConn = new DBConnection();
     console.log(query);
     await dbConn

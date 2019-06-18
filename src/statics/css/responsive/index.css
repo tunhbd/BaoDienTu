@@ -8,9 +8,6 @@ body {
 .menu-list .menu-list-item {
   list-style: none;
 }
-.menu-list .menu-list-item:not(:first-child) {
-  margin-left: 20px;
-}
 .menu-list .menu-list-item a {
   text-decoration: none;
   color: black;
