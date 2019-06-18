@@ -1,4 +1,4 @@
-const { categoryBus, postBus } = require("../../business");
+const { categoryBus, postBus, tagBus, authBus } = require("../../business");
 const {
   getTenLatestPosts,
   getPostsFromCategoryId,
@@ -13,11 +13,12 @@ const {
   getCountPostsFromTagId
 } = require("../../business/postBus");
 const { addComment, loadComment } = require("../../business/commentBus");
+const { LIMIT_SEARCH_POSTS, LIMIT_LIST_POSTS } = require('../../config')
 const moment = require("moment");
 
 let categories = [];
 Promise.all([categoryBus.getAllWithLevel()])
-  .then(function([categs]) {
+  .then(function ([categs]) {
     // categs.unshift({ categoryName: "Home", categoryId: "home" });
     categs.push({ categoryName: "More", categoryId: "more" });
     categories = categs;
@@ -69,14 +70,14 @@ const getSearchResultsGetRequest = (req, res) => {
 
   Promise.all([
     getCountPostFromFTSearch(sub, search),
-    getPostFromFTSearch(sub, search, (page - 1) * 10, 10)
+    getPostFromFTSearch(sub, search, (page - 1) * LIMIT_SEARCH_POSTS, LIMIT_SEARCH_POSTS)
   ])
     .then(([count, posts]) => {
       posts = parseData(posts);
 
       count = count[0]["count(*)"];
-      let numpage = Math.floor(count / 10);
-      if (count % 10 != 0) numpage++;
+      let numpage = Math.floor(count / LIMIT_SEARCH_POSTS);
+      if (count % LIMIT_SEARCH_POSTS != 0) numpage++;
 
       let countObj = [];
       countObj.push;
@@ -84,13 +85,14 @@ const getSearchResultsGetRequest = (req, res) => {
         countObj.push({ data: i + 1 });
       }
 
-      res.render("searchPageContent", {
+      res.render("user/searchPageContent", {
         data: {
           user: req.user,
           posts,
           categories,
           search: search,
-          count: countObj
+          count: countObj,
+          thisPage: page
         },
         layout: "indexLayout"
       });
@@ -101,12 +103,17 @@ const getSearchResultsGetRequest = (req, res) => {
     });
 };
 
-const renderHomePage = function(req, res) {
+const renderHomePage = function (req, res) {
   let sub = false;
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
 
-  Promise.all([getTenLatestPosts(sub), postBus.getMuchViewPosts(sub)])
-    .then(([latestPosts, muchViewPosts]) => {
+  Promise
+    .all([
+      getTenLatestPosts(sub),
+      postBus.getMuchViewPosts(sub),
+      postBus.getTopCategoryWithLatestPost(sub)
+    ])
+    .then(([latestPosts, muchViewPosts, topCategoryWithPosts]) => {
       let highlightPosts = postBus.filterHighlightPostsFrom(muchViewPosts);
       latestPosts = parseData(latestPosts);
       console.log(req.user);
@@ -119,6 +126,7 @@ const renderHomePage = function(req, res) {
           },
           categories,
           latestPosts,
+          topCategoryWithPosts,
           muchViewPosts,
           highlightPosts
         },
@@ -132,123 +140,176 @@ const renderHomePage = function(req, res) {
     });
 };
 
-const showPostsListByCategoryGetRequest = (req, res) => {
+const showPostsListByCategoryGetRequest = (req, res, next) => {
   let { page } = req.query;
+  page = Number(page) || 1;
+  let alias = req.params.catAlias
+
+  let sub = false;
+  if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
+
+  categoryBus
+    .getCommonOneByAlias(alias)
+    .then(category => {
+      Promise
+        .all([
+          getCountPostsFromCategoryId(sub, category.categoryId),
+          getPostsFromCategoryId(sub, category.categoryId, (page - 1) * LIMIT_LIST_POSTS, LIMIT_LIST_POSTS)
+        ])
+        .then(([count, posts]) => {
+          count = count[0]["count(*)"];
+          let numpage = Math.floor(count / LIMIT_LIST_POSTS);
+          if (count % LIMIT_LIST_POSTS != 0) numpage++;
+
+          let countObj = [];
+          countObj.push;
+          for (i = 0; i < numpage; i++) {
+            countObj.push({ data: i + 1 });
+          }
+
+          res.render("user/listPostContent", {
+            data: {
+              category: category,
+              user: req.user,
+              categories,
+              posts,
+              thisPage: page,
+              // catName: catName.category_name,
+              count: countObj
+            },
+            layout: "indexLayout"
+          });
+        })
+
+        .catch(err => {
+          console.log(err)
+          req.error = true
+          next()
+        });
+    })
+    .catch(err => {
+      req.error = true
+      next()
+    })
+};
+
+const showPostsListByTagGetRequest = (req, res, next) => {
+  let { page } = req.query;
+  let alias = req.params.tagAlias
   page = Number(page) || 1;
 
   let sub = false;
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
-  Promise.all([
-    getCountPostsFromCategoryId(sub, req.params.catId),
-    getPostsFromCategoryId(sub, req.params.catId, (page - 1) * 10, 10),
-    getNameCatById(req.params.catId)
-  ])
-    .then(([count, postsFromCatId, catName]) => {
-      postsFromCatId = parseData(postsFromCatId);
-      count = count[0]["count(*)"];
-      let numpage = Math.floor(count / 10);
-      if (count % 10 != 0) numpage++;
 
-      let countObj = [];
-      countObj.push;
-      for (i = 0; i < numpage; i++) {
-        countObj.push({ data: i + 1 });
-      }
-      console.log(req.params.catId);
-      res.render("listPostContent", {
-        data: {
-          catId: req.params.catId,
-          user: req.user,
-          categories,
-          posts: postsFromCatId,
-          catName: catName.category_name,
-          count: countObj
-        },
-        layout: "indexLayout"
-      });
+  tagBus
+    .getOneByAlias(alias)
+    .then(tag => {
+      Promise.all([
+        getCountPostsFromTagId(sub, tag.tagId),
+        getPostsFromTagId(sub, tag.tagId, (page - 1) * LIMIT_LIST_POSTS, LIMIT_LIST_POSTS)
+      ])
+        .then(([count, posts]) => {
+          console.log('posts', posts.length)
+          count = count[0]["count(*)"];
+          let numpage = Math.floor(count / LIMIT_LIST_POSTS);
+          if (count % LIMIT_LIST_POSTS != 0) numpage++;
+
+          let countObj = [];
+          countObj.push;
+          for (i = 0; i < numpage; i++) {
+            countObj.push({ data: i + 1 });
+          }
+
+          res.render("user/listTagPostContent", {
+            data: {
+              tag,
+              user: req.user,
+              categories,
+              posts,
+              count: countObj,
+              thisPage: page,
+            },
+            layout: "indexLayout"
+          });
+        })
+
+        .catch(err => {
+          console.log(err)
+          req.error = true
+          next()
+        });
+    })
+    .catch(err => {
+      console.log(err)
+      req.error = true
+      next()
     })
 
-    .catch(err => {
-      throw err;
-    });
 };
 
-const showPostsListByTagGetRequest = (req, res) => {
-  let { page } = req.query;
-  page = Number(page) || 1;
-
+const showPostDetailGetRequest = (req, res, next) => {
+  let alias = req.params.postAlias;
   let sub = false;
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
-  Promise.all([
-    getCountPostsFromTagId(sub, req.params.tagId),
-    getPostsFromTagId(sub, req.params.tagId, (page - 1) * 10, 10),
-    getNameTagById(req.params.tagId)
-  ])
-    .then(([count, postsFromTagId, tagName]) => {
-      postsFromTagId = parseData(postsFromTagId);
 
-      count = count[0]["count(*)"];
-      let numpage = Math.floor(count / 10);
-      if (count % 10 != 0) numpage++;
-
-      let countObj = [];
-      countObj.push;
-      for (i = 0; i < numpage; i++) {
-        countObj.push({ data: i + 1 });
+  postBus
+    .getOneByAlias(alias)
+    .then(async post => {
+      let checked = true
+      if (post.premium) {
+        if (!sub) {
+          checked = false
+          req.flash('err', 'Bạn hãy đăng ký làm độc giả để có thể xem được bài viết này')
+          res.redirect('/sign-up')
+        }
+        else {
+          await authBus
+            .checkExpirationOfSubscriber(req.user.account)
+            .then(ret => {
+              if (!ret) {
+                checked = false
+                req.flash('err', 'Bạn hãy gia hạn tài khoản của bạn để có thể xem bài viết này')
+                res.redirect(req.headers.referer)
+              }
+            })
+            .catch(err => {
+              console.log(err)
+              req.error = true
+              next()
+            })
+        }
       }
 
-      res.render("listTagPostContent", {
-        data: {
-          tagId: req.params.tagId,
-          user: req.user,
-          categories,
-          posts: postsFromTagId,
-          tagName: tagName.tag_name,
-          count: countObj
-        },
-        layout: "indexLayout"
-        //TODO: tenPostsMostView
-      });
-    })
-
-    .catch(err => {
-      throw err;
-    });
-};
-
-const showPostDetailGetRequest = (req, res) => {
-  let postId = req.params.postId;
-  let sub = false;
-  if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
-  Promise.all([
-    getTagsFromPostId(postId),
-    getPostFromId(sub, postId),
-    getTenLatestPosts(sub, req.params.caId),
-    loadComment(postId)
-  ])
-
-    .then(([tags, post, tenPostsFromCatId, comments]) => {
-      post = parseData(post);
-      tenPostsFromCatId = parseData(tenPostsFromCatId);
-      res.render("postDetailContent", {
-        data: {
-          categories,
-          tenPostsFromCatId,
-          user: req.user,
-          post: post[0],
-          tags,
-          comments: comments.map(cmt => {
-            cmt.comment_date = moment(cmt.comment_date).format("DD-MM-YYYY");
-            return cmt;
+      if (checked) {
+        Promise
+          .all([
+            postBus.getRelativePostsViaCategoryId(sub, post.category.categoryId, post.postId),
+            loadComment(post.postId)
+          ])
+          .then(([relativePosts, comments]) => {
+            res.render("user/postDetailContent", {
+              data: {
+                categories,
+                relativePosts,
+                user: req.user,
+                post,
+                comments,
+              },
+              layout: "indexLayout"
+            });
           })
-        },
-        layout: "indexLayout"
-      });
+          .catch(err => {
+            console.log(err)
+            req.error = true
+            next()
+          });
+      }
     })
-
     .catch(err => {
-      throw err;
-    });
+      console.log(err)
+      req.error = true
+      next()
+    })
 };
 const insertCommentPostRequest = (req, res, next) => {
   if (req.user) {

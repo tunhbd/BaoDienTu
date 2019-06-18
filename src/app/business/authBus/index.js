@@ -453,6 +453,23 @@ const updateUserAvatar = user => new Promise((resolve, reject) => {
     })
 })
 
+const checkExpirationOfSubscriber = account => new Promise((resolve, reject) => {
+  let query =
+    `SELECT u.user_account 
+    FROM users u JOIN subscribers sb ON u.user_account=sb.user_account
+    WHERE u.user_account='${account}' AND DATEDIFF(now(), sb.expiration_date) < 0`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      resolve(rets.length > 0)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 module.exports = {
   getSigninedUser,
   checkSignInedUser,
@@ -467,6 +484,7 @@ module.exports = {
   checkOldPassword,
   checkExistsEmailInSystem,
   checkUserToken,
+  checkExpirationOfSubscriber,
   resetPassword,
   saveUserToken,
   getPseudonymOfWriter,

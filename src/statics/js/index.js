@@ -96,74 +96,69 @@ var arrDay = [
   "15-4-2019",
   "15-4-2019"
 ];
-for (var i = 0; i < arrImageLink.length - 1; i++) {
-  var a =
-    `
-  <div class="new-post" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),  url(media/images/${
-    arrImageLink[i]
-    })">
-    <a href="/post/post_sample">
-      <div class="d-flex topic-post">
-        <p class="topic">` +
-    arrTopic[i] +
-    `</p>
+// for (var i = 0; i < arrImageLink.length - 1; i++) {
+//   var a =
+//     `
+//   <div class="new-post" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),  url(media/images/${
+//     arrImageLink[i]
+//     })">
+//     <a href="/post/post_sample">
+//       <div class="d-flex topic-post">
+//         <p class="topic">` +
+//     arrTopic[i] +
+//     `</p>
 
-      </div>
-      <p class="title-post">` +
-    arrTitle[i] +
-    `</p>
-      <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">` +
-    arrDay[i] +
-    `</i></p>
-    </a>
-  </div>`;
-  $(".slick-new-image").append(a);
-}
-for (var i = 0; i < arrImageLink.length - 1; i++) {
-  var a =
-    `
-  `;
-  $(".list-mv").append(a);
-}
-for (var i = 0; i < arrImageLink.length - 1; i++) {
-  var a =
-    `
-  <div class="item-top-10">
-    <a href="/post/post_sample">
-      <div class=" row">
+//       </div>
+//       <p class="title-post">` +
+//     arrTitle[i] +
+//     `</p>
+//       <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">` +
+//     arrDay[i] +
+//     `</i></p>
+//     </a>
+//   </div>`;
+//   $(".slick-new-image").append(a);
+// }
 
-        <div class="col-md-6">
-          <div class="image-item">
+// for (var i = 0; i < arrImageLink.length - 1; i++) {
+//   var a =
+//     `
+//   <div class="item-top-10">
+//     <a href="/post/post_sample">
+//       <div class=" row">
 
-            <img src="media/images/` +
-    arrImageLink[i] +
-    `" alt="">
+//         <div class="col-md-6">
+//           <div class="image-item">
 
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="item-topic">
-            <span class="topic">` +
-    arrTopic[i] +
-    `</span>
-          </div>
-          <div class="item-title">
-            <span class="title">` +
-    arrTitle[i] +
-    `</span>
-          </div>
-          <div class="item-day">
-            <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">` +
-    arrDay[i] +
-    `</i></span>
-          </div>
-        </div>
+//             <img src="media/images/` +
+//     arrImageLink[i] +
+//     `" alt="">
 
-      </div>
-    </a>
-  </div>`;
-  $(".top-10-content").append(a);
-}
+//           </div>
+//         </div>
+//         <div class="col-md-6">
+//           <div class="item-topic">
+//             <span class="topic">` +
+//     arrTopic[i] +
+//     `</span>
+//           </div>
+//           <div class="item-title">
+//             <span class="title">` +
+//     arrTitle[i] +
+//     `</span>
+//           </div>
+//           <div class="item-day">
+//             <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">` +
+//     arrDay[i] +
+//     `</i></span>
+//           </div>
+//         </div>
+
+//       </div>
+//     </a>
+//   </div>`;
+//   $(".top-10-content").append(a);
+// }
 
 setEventForAvatarUser();
 // $(document).ready(function(){

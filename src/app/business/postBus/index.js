@@ -9,6 +9,9 @@ const {
 } = require("../../config");
 const commentBus = require("../commentBus");
 const postTagBus = require("../postTagBus");
+const categoryBus = require('../categoryBus')
+const tagBus = require('../tagBus')
+const postBus = require('../postBus')
 const fs = require("fs");
 const path = require("path");
 
@@ -49,33 +52,33 @@ const getDraftPostsFilterBy = (pageNum, categoryAlias, filterId, limit, user) =>
       JOIN writers w ON w.user_account = u.user_account
       LEFT JOIN categories cp ON cp.category_id = c.parent_category
       ${
-        user.role === USER_ROLES.EDITOR
-          ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
+        : ""
       }
     WHERE
       p.checked = 0
       ${
-        user.role === USER_ROLES.EDITOR
-          ? ` AND ac.user_account='${user.account}' `
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? ` AND ac.user_account='${user.account}' `
+        : ""
       }
       ${
-        user.role === USER_ROLES.WRITER ? `AND p.author='${user.account}' ` : ""
+      user.role === USER_ROLES.WRITER ? `AND p.author='${user.account}' ` : ""
       }
       ${
-        categoryAlias != "ALL"
-          ? ` AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'`
-          : ""
+      categoryAlias != "ALL"
+        ? ` AND (c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}')`
+        : ""
       }
       ${
-        filterId === FILTER.INCREASE_CREATED_DATE
-          ? "ORDER BY p.created_date ASC"
-          : filterId === FILTER.DECREASE_CREATED_DATE
+      filterId === FILTER.INCREASE_CREATED_DATE
+        ? "ORDER BY p.created_date ASC"
+        : filterId === FILTER.DECREASE_CREATED_DATE
           ? "ORDER BY p.created_date DESC"
           : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? "ORDER BY p.published_date ASC"
-          : "ORDER BY p.published_date DESC"
+            ? "ORDER BY p.published_date ASC"
+            : "ORDER BY p.published_date DESC"
       }
       LIMIT ${(pageNum - 1) * limit}, ${limit} `;
 
@@ -127,31 +130,31 @@ const getCountDraftPostsFilterBy = (pageNum, categoryAlias, filterId, user) =>
       user.role === USER_ROLES.EDITOR
         ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
         : ""
-    }
+      }
     WHERE
       p.checked=0
       ${
-        user.role === USER_ROLES.EDITOR
-          ? ` AND ac.user_account='${user.account}' `
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? ` AND ac.user_account='${user.account}' `
+        : ""
       }
       ${
-        user.role === USER_ROLES.WRITER ? `AND p.author='${user.account}' ` : ""
+      user.role === USER_ROLES.WRITER ? `AND p.author='${user.account}' ` : ""
       }
       ${
-        categoryAlias != "ALL"
-          ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'`
-          : ""
+      categoryAlias != "ALL"
+        ? `AND (c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}')`
+        : ""
       }
     ${
       filterId === FILTER.INCREASE_CREATED_DATE
         ? "ORDER BY p.created_date ASC"
         : filterId === FILTER.DECREASE_CREATED_DATE
-        ? "ORDER BY p.created_date DESC"
-        : filterId === FILTER.INCREASE_PUBLISHED_DATE
-        ? "ORDER BY p.published_date ASC"
-        : "ORDER BY p.published_date DESC"
-    } `;
+          ? "ORDER BY p.created_date DESC"
+          : filterId === FILTER.INCREASE_PUBLISHED_DATE
+            ? "ORDER BY p.published_date ASC"
+            : "ORDER BY p.published_date DESC"
+      } `;
 
     let dbConn = new DBConnection();
     await dbConn
@@ -181,38 +184,38 @@ const getRejectPostsFilterBy = (
         JOIN writers w ON w.user_account = u.user_account
         LEFT JOIN categories cp ON cp.category_id = c.parent_category
         ${
-          user.role === USER_ROLES.EDITOR
-            ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
-            : ""
-        }
+      user.role === USER_ROLES.EDITOR
+        ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
+        : ""
+      }
       WHERE
       p.checked=1
       AND p.published_date IS NULL
       ${
-        user.role === USER_ROLES.EDITOR
-          ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
-              user.account
-            }' `
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
+        user.account
+        }' `
+        : ""
       }
       ${
-        user.role === USER_ROLES.WRITER
-          ? ` AND p.author='${user.account}' `
-          : ""
+      user.role === USER_ROLES.WRITER
+        ? ` AND p.author='${user.account}' `
+        : ""
       }
       ${
-        categoryAlias != "ALL"
-          ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'`
-          : ""
+      categoryAlias != "ALL"
+        ? `AND (c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}')`
+        : ""
       }
       ${
-        filterId === FILTER.INCREASE_CREATED_DATE
-          ? "ORDER BY p.created_date ASC"
-          : filterId === FILTER.DECREASE_CREATED_DATE
+      filterId === FILTER.INCREASE_CREATED_DATE
+        ? "ORDER BY p.created_date ASC"
+        : filterId === FILTER.DECREASE_CREATED_DATE
           ? "ORDER BY p.created_date DESC"
           : filterId === FILTER.INCREASE_PUBLISHED_DATE
-          ? "ORDER BY p.published_date ASC"
-          : "ORDER BY p.published_date DESC"
+            ? "ORDER BY p.published_date ASC"
+            : "ORDER BY p.published_date DESC"
       }
       LIMIT ${(pageNum - 1) * limit}, ${limit} `;
 
@@ -263,36 +266,36 @@ const getCountRejectPostsFilterBy = (pageNum, categoryAlias, filterId, user) =>
       user.role === USER_ROLES.EDITOR
         ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
         : ""
-    }
+      }
     WHERE
       p.checked=1
       AND p.published_date IS NULL
       ${
-        user.role === USER_ROLES.EDITOR
-          ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
-              user.account
-            }' `
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
+        user.account
+        }' `
+        : ""
       }
       ${
-        user.role === USER_ROLES.WRITER
-          ? ` AND p.author='${user.account}' `
-          : ""
+      user.role === USER_ROLES.WRITER
+        ? ` AND p.author='${user.account}' `
+        : ""
       }
       ${
-        categoryAlias != "ALL"
-          ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'`
-          : ""
+      categoryAlias != "ALL"
+        ? `AND (c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}')`
+        : ""
       }
     ${
       filterId === FILTER.INCREASE_CREATED_DATE
         ? "ORDER BY p.created_date ASC"
         : filterId === FILTER.DECREASE_CREATED_DATE
-        ? "ORDER BY p.created_date DESC"
-        : filterId === FILTER.INCREASE_PUBLISHED_DATE
-        ? "ORDER BY p.published_date ASC"
-        : "ORDER BY p.published_date DESC"
-    } `;
+          ? "ORDER BY p.created_date DESC"
+          : filterId === FILTER.INCREASE_PUBLISHED_DATE
+            ? "ORDER BY p.published_date ASC"
+            : "ORDER BY p.published_date DESC"
+      } `;
 
     let dbConn = new DBConnection();
     await dbConn
@@ -325,37 +328,37 @@ const getPublishedPostsFilterBy = (
       user.role === USER_ROLES.EDITOR
         ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
         : ""
-    }
+      }
     WHERE
       p.checked=1
       AND p.published_date IS NOT NULL
       AND DATEDIFF(NOW(), p.published_date) >= 0
       ${
-        user.role === USER_ROLES.EDITOR
-          ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
-              user.account
-            }' `
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
+        user.account
+        }' `
+        : ""
       }
       ${
-        user.role === USER_ROLES.WRITER
-          ? ` AND p.author='${user.account}' `
-          : ""
+      user.role === USER_ROLES.WRITER
+        ? ` AND p.author='${user.account}' `
+        : ""
       }
       ${
-        categoryAlias != "ALL"
-          ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'`
-          : ""
+      categoryAlias != "ALL"
+        ? `AND (c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}')`
+        : ""
       }
     ${
       filterId === FILTER.INCREASE_CREATED_DATE
         ? "ORDER BY p.created_date ASC"
         : filterId === FILTER.DECREASE_CREATED_DATE
-        ? "ORDER BY p.created_date DESC"
-        : filterId === FILTER.INCREASE_PUBLISHED_DATE
-        ? "ORDER BY p.published_date ASC"
-        : "ORDER BY p.published_date DESC"
-    }
+          ? "ORDER BY p.created_date DESC"
+          : filterId === FILTER.INCREASE_PUBLISHED_DATE
+            ? "ORDER BY p.published_date ASC"
+            : "ORDER BY p.published_date DESC"
+      }
     LIMIT ${(pageNum - 1) * limit}, ${limit} `;
 
     let dbConn = new DBConnection();
@@ -410,37 +413,37 @@ const getCountPublishedPostsFilterBy = (
       user.role === USER_ROLES.EDITOR
         ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
         : ""
-    }
+      }
     WHERE
       p.checked=1
       AND p.published_date IS NOT NULL
       AND DATEDIFF(NOW(), p.published_date) >= 0
       ${
-        user.role === USER_ROLES.EDITOR
-          ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
-              user.account
-            }' `
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
+        user.account
+        }' `
+        : ""
       }
       ${
-        user.role === USER_ROLES.WRITER
-          ? ` AND p.author='${user.account}' `
-          : ""
+      user.role === USER_ROLES.WRITER
+        ? ` AND p.author='${user.account}' `
+        : ""
       }
       ${
-        categoryAlias != "ALL"
-          ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'`
-          : ""
+      categoryAlias != "ALL"
+        ? `AND (c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}')`
+        : ""
       }
     ${
       filterId === FILTER.INCREASE_CREATED_DATE
         ? "ORDER BY p.created_date ASC"
         : filterId === FILTER.DECREASE_CREATED_DATE
-        ? "ORDER BY p.created_date DESC"
-        : filterId === FILTER.INCREASE_PUBLISHED_DATE
-        ? "ORDER BY p.published_date ASC"
-        : "ORDER BY p.published_date DESC"
-    } `;
+          ? "ORDER BY p.created_date DESC"
+          : filterId === FILTER.INCREASE_PUBLISHED_DATE
+            ? "ORDER BY p.published_date ASC"
+            : "ORDER BY p.published_date DESC"
+      } `;
 
     let dbConn = new DBConnection();
     await dbConn
@@ -473,37 +476,37 @@ const getWaitingPostsFilterBy = (
       user.role === USER_ROLES.EDITOR
         ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
         : ""
-    }
+      }
     WHERE
       p.checked=1
       AND p.published_date IS NOT NULL
       AND DATEDIFF(NOW(), p.published_date) < 0
       ${
-        user.role === USER_ROLES.EDITOR
-          ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
-              user.account
-            }' `
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
+        user.account
+        }' `
+        : ""
       }
       ${
-        user.role === USER_ROLES.WRITER
-          ? ` AND p.author='${user.account}' `
-          : ""
+      user.role === USER_ROLES.WRITER
+        ? ` AND p.author='${user.account}' `
+        : ""
       }
       ${
-        categoryAlias != "ALL"
-          ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'`
-          : ""
+      categoryAlias != "ALL"
+        ? `AND (c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}')`
+        : ""
       }
     ${
       filterId === FILTER.INCREASE_CREATED_DATE
         ? "ORDER BY p.created_date ASC"
         : filterId === FILTER.DECREASE_CREATED_DATE
-        ? "ORDER BY p.created_date DESC"
-        : filterId === FILTER.INCREASE_PUBLISHED_DATE
-        ? "ORDER BY p.published_date ASC"
-        : "ORDER BY p.published_date DESC"
-    }
+          ? "ORDER BY p.created_date DESC"
+          : filterId === FILTER.INCREASE_PUBLISHED_DATE
+            ? "ORDER BY p.published_date ASC"
+            : "ORDER BY p.published_date DESC"
+      }
     LIMIT ${(pageNum - 1) * limit}, ${limit} `;
 
     let dbConn = new DBConnection();
@@ -553,37 +556,37 @@ const getCountWaitingPostsFilterBy = (pageNum, categoryAlias, filterId, user) =>
       user.role === USER_ROLES.EDITOR
         ? `JOIN assigned_categories ac ON ac.category_id = c.category_id OR ac.category_id=c.parent_category`
         : ""
-    }
+      }
     WHERE
       p.checked=1
       AND DATEDIFF(NOW(), p.published_date) < 0
       AND p.published_date IS NOT NULL
       ${
-        user.role === USER_ROLES.EDITOR
-          ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
-              user.account
-            }' `
-          : ""
+      user.role === USER_ROLES.EDITOR
+        ? ` AND ac.user_account='${user.account}' AND p.browse_user='${
+        user.account
+        }' `
+        : ""
       }
       ${
-        user.role === USER_ROLES.WRITER
-          ? ` AND p.author='${user.account}' `
-          : ""
+      user.role === USER_ROLES.WRITER
+        ? ` AND p.author='${user.account}' `
+        : ""
       }
       ${
-        categoryAlias != "ALL"
-          ? `AND c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}'`
-          : ""
+      categoryAlias != "ALL"
+        ? `AND (c.category_alias = '${categoryAlias}' OR cp.category_alias='${categoryAlias}')`
+        : ""
       }
     ${
       filterId === FILTER.INCREASE_CREATED_DATE
         ? "ORDER BY p.created_date ASC"
         : filterId === FILTER.DECREASE_CREATED_DATE
-        ? "ORDER BY p.created_date DESC"
-        : filterId === FILTER.INCREASE_PUBLISHED_DATE
-        ? "ORDER BY p.published_date ASC"
-        : "ORDER BY p.published_date DESC"
-    } `;
+          ? "ORDER BY p.created_date DESC"
+          : filterId === FILTER.INCREASE_PUBLISHED_DATE
+            ? "ORDER BY p.published_date ASC"
+            : "ORDER BY p.published_date DESC"
+      } `;
 
     let dbConn = new DBConnection();
     await dbConn
@@ -684,8 +687,8 @@ const browse = (alias, checking, publishedDate, reasonReject, account) =>
     checking
       ? (query = `UPDATE posts SET checked = 1, published_date = '${publishedDate}', browse_user = '${account}' WHERE post_alias = '${alias}'`)
       : (query = `UPDATE posts SET checked = 1, reason_reject = '${escape(
-          reasonReject
-        )}', browse_user = '${account}' WHERE post_alias = '${alias}'`);
+        reasonReject
+      )}', browse_user = '${account}' WHERE post_alias = '${alias}'`);
 
     let dbConn = new DBConnection();
 
@@ -803,13 +806,13 @@ const getTenLatestPosts = (premium, categoryId) =>
   new Promise((resolve, reject) => {
     let query = `SELECT * FROM posts join categories on posts.category = categories.category_id WHERE ${
       premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
-    } and posts.published_date ORDER BY  posts.premium DESC, posts.published_date DESC  LIMIT 10`;
+      } and posts.published_date ORDER BY  posts.premium DESC, posts.published_date DESC  LIMIT 10`;
     if (categoryId)
       query = `SELECT * FROM posts join categories on posts.category = categories.category_id WHERE ${
         premium
           ? "(posts.premium = 1 or posts.premium = 0)"
           : "posts.premium = 0"
-      } and posts.category = '${categoryId}' AND posts.published_date  ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT 10`;
+        } and posts.category = '${categoryId}' AND posts.published_date  ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT 10`;
 
     let dbConn = new DBConnection();
 
@@ -840,9 +843,16 @@ const getNameCatById = id =>
 
 const getCountPostsFromCategoryId = (premium, id) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT count(*) FROM posts join categories on categories.category_id = posts.category WHERE ${
-      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
-    } and categories.category_alias = '${id}' and posts.published_date ORDER BY posts.premium DESC, posts.published_date DESC`;
+    let query =
+      `SELECT count(*) 
+      FROM 
+        posts p JOIN categories c ON c.category_id = p.category 
+      WHERE
+        p.checked=1
+        AND p.published_date IS NOT NULL
+        AND DATEDIFF(now(), p.published_date) >= 0
+        AND (c.category_id = '${id}' OR c.parent_category='${id}')
+      ORDER BY p.premium DESC, p.published_date DESC`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -855,17 +865,89 @@ const getCountPostsFromCategoryId = (premium, id) =>
       });
   });
 
+const getTagsOfPostByPostId = postId => new Promise((resolve, reject) => {
+  let query = `SELECT t.tag_id, t.tag_name, t.tag_alias FROM tags t JOIN post_tags pt ON t.tag_id=pt.tag_id WHERE pt.post_id='${postId}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let tags = rets.map(ret => {
+        let tag = new Tag()
+        tag.tagId = ret.tag_id
+        tag.tagName = ret.tag_name
+        tag.alias = ret.tag_alias
+
+        return tag
+      })
+
+      resolve(tags)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 const getPostsFromCategoryId = (premium, id, from, limit) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT * FROM posts join categories on categories.category_id = posts.category WHERE ${
-      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
-    } and categories.category_alias = '${id}' and posts.published_date ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
+    let query =
+      `SELECT 
+        p.post_id, p.post_alias, p.post_summary, p.premium, p.published_date, p.post_avatar_image,
+        c.category_id, c.category_name, c.category_alias
+      FROM 
+        posts p JOIN categories c ON c.category_id = p.category 
+      WHERE
+        p.checked=1
+        AND p.published_date IS NOT NULL
+        AND DATEDIFF(now(), p.published_date) >= 0
+        AND (c.category_id = '${id}' OR c.parent_category='${id}')
+      ORDER BY p.premium DESC, p.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
     let dbConn = new DBConnection();
 
     dbConn
       .loadRequest(query)
-      .then(rets => {
-        resolve(rets);
+      .then(async rets => {
+        let posts = []
+        Promise
+          .all(rets.map(async ret => {
+            let post = new Post()
+
+            post.postId = ret.post_id;
+            post.postTitle = ret.post_title;
+            post.postAvatarImage = ret.post_avatar_image;
+            post.postSummary = ret.post_summary;
+            post.alias = ret.post_alias;
+            post.publishedDate = ret.published_date;
+            post.premium = ret.premium === 1 ? true : false;
+
+            let categ = new Category()
+            categ.categoryId = ret.category_id
+            categ.categoryName = ret.category_name
+            categ.alias = ret.category_alias
+            post.category = categ
+
+            await getTagsOfPostByPostId(post.postId)
+              .then(tags => {
+                post.tags = tags
+              })
+              .catch(err => {
+                reject(err)
+              })
+
+            console.log('postId', post.postId)
+            return post
+          }))
+          .then(newPosts => {
+            resolve(newPosts)
+          })
+          .catch(err => {
+            reject(err)
+          })
+
+        // for (let index = 0; index < rets.length; index++) {
+
+        // }
+        // resolve(posts);
       })
       .catch(err => {
         reject(err);
@@ -876,7 +958,7 @@ const getPostFromId = (premium, id) =>
     let query = `SELECT * FROM posts join categories on posts.category = categories.category_id
     WHERE ${
       premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
-    } and posts.post_alias = '${id}' and posts.published_date order by posts.premium DESC, posts.published_date DESC`;
+      } and posts.post_alias = '${id}' and posts.published_date order by posts.premium DESC, posts.published_date DESC`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -920,12 +1002,18 @@ const getNameTagById = id =>
 
 const getCountPostsFromTagId = (premium, id) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT count(*) FROM  post_tags join posts on post_tags.post_id = posts.post_id
-    join tags on tags.tag_id = post_tags.tag_id WHERE ${
-      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
-    } and tags.tag_alias = '${id}' and posts.published_date ORDER BY posts.premium DESC, posts.published_date DESC`;
+    let query =
+      `SELECT count(*) 
+      FROM 
+        post_tags pt JOIN posts p on pt.post_id = p.post_id
+        JOIN tags t on t.tag_id = pt.tag_id 
+      WHERE
+        p.checked=1
+        AND p.published_date IS NOT NULL
+        AND DATEDIFF(now(), p.published_date) >= 0
+        AND t.tag_id = '${id}' 
+        ORDER BY ${premium ? `p.premium DESC,` : ''} p.published_date DESC`;
     let dbConn = new DBConnection();
-    console.log(33, query);
 
     dbConn
       .loadRequest(query)
@@ -939,16 +1027,60 @@ const getCountPostsFromTagId = (premium, id) =>
 
 const getPostsFromTagId = (premium, id, from, limit) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT * FROM  post_tags join posts on post_tags.post_id = posts.post_id
-    join tags on tags.tag_id = post_tags.tag_id WHERE ${
-      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
-    } and tags.tag_alias = '${id}' and posts.published_date ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
+    let query =
+      `SELECT 
+        p.post_id, p.post_title, p.post_summary, p.post_alias, p.published_date, p.premium, p.post_avatar_image,
+        c.category_id, c.category_name, c.category_alias
+      FROM 
+        post_tags pt JOIN posts p ON pt.post_id = p.post_id 
+        JOIN categories c ON p.category=c.category_id
+      WHERE
+        p.checked=1
+        AND p.published_date IS NOT NULL
+        AND DATEDIFF(now(), p.published_date) >=0
+        AND pt.tag_id = '${id}'
+      ORDER BY ${premium ? `p.premium DESC,` : ''} p.published_date DESC
+      LIMIT ${limit} OFFSET ${from}`;
     let dbConn = new DBConnection();
 
     dbConn
       .loadRequest(query)
       .then(rets => {
-        resolve(rets);
+        Promise
+          .all(rets.map(async ret => {
+            let post = new Post()
+
+            post.postId = ret.post_id;
+            post.postTitle = ret.post_title;
+            post.postAvatarImage = ret.post_avatar_image;
+            post.postSummary = ret.post_summary;
+            post.alias = ret.post_alias;
+            post.publishedDate = ret.published_date;
+            post.premium = ret.premium === 1 ? true : false;
+
+            let categ = new Category()
+            categ.categoryId = ret.category_id
+            categ.categoryName = ret.category_name
+            categ.alias = ret.category_alias
+            post.category = categ
+
+            await getTagsOfPostByPostId(post.postId)
+              .then(tags => {
+                post.tags = tags
+              })
+              .catch(err => {
+                reject(err)
+              })
+
+            console.log('postId', post.postId)
+            return post
+          }))
+          .then(posts => {
+            resolve(posts)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
       .catch(err => {
         reject(err);
@@ -957,9 +1089,16 @@ const getPostsFromTagId = (premium, id, from, limit) =>
 
 const getPostFromFTSearch = (premium, searchStr, from, limit) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT * FROM  posts join categories on posts.category = categories.category_id WHERE ${
-      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
-    } and MATCH(post_title) AGAINST('${searchStr}' IN NATURAL LANGUAGE MODE) and posts.published_date order by posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
+    let query =
+      `SELECT * 
+      FROM  posts p join categories c on p.category = c.category_id
+      WHERE
+        p.checked=1
+        AND p.published_date IS NOT NULL
+        AND DATEDIFF(now(), p.published_date) >= 0
+        AND MATCH(p.post_title) AGAINST('${searchStr}' IN NATURAL LANGUAGE MODE) 
+      ORDER BY ${premium ? `p.premium DESC,` : ''} p.published_date DESC
+      LIMIT ${limit} OFFSET ${from}`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -974,9 +1113,15 @@ const getPostFromFTSearch = (premium, searchStr, from, limit) =>
 
 const getCountPostFromFTSearch = (premium, searchStr) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT count(*) FROM  posts join categories on posts.category = categories.category_id WHERE ${
-      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
-    } and MATCH(post_title) AGAINST('${searchStr}' IN NATURAL LANGUAGE MODE) and posts.published_date order by posts.premium DESC, posts.published_date DESC`;
+    let query =
+      `SELECT count(*) 
+      FROM  posts p join categories c on p.category = c.category_id
+      WHERE
+        p.checked=1
+        AND p.published_date IS NOT NULL
+        AND DATEDIFF(now(), p.published_date) >= 0
+        AND MATCH(p.post_title) AGAINST('${searchStr}' IN NATURAL LANGUAGE MODE) 
+      ORDER BY ${premium ? `p.premium DESC,` : ''} p.published_date DESC`;
     let dbConn = new DBConnection();
     dbConn
       .loadRequest(query)
@@ -1052,6 +1197,150 @@ const filterHighlightPostsFrom = posts => {
   return highlightPosts;
 };
 
+const getRelativePostsViaCategoryId = (sub, categoryId, postId) => new Promise((resolve, reject) => {
+  let query =
+    `SELECT 
+        p.post_id, p.post_title, p.post_summary, p.post_alias, p.published_date, p.premium, p.post_avatar_image,
+        c.category_id, c.category_name, c.category_alias
+      FROM 
+        posts p JOIN categories c ON p.category=c.category_id
+      WHERE
+        p.checked=1
+        AND p.published_date IS NOT NULL
+        AND DATEDIFF(now(), p.published_date) >=0
+        AND p.post_id <> '${postId}'
+        AND (c.category_id='${categoryId}' OR c.parent_category='${categoryId}')
+      ORDER BY ${sub ? `p.premium DESC,` : ''} p.published_date DESC
+      LIMIT 0, 5`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      Promise
+        .all(rets.map(async ret => {
+          let post = new Post()
+
+          post.postId = ret.post_id;
+          post.postTitle = ret.post_title;
+          post.postAvatarImage = ret.post_avatar_image;
+          post.postSummary = ret.post_summary;
+          post.alias = ret.post_alias;
+          post.publishedDate = ret.published_date;
+          post.premium = ret.premium === 1 ? true : false;
+
+          let categ = new Category()
+          categ.categoryId = ret.category_id
+          categ.categoryName = ret.category_name
+          categ.alias = ret.category_alias
+          post.category = categ
+
+          await getTagsOfPostByPostId(post.postId)
+            .then(tags => {
+              post.tags = tags
+            })
+            .catch(err => {
+              reject(err)
+            })
+
+          return post
+        }))
+        .then(posts => {
+          resolve(posts)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const getLatestPostViaCategoryId = (sub, categoryId) => new Promise((resolve, reject) => {
+  let query =
+    `SELECT 
+        p.post_id, p.post_title, p.post_summary, p.post_alias, p.published_date, p.premium, p.post_avatar_image,
+        c.category_id, c.category_name, c.category_alias
+      FROM 
+        posts p JOIN categories c ON p.category=c.category_id
+      WHERE
+        p.checked=1
+        AND p.published_date IS NOT NULL
+        AND DATEDIFF(now(), p.published_date) >=0
+        AND c.category_id='${categoryId}'
+      ORDER BY ${sub ? `p.premium DESC,` : ''} p.published_date DESC
+      LIMIT 0, 1`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(async rets => {
+      let ret = rets[0]
+
+      if (!ret) {
+        resolve(null)
+      }
+      else {
+        let post = new Post()
+
+        post.postId = ret.post_id;
+        post.postTitle = ret.post_title;
+        post.postAvatarImage = ret.post_avatar_image;
+        post.postSummary = ret.post_summary;
+        post.alias = ret.post_alias;
+        post.publishedDate = ret.published_date;
+        post.premium = ret.premium === 1 ? true : false;
+
+        let categ = new Category()
+        categ.categoryId = ret.category_id
+        categ.categoryName = ret.category_name
+        categ.alias = ret.category_alias
+        post.category = categ
+
+        await getTagsOfPostByPostId(post.postId)
+          .then(tags => {
+            post.tags = tags
+          })
+          .catch(err => {
+            reject(err)
+          })
+
+        resolve(post)
+      }
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const getTopCategoryWithLatestPost = sub => new Promise((resolve, reject) => {
+  categoryBus
+    .getLessInfoCategories()
+    .then(categories => {
+      Promise
+        .all(categories.map(async c => {
+          let p = {}
+          await getLatestPostViaCategoryId(sub, c.categoryId)
+            .then(post => {
+              p = post
+            })
+            .catch(err => {
+              reject(err)
+            })
+
+          return p
+        }))
+        .then(posts => {
+          posts = posts.filter(p => p !== null).slice(0, 11)
+          resolve(posts)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+})
+
 module.exports = {
   createPost,
   updatePost,
@@ -1080,5 +1369,7 @@ module.exports = {
   filterHighlightPostsFrom,
   getCountPostFromFTSearch,
   getCountPostsFromTagId,
-  getCountPostsFromCategoryId
+  getCountPostsFromCategoryId,
+  getRelativePostsViaCategoryId,
+  getTopCategoryWithLatestPost,
 };

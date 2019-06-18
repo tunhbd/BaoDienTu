@@ -94,7 +94,7 @@ const createTag = tag =>
 
     let queryString = `INSERT INTO tags(tag_id, tag_name, tag_alias) VALUES('${
       tag.tagId
-    }', N'${tag.tagName}', '${tag.alias}')`;
+      }', N'${tag.tagName}', '${tag.alias}')`;
 
     let DBConnect = new DBConnection();
 
@@ -113,7 +113,7 @@ const updateTag = tag =>
 
     let queryString = `UPDATE tags SET tag_name='${tag.tagName}', tag_alias='${
       tag.alias
-    }' WHERE tag_id='${tag.tagId}'`;
+      }' WHERE tag_id='${tag.tagId}'`;
 
     let DBConnect = new DBConnection();
 
@@ -163,6 +163,25 @@ const getCountTags = () =>
       });
   });
 
+const getOneByAlias = alias => new Promise((resolve, reject) => {
+  let query = `SELECT tag_id, tag_name FROM tags WHERE tag_alias='${alias}'`
+  let dbConn = new DBConnection()
+
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let tag = new Tag()
+      tag.tagId = rets[0].tag_id
+      tag.tagName = rets[0].tag_name
+      tag.alias = alias
+
+      resolve(tag)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
 module.exports = {
   getFullInfoTags,
   getFullInfoTagsFilterBy,
@@ -171,5 +190,6 @@ module.exports = {
   deleteTags,
   getLessInfoTags,
   hasTag,
-  getCountTags
+  getCountTags,
+  getOneByAlias,
 };

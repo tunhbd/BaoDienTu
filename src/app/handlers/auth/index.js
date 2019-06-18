@@ -71,7 +71,14 @@ const renderSignUpPage = (req, res) => {
     res.redirect('/sign-up')
   }
   else {
-    res.render("user/signUp", { layout: false });
+    res.render("user/signUp", {
+      data: {
+        message: {
+          error: req.flash('err') ? req.flash('err') : undefined,
+        }
+      },
+      layout: false
+    });
   }
 };
 

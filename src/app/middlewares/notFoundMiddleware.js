@@ -1,7 +1,7 @@
 const registerMiddleware = server => {
   server.use((req, res) => {
     if (req.error) {
-      res.render('user/errorNotify', {
+      res.render('others/errorNotify', {
         data: {
           backLink: req.headers.referer ? req.headers.referer : '/'
         },

@@ -83,8 +83,9 @@
   <ul class="pagination">
     <li class="page-item"><a class="page-link" href="#">Trước</a></li>
     {{#each data.count}}
-    <li class="page-item"><a class="page-link"
-        href="/search/result?search={{data.search}}&page={{this.data}}">{{this.data}}</a></li>
+    <li class="page-item">
+      <a class="page-link{{#if (opt ../data.thisPage '===' this.data opt)}} page-active{{/if}}"
+        href="/search/result?search={{../data.search}}&page={{this.data}}">{{this.data}}</a></li>
     {{/each}}
     <li class="page-item"><a class="page-link" href="#">Sau</a></li>
   </ul>

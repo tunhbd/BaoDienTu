@@ -28,8 +28,10 @@
               <img src="/media/images/posts/{{this.postAvatarImage}}" alt="">
             </div>
             <div class="img-content">
-              <div class="d-flex topic-post">
+              <div class="d-flex topic-post align-items-start align-content-center">
                 <p class="topic">{{this.category.categoryName}}</p>
+                {{#if this.premium}}<span class="badge badge-warning p-2"
+                  style="margin-top: -20px; z-index: 1;">Premium</span>{{/if}}
               </div>
               <p class="title-post">
                 {{this.postTitle}}
@@ -81,10 +83,12 @@
           <a href="/post/{{this.post_alias}}">
             <div class="d-flex topic-post">
               <p class="topic">{{this.category_name}}</p>
-
+              {{#if this.premium}}<span class="badge badge-warning p-2 ml-2">Premium</span>{{/if}}
             </div>
-            <p class="title-post">{{#if this.premium}}<i class="fa fa-star"
-                aria-hidden="true"></i>{{/if}}{{this.post_title}}</p>
+
+            <p class="title-post">
+              {{this.post_title}}
+            </p>
             <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post"></i>{{this.published_date}}</p>
           </a>
         </div>
@@ -101,7 +105,35 @@
     <div class="col-md-12 col-lg-4">
       <div class="top-10"><span>Top 10 chuyên mục</span></div>
       <div class="top-10-content bao-dien-tu-scrollbar">
-        {{!-- List top 10 categories --}}
+        {{#each data.topCategoryWithPosts}}
+        <div class="item-top-10">
+          <a href="/post/{{this.alias}}">
+            <div class=" row">
+              <div class="col-md-6">
+                <div class="image-item">
+                  <img src="/media/images/posts/{{this.postAvatarImage}}" alt="">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="item-topic">
+                  <span class="topic">
+                    {{this.category.categoryName}}
+                  </span>
+                </div>
+                <div class="item-title">
+                  <span class="title">
+                    {{this.postTitle}}
+                  </span>
+                </div>
+                <div class="item-day">
+                  <span class="day"><strong>Ngày đăng:</strong> <i
+                      class="date-post">{{#viDate this.publishedDate}}{{/viDate}}</i></span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        {{/each}}
       </div>
     </div>
     <div class="most-view-content container col-md-12 col-lg-8">

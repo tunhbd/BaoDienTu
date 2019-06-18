@@ -1,4 +1,5 @@
 const { DBConnection } = require("../../db");
+const { Comment, User } = require('../../models')
 const ur = require("unique-random");
 const moment = require("moment");
 
@@ -21,9 +22,9 @@ const addComment = data =>
   new Promise(async (resolve, reject) => {
     let query = `insert into comments values (${ur(0, 999)()}, ${
       data.post_id
-    }, '${data.user}', '${moment(new Date()).format("YYYY/MM/DD")}' ,'${
+      }, '${data.user}', '${moment(new Date()).format("YYYY/MM/DD")}' ,'${
       data.content
-    }')`;
+      }')`;
     let dbConn = new DBConnection();
     console.log(query);
     await dbConn
@@ -38,13 +39,33 @@ const addComment = data =>
 
 const loadComment = post_id =>
   new Promise(async (resolve, reject) => {
-    let query = `select * from comments join users on users.user_account = comments.user_account join posts on comments.post_id = posts.post_id where posts.post_alias = '${post_id}' limit 10;`;
+    let query =
+      `SELECT cm.comment_id, cm.comment_date, cm.comment_content, u.user_account, u.user_fullname 
+      FROM
+        comments cm JOIN users u ON u.user_account = cm.user_account
+      WHERE cm.post_id = '${post_id}' limit 0, 20;`
     let dbConn = new DBConnection();
-    console.log(query);
+
     await dbConn
       .loadRequest(query)
-      .then(ret => {
-        resolve(ret);
+      .then(rets => {
+        let comments = rets.map(ret => {
+          let cm = new Comment()
+
+          cm.commentId = ret.comment_id
+          cm.commentContent = ret.comment_content
+          cm.commentDate = ret.comment_date
+          cm.postId = ret.post_id
+
+          let user = new User()
+          user.account = ret.user_account
+          user.fullname = ret.user_fullname
+          cm.user = user
+
+          return cm
+        })
+
+        resolve(comments)
       })
       .catch(err => {
         reject(err);

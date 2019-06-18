@@ -5,7 +5,7 @@
   <div class="row content">
     <div class="col-md-8 list-content">
       <div class="title-category">
-        <span>#Tag: {{data.tagName}}</span>
+        <span>#Tag: {{data.tag.tagName}}</span>
       </div>
       {{!-- <div class="tag-name mb-2">Tags:
                 <span>
@@ -21,32 +21,37 @@
             </div> --}}
       {{#each data.posts}}
       <div class="item-top-10">
-        <a href="/post/{{this.post_alias}}">
+        <a href="/post/{{this.alias}}">
           <div class="row">
             <div class="col-md-4">
-              <div class="image-item">
-                <img src="/media/images/posts/{{this.post_avatar_image}}" alt="{{this.post_title}}">
+              <div class="image-item position-relative">
+                <div class="d-flex topic-post position-absolute" style="top: 10px; left: 10px;">
+                  <p class="topic">{{this.category.categoryName}}</p>
+                </div>
+                <img src="/media/images/posts/{{this.postAvatarImage}}" alt="{{this.postTitle}}">
               </div>
             </div>
             <div class="col-md-8">
               <div class="item-title">
                 <span class="title">{{#if this.premium}}<i class="fa fa-star"
-                    aria-hidden="true"></i>{{/if}}{{this.post_title}}</span>
+                    aria-hidden="true"></i>{{/if}}{{this.postTitle}}</span>
               </div>
               <div class="item-description">
-                <p>{{this.post_summary}}
+                <p>{{this.postSummary}}
                 </p>
               </div>
               <div class="item-day">
-                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{this.published_date}}</i></span>
+                <span class="day"><strong>Ngày đăng:</strong> <i
+                    class="date-post">{{#viDate this.publishedDate}}{{/viDate}}</i></span>
               </div>
-              {{!-- <div class="item-tags">
+              <div class="item-tags">
                 <span class="tags-title">
                   <strong>Tags:</strong>
-                  <span class="badge badge-secondary p-1">Cây trồng</span>
-                  <span class="badge badge-secondary p-1">Thủy sản</span>
+                  {{#each this.tags}}
+                  <span class="badge badge-secondary p-1">{{this.tagName}}</span>
+                  {{/each}}
                 </span>
-              </div> --}}
+              </div>
             </div>
           </div>
         </a>
@@ -58,7 +63,7 @@
 
     </div>
     <!-- post relative -->
-    <div id="right-cont" style="overflow: hidden;" class="col-md-4 post-relative">
+    {{!-- <div id="right-cont" style="overflow: hidden;" class="col-md-4 post-relative">
       <div class="title-category-right"><span>Xem nhiều nhất</span></div>
 
       {{#each data.tenPostsFromCatId}}
@@ -89,19 +94,32 @@
       {{/each}}
 
 
-    </div>
+    </div> --}}
   </div>
   <!-- pagination -->
 
-
+  {{#if data.count.length}}
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Trước</a></li>
+    <li class="page-item">
+      {{#if (opt this.data '===' 1 opt)}}
+      <a class="page-link" href="javascript:;">Trước</a>
+      {{else}}
+      <a class="page-link" href="/tag/{{../data.tag.tagId}}?page={{#opt this.data '-' 1}}{{/opt}}">Trước</a>
+      {{/if}}
+    </li>
     {{#each data.count}}
-    <li class="page-item"><a class="page-link" href="/tag/{{data.tagId}}?page={{this.data}}">{{this.data}}</a>
+    <li class=" page-item"><a class="page-link{{#if (opt this.data '===' ../data.thisPage opt)}} page-active{{/if}}"
+        href="/tag/{{../data.tag.tagId}}?page={{this.data}}">{{this.data}}</a>
     </li>
     {{/each}}
-    <li class="page-item"><a class="page-link" href="#">Sau</a></li>
+    <li class="page-item">
+      {{#if (opt this.data '===' ../data.count.length opt)}}
+      <a class="page-link" href="javascript:;">Sau</a>
+      {{else}}
+      <a class="page-link" href="/tag/{{../data.tag.tagId}}?page={{#opt this.data '+' 1}}{{/opt}}">Sau</a>
+      {{/if}}
+    </li>
   </ul>
-
+  {{/if}}
 
 </div>
