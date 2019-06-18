@@ -15,7 +15,8 @@ const renderDashboardPage = (req, res) => {
   })
 }
 
-const renderCreatePostPage = (req, res) => {
+const renderCreatePostPage = (req, res, next) => {
+  console.log(req.headers)
   if (req.user.role === config.USER_ROLES.EDITOR) {
     res.redirect('/admin/dashboard')
   }
@@ -39,12 +40,13 @@ const renderCreatePostPage = (req, res) => {
       })
       .catch(err => {
         console.log('GET LESS INFO CATEGORIES ERROR: ', err)
-        res.send('error')
+        req.error = true
+        next()
       })
   }
 }
 
-const renderPreviewPostAndCheckPage = (req, res) => {
+const renderPreviewPostAndCheckPage = (req, res, next) => {
   let alias = req.params.postAlias
   let backLink = req.headers.referer ? req.headers.referer : '/admin/dashboard'
   backLink = backLink ? backLink : '/admin/dashboard'
@@ -63,11 +65,12 @@ const renderPreviewPostAndCheckPage = (req, res) => {
     })
     .catch(err => {
       console.log('error', err)
-      res.send('error')
+      req.error = true
+      next()
     })
 }
 
-const renderEditPostPage = async (req, res) => {
+const renderEditPostPage = async (req, res, next) => {
   if (req.user.role === config.USER_ROLES.EDITOR) {
     res.redirect('/admin/dashboard')
   }
@@ -112,12 +115,13 @@ const renderEditPostPage = async (req, res) => {
         }
       })
       .catch(err => {
-        res.send('error')
+        req.error = true
+        next()
       })
   }
 }
 
-const renderDraftPostsPage = (req, res) => {
+const renderDraftPostsPage = (req, res, next) => {
   let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
   let categoryAlias = !req.query.category ? 'ALL' : req.query.category
   let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
@@ -177,12 +181,13 @@ const renderDraftPostsPage = (req, res) => {
         })
       })
       .catch(err => {
-
+        req.error = true
+        next()
       })
   }
 }
 
-const renderRejectPostsPage = (req, res) => {
+const renderRejectPostsPage = (req, res, next) => {
   let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
   let categoryAlias = !req.query.category ? 'ALL' : req.query.category
   let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
@@ -219,11 +224,12 @@ const renderRejectPostsPage = (req, res) => {
       })
     })
     .catch(err => {
-
+      req.error = true
+      next()
     })
 }
 
-const renderPublishedPostsPage = (req, res) => {
+const renderPublishedPostsPage = (req, res, next) => {
   let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
   let categoryAlias = !req.query.category ? 'ALL' : req.query.category
   let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
@@ -260,11 +266,12 @@ const renderPublishedPostsPage = (req, res) => {
       })
     })
     .catch(err => {
-
+      req.error = true
+      next()
     })
 }
 
-const renderWaitingPostsPage = (req, res) => {
+const renderWaitingPostsPage = (req, res, next) => {
   let pageNum = !req.query.page ? 1 : parseInt(req.query.page)
   let categoryAlias = !req.query.category ? 'ALL' : req.query.category
   let filterId = !req.query.filterBy ? config.FILTER.DECREASE_CREATED_DATE : req.query.filterBy
@@ -302,11 +309,12 @@ const renderWaitingPostsPage = (req, res) => {
       })
     })
     .catch(err => {
-
+      req.error = true
+      next()
     })
 }
 
-const renderUsersPage = (req, res) => {
+const renderUsersPage = (req, res, next) => {
   if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.redirect('/admin/dashboard')
   }
@@ -341,12 +349,13 @@ const renderUsersPage = (req, res) => {
       })
       .catch(err => {
         console.log(err)
-        res.send('error')
+        req.error = true
+        next()
       })
   }
 }
 
-const renderTagsPage = (req, res) => {
+const renderTagsPage = (req, res, next) => {
   if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.redirect('/admin/dashboard')
   }
@@ -376,12 +385,13 @@ const renderTagsPage = (req, res) => {
         })
       })
       .catch(err => {
-        res.send('error')
+        req.error = true
+        next()
       })
   }
 }
 
-const renderCategoriesPage = (req, res) => {
+const renderCategoriesPage = (req, res, next) => {
   if (req.user.role !== config.USER_ROLES.ADMIN) {
     res.redirect('/admin/dashboard')
   }
@@ -400,7 +410,8 @@ const renderCategoriesPage = (req, res) => {
         })
       })
       .catch(err => {
-        res.send('error')
+        req.error = true
+        next()
       })
   }
 }
@@ -498,7 +509,7 @@ const deleteCategory = (req, res) => {
   }
 }
 
-const editPost = (req, res) => {
+const editPost = (req, res, next) => {
   if (req.user.role === config.USER_ROLES.EDITOR) {
     res.redirect('/admin/dashboard')
   }
@@ -563,17 +574,20 @@ const editPost = (req, res) => {
                 res.redirect('/admin/dashboard')
               }
               else {
-                res.send('error')
+                req.error = true
+                next()
               }
             })
             .catch(err => {
               console.log('UPDATE POST ERROR: ', err)
-              res.send('error')
+              req.error = true
+              next()
             })
         }
       })
       .catch(err => {
-        res.send('error')
+        req.error = true
+        next()
       })
   }
 }
@@ -677,7 +691,7 @@ const deleteUser = (req, res) => {
 
 }
 
-const createPost = (req, res) => {
+const createPost = (req, res, next) => {
   if (req.user.role === config.USER_ROLES.EDITOR) {
     res.redirect('/admin/dashboard')
   }
@@ -734,12 +748,14 @@ const createPost = (req, res) => {
           res.redirect('/admin/dashboard/create-post')
         }
         else {
-          res.send('error')
+          req.error = true
+          next()
         }
       })
       .catch(err => {
         console.log('CREATE POST ERROR: ', err)
-        res.send('error')
+        req.error = true
+        next()
       })
   }
 }
@@ -775,7 +791,7 @@ const createTag = (req, res) => {
     })
 }
 
-const browsePost = (req, res) => {
+const browsePost = (req, res, next) => {
   if (req.user.role === config.USER_ROLES.WRITER) {
     res.redirect('/admin/dashboard')
   }
@@ -795,7 +811,8 @@ const browsePost = (req, res) => {
         res.redirect('/admin/dashboard/draft-posts')
       })
       .catch(err => {
-        res.send('error')
+        req.error = true
+        next()
       })
   }
 }

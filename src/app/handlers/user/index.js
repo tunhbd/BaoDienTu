@@ -1,4 +1,4 @@
-const { categoryBus } = require("../../business");
+const { categoryBus, postBus } = require("../../business");
 const {
   getTenLatestPosts,
   getPostsFromCategoryId,
@@ -15,7 +15,7 @@ const moment = require("moment");
 let categories = []
 Promise.all([categoryBus.getAllWithLevel()])
   .then(function ([categs]) {
-    categs.unshift({ categoryName: "Home", categoryId: "home" });
+    // categs.unshift({ categoryName: "Home", categoryId: "home" });
     categs.push({ categoryName: "More", categoryId: "more" });
     categories = categs;
   })
@@ -82,9 +82,11 @@ const renderHomePage = function (req, res) {
   if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
 
   Promise.all([
-    getTenLatestPosts(sub)
+    getTenLatestPosts(sub),
+    postBus.getMuchViewPosts(sub),
   ])
-    .then(([latestPosts]) => {
+    .then(([latestPosts, muchViewPosts]) => {
+      let highlightPosts = postBus.filterHighlightPostsFrom(muchViewPosts)
       latestPosts = parseData(latestPosts);
       res.render("user/indexContent", {
         data: {
@@ -94,7 +96,9 @@ const renderHomePage = function (req, res) {
             success: req.flash("suc")
           },
           categories,
-          latestPosts
+          latestPosts,
+          muchViewPosts,
+          highlightPosts
         },
 
         layout: "indexLayout",

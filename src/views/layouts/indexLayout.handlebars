@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="/css/responsive/index.css">
   <link rel="stylesheet" href="/css/responsive/slideout.css">
   <link rel="stylesheet" href="/css/bao_dien_tu_scrollbar.css">
+  {{{_sections.moreCss}}}
 
 </head>
 
@@ -172,6 +173,11 @@
           <div href="#" class="btn-menu js-slideout-toggle"><i class="fas fa-bars"></i></div>
           <div class="menu-topic">
             <ul class="menu-list">
+              <li class="menu-list-item dropdown">
+                <a href="/">
+                  Home<b></b>
+                </a>
+              </li>
               {{!-- <li class="menu-list-item"><a href="/"><i class="fas fa-home home-icon"></i></a></li> --}}
               {{#each data.categories}}
               {{!-- {{#if (opt this.children.length '>' 0 opt)}} --}}
@@ -255,6 +261,7 @@
   <script src="/js/user_menu.js"></script>
   <script src="/js/index.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  {{{_sections.moreJs}}}
   {{#if data.message.success}}
   <script>
     swal.fire({

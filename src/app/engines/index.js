@@ -47,9 +47,10 @@ const getViewEngine = () => {
         }
       },
       jsonStringify: function (object) {
-        return JSON.stringify(object)
+        return JSON.stringify(object).replace(/\"/img, `\\\"`)
       },
       jsonParse: function (json) {
+        // json = json.replace(/\"/img, `\\\"`)
         return JSON.parse(json)
       },
       viDate: function (date) {

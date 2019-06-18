@@ -1,6 +1,6 @@
 var menuIsShow = false;
 
-$(document).ready(function() {
+$(document).ready(function () {
   // var slideout = new Slideout({
   //   'panel': document.getElementById('wrapper'),
   //   'menu': document.getElementById('menu'),
@@ -11,21 +11,21 @@ $(document).ready(function() {
   //   slideout.toggle();
   // });
 
-  $(".btn-menu").click(function() {
+  $(".btn-menu").click(function () {
     $("#menu").show();
     $("#menu").removeClass("collapsed-main-menu");
     $("#menu").addClass("expanded-main-menu");
   });
 
-  $(".close-menu-button").click(function() {
+  $(".close-menu-button").click(function () {
     $("#menu").removeClass("expanded-main-menu");
     $("#menu").addClass("collapsed-main-menu");
-    setTimeout(function() {
+    setTimeout(function () {
       $("#menu").hide();
     }, 500);
   });
 
-  $(".expand-sub-menu-button").click(function(e) {
+  $(".expand-sub-menu-button").click(function (e) {
     e.stopPropagation();
     e.preventDefault();
     $(this)
@@ -101,7 +101,7 @@ for (var i = 0; i < arrImageLink.length - 1; i++) {
     `
   <div class="new-post" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),  url(media/images/${
     arrImageLink[i]
-  })">
+    })">
     <a href="/post/post_sample">
       <div class="d-flex topic-post">
         <p class="topic">` +
@@ -122,37 +122,7 @@ for (var i = 0; i < arrImageLink.length - 1; i++) {
 for (var i = 0; i < arrImageLink.length - 1; i++) {
   var a =
     `
-  <div class="mv col-md-4">
-  <div class="item-most-view">
-    <a href="/post/post_sample">
-      <div class="mv-image">
-        <img src="media/images/` +
-    arrImageLink[i] +
-    `" alt="">
-    <div class="mv-topic" style="margin: -10px 0 0 10px;">
-    <span class="topic">
-      ` +
-    arrTopic[i] +
-    `
-    </span>
-  </div>
-      </div>
-      <div class="mv-title">
-        <span class="title">
-          ` +
-    arrTitle[i] +
-    `
-        </span>
-      </div>
-
-      <div class="mv-day ">
-        <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">` +
-    arrDay[i] +
-    `</i></span>
-      </div>
-    </a>
-  </div>
-    </div>`;
+  `;
   $(".list-mv").append(a);
 }
 for (var i = 0; i < arrImageLink.length - 1; i++) {

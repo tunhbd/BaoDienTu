@@ -1,3 +1,9 @@
+{{#section 'moreJs'}}
+<script>
+  var highlightPosts = '{{#jsonStringify data.highlightPosts}}{{/jsonStringify}}'
+  console.log('highlight', JSON.parse(highlightPosts))
+</script>
+{{/section}}
 <section class="top-body container mt-1">
   <div class="row">
     <!-- tag nổi bật và tin mới -->
@@ -14,24 +20,28 @@
       </div>
       <!-- slick image -->
       <div class="slick-image">
+        {{#each data.highlightPosts}}
+
         <div class="item-hightlight">
-          <a href="/post/post_sample">
+          <a href="/post/{{this.alias}}">
             <div class="img-link">
-              <img src="media/images/Xe-1.jpg" alt="">
+              <img src="/media/images/posts/{{this.postAvatarImage}}" alt="">
             </div>
             <div class="img-content">
               <div class="d-flex topic-post">
-                <p class="topic">XE</p>
+                <p class="topic">{{this.category.categoryName}}</p>
               </div>
               <p class="title-post">
-                Lộ ảnh Mercedes-Benz GLS-Class 2020 trước ngày ra mắt, thiết kế giống GLE, nội
-                thất rộng rãi hơn
+                {{this.postTitle}}
               </p>
-              <p class="date-post">Ngày đăng: <i>15-4- 2019</i></p>
+              <p class="date-post">Ngày đăng: <i>{{#viDate this.publishedDate}}{{/viDate}}</i></p>
             </div>
           </a>
         </div>
-        <div class="item-hightlight">
+
+        {{/each}}
+
+        {{!-- <div class="item-hightlight">
           <a href="/post/post_sample">
             <div class="img-link">
               <img src="media/images/vh-1.jpg" alt="">
@@ -58,7 +68,7 @@
               <p class="date-post">Ngày đăng: <i>15-4- 2019</i></p>
             </div>
           </a>
-        </div>
+        </div> --}}
       </div>
     </div>
     <div class="new-content col-lg-4 col-md-12 ">
@@ -96,7 +106,36 @@
     <div class="most-view-content container col-md-12 col-lg-8">
       <div class="most-view"><span>Xem nhiều nhất</span> </div>
       <div style="margin-top: 16px;" class="list-mv row bao-dien-tu-scrollbar">
-        {{!-- List much view --}}
+        {{#each data.muchViewPosts}}
+
+        <div class="mv col-md-4">
+          <div class="item-most-view">
+            <a href="/post/{{this.alias}}">
+              <div class="mv-image">
+                <img src="/media/images/posts/{{this.postAvatarImage}}" alt="">
+                <div class="mv-topic" style="margin: -10px 0 0 10px;">
+                  <span class="topic">
+                    {{this.category.categoryName}}
+                  </span>
+                </div>
+              </div>
+              <div class="mv-title">
+                <span class="title">
+                  {{this.postTitle}}
+                </span>
+              </div>
+
+              <div class="mv-day ">
+                <span class="day">
+                  <strong>Ngày đăng:</strong>
+                  <i class="date-post">{{#viDate this.publishedDate}}{{/viDate}}</i>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        {{/each}}
       </div>
     </div>
   </div>

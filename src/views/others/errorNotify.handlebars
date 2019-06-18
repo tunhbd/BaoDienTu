@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Digital News - Errors</title>
-  {{!-- logo --}}
-  <link rel="shortcut icon" href="/media/images/logo/logo.png" />
-  <!-- bootstrap 4.3 -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <title>404 Not Found</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900" rel="stylesheet">
+
+  <!-- Custom stlylesheet -->
+  <link type="text/css" rel="stylesheet" href="/notfound/css/style.css" />
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
 </head>
-<body class="h-100">
-  <div class="card w-50 mx-auto">
-    <div class="card-header">
-      Errors
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Just have some error on server. You can return in other time</h5>
-      {{!-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
+
+<body>
+
+  <div id="notfound">
+    <div class="notfound">
+      <div class="notfound-404">
+        <h1>Oops!</h1>
+      </div>
+      <h2>500 - Error on server</h2>
+      <p>There is some error on server. At this time, system can not serve your request. You can try again later</p>
+      <a href="{{data.backLink}}">Go Back</a>
     </div>
   </div>
-</body>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
 </html>

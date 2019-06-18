@@ -94,6 +94,7 @@ CREATE TABLE posts
   published_date DATETIME,
   post_summary TEXT NOT NULL,
   post_content LONGTEXT NOT NULL,
+  views INT DEFAULT 0 NOT NULL,
   
 
   PRIMARY KEY(post_id),

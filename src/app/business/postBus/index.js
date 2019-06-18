@@ -1,7 +1,7 @@
 const { Post, Category, User, Writer, Tag } = require('../../models')
 const { DBConnection } = require('../../db')
 const { convertToAlias, formatValidSqlStringSyntax } = require('../../utils')
-const { FILTER, USER_ROLES } = require('../../config')
+const { FILTER, USER_ROLES, LIMIT_HIGHLIGHT_POSTS, LIMIT_MUCH_VIEW_POSTS } = require('../../config')
 const commentBus = require('../commentBus')
 const postTagBus = require('../postTagBus')
 const fs = require('fs')
@@ -791,6 +791,70 @@ const getPostFromFTSearch = (premium, searchStr, from, limit) =>
       });
   });
 
+const getMuchViewPosts = sub => new Promise((resolve, reject) => {
+  let query =
+    `SELECT 
+      p.post_id, p.post_alias, p.post_title, p.post_summary, p.created_date, p.published_date, p.premium, p.views, p.post_avatar_image, 
+      c.category_id, c.category_name, c.category_alias,
+      u.user_account, u.user_fullname,
+      w.pseudonym
+    FROM 
+      posts p JOIN categories c ON p.category=c.category_id
+      JOIN users u ON p.author=u.user_account
+      JOIN writers w ON u.user_account=w.user_account
+    WHERE p.checked=1 AND p.published_date IS NOT NULL AND DATEDIFF(now(), p.published_date) >= 0
+    ORDER BY p.views ${sub ? `, p.premium` : ''} DESC
+    LIMIT 0, 12`
+  let dbConn = new DBConnection()
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let posts = rets.map(ret => {
+        let post = new Post()
+        post.postId = ret.post_id
+        post.postTitle = ret.post_title
+        post.postSummary = ret.post_summary
+        // post.postContent = ret.post_content
+        post.premium = ret.premium
+        post.alias = ret.post_alias
+        post.createdDate = ret.created_date
+        post.publishedDate = ret.published_date
+        post.postAvatarImage = ret.post_avatar_image
+        post.views = ret.views
+
+        let category = new Category()
+        category.categoryId = ret.category_id
+        category.categoryName = ret.category_name
+        category.alias = ret.category_alias
+        post.category = category
+
+        let author = new Writer()
+        author.account = ret.user_account
+        author.pseudonym = ret.pseudonym
+        author.fullname = ret.user_fullname
+        post.author = author
+
+        return post
+      })
+
+      resolve(posts)
+    })
+    .catch(err => {
+      reject(err)
+    })
+})
+
+const filterHighlightPostsFrom = posts => {
+  console.log('posts', posts)
+  let highlightPosts = []
+  for (let index = 0; index < LIMIT_HIGHLIGHT_POSTS; index++) {
+    highlightPosts.push(posts.shift())
+  }
+
+  console.log('highlight', highlightPosts)
+  return highlightPosts
+}
+
 module.exports = {
   createPost,
   updatePost,
@@ -814,5 +878,7 @@ module.exports = {
   getTagsFromPostId,
   getPostsFromTagId,
   getNameTagById,
-  getPostFromFTSearch
+  getPostFromFTSearch,
+  getMuchViewPosts,
+  filterHighlightPostsFrom,
 };

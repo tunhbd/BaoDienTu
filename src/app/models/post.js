@@ -17,6 +17,7 @@ class Post {
     this.reasonReject = null
     this.premium = false
     this.browseUser = null
+    this.views = 0
   }
 
   generateAlias() {
