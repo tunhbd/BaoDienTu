@@ -9,7 +9,7 @@
   box-shadow: none;
 }
 
-.wrap-input .form-control:focus+.w-input:before {
+.wrap-input .form-control:focus + .w-input:before {
   width: 100%;
   outline: 0;
 }
@@ -64,7 +64,7 @@
 }
 
 .text-harsh-active,
-.wrap-input .form-control:focus~.title-harsh {
+.wrap-input .form-control:focus ~ .title-harsh {
   display: inline-block;
   left: 0;
   top: 2px;
@@ -127,8 +127,8 @@
 }
 
 .dropdown-menu {
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  /* box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); */
+  border-radius: 2px;
   border: 0;
 }
 
@@ -184,6 +184,10 @@
 .avatar-image-preview-container {
   width: 500px;
   height: 300px;
+<<<<<<< HEAD
+=======
+  /* display: none; */
+>>>>>>> origin/viet-task
   padding: 10px;
   margin: 10px auto;
   box-sizing: border-box;

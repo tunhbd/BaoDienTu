@@ -1,6 +1,6 @@
 :root {
   --table-header-bg: rgb(233, 30, 99);
-  --table-row-bg-hover: rgba(233, 30, 99, 0.3)
+  --table-row-bg-hover: rgba(233, 30, 99, 0.3);
 }
 
 .post-list {
@@ -91,14 +91,14 @@
   margin: 0px 2px;
   padding: 0 !important;
   background-color: #f2f2f2;
-  border: 1px solid #42A5F5;
+  border: 1px solid #42a5f5;
   border-radius: 3 !important;
   overflow: hidden !important;
   box-shadow: 0px 0px 1px 0px #fff !important;
 }
 
 .control-buttons button.edit-btn {
-  color: #1E88E5;
+  color: #1e88e5;
 }
 
 .control-buttons button.preview-btn {

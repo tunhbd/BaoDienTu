@@ -15,7 +15,7 @@
       <div id="author" class="d-flex align-content-center align-items-center mt-1 mb-1">
         <div id="author__avatar" class="mr-2 h-100">
           <img
-            src="/media/images/users/{{#if (opt data.post.author.avatar '===' null opt)}}avatar_sample.png{{else}}data.post.author.avatar{{/if}}"
+            src="/media/images/users/{{#if (opt data.post.author.avatar '===' null opt)}}avatar_sample.png{{else}}{{data.post.author.avatar}}{{/if}}"
             alt="" />
         </div>
         <div id="author-pseudonym">{{data.post.author.pseudonym}}</div>
@@ -61,10 +61,10 @@
       </div>
     </div>
     {{else}}
-    <span class="badge badge-success">Published</span>
+    <span class="badge badge-success p-2">Published</span>
     {{/if}}
     {{else}}
-    <span class="badge badge-warning">Not browse</span>
+    <span class="badge badge-warning p-2">Not browse</span>
     {{/if}}
   </div>
   {{/if}}

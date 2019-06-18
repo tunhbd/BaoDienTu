@@ -1,12 +1,24 @@
 .bao-dien-tu-scrollbar::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
+  border-radius: 999px;
 }
 .bao-dien-tu-scrollbar::-webkit-scrollbar-thumb {
-    background-color: rgba(233, 30, 99, 0.5);
+  background-image: linear-gradient(
+    rgba(233, 30, 99, 0.5),
+    rgba(70, 30, 99, 0.5)
+  );
+  border-radius: 999px;
 }
 .bao-dien-tu-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(233, 30, 99, 0.7);
+  background-image: linear-gradient(
+    rgba(233, 30, 99, 0.7),
+    rgba(70, 30, 99, 0.7)
+  );
 }
 .bao-dien-tu-scrollbar::-webkit-scrollbar-track {
-    background-color: rgba(233, 30, 99, 0.1);
+  background-image: linear-gradient(
+    rgba(233, 30, 99, 0.1),
+    rgba(70, 30, 99, 0.1)
+  );
+  border-radius: 999px;
 }

@@ -104,18 +104,18 @@ const signUp = (req, res, next) => {
 };
 
 const checkNotExistsUserAccount = (req, res) => {
-  let account = req.query.username
+  let account = req.query.username;
   authBus
     .checkExistsUserAccount(account)
     .then(ret => {
-      console.log(ret ? false : true)
-      res.json(ret ? false : true)
+      console.log(ret ? false : true);
+      res.json(ret ? false : true);
     })
     .catch(err => {
-      console.log(err)
-      res.json(false)
-    })
-}
+      console.log(err);
+      res.json(false);
+    });
+};
 
 const renderChangePasswordPage = (req, res) => {
   if (req.user) {
@@ -360,12 +360,38 @@ const forgotPassword = (req, res) => {
 };
 
 const renderResetPasswordPage = (req, res) => {
-  res.render('user/resetPassword', {
-    data: {
-      token: req.params.token,
-    },
-    layout: false
-  });
+  authBus
+    .checkUserToken(req.params.token)
+    .then(ret => {
+      if (!ret) {
+        req.flash('mes', 'Token không tồn tại')
+        res.render('user/resetPassword', {
+          data: {
+            info: req.body,
+            message: { error: req.flash("mes") }
+          },
+          layout: false
+        })
+      }
+      else {
+        res.render('user/resetPassword', {
+          data: {
+            token: req.params.token,
+          },
+          layout: false
+        });
+      }
+    })
+    .catch(err => {
+      req.flash('mes', 'Hệ thống đang gặp sự cố . Bạn có thể thử lại lần sau')
+      res.render('user/resetPassword', {
+        data: {
+          info: req.body,
+          message: { error: req.flash("mes") }
+        },
+        layout: false
+      })
+    })
 };
 const resetPassword = (req, res, next) => {
   let token = req.params.token;
@@ -382,7 +408,7 @@ const resetPassword = (req, res, next) => {
             data: {
               token: req.params.token,
               info: req.body,
-              message: req.flash('mes')
+              message: { error: req.flash('mes') }
             },
             layout: false
           });
@@ -400,12 +426,23 @@ const resetPassword = (req, res, next) => {
                 data: {
                   token: req.params.token,
                   info: req.body,
-                  message: req.flash('mes')
+                  message: { error: req.flash('mes') }
                 },
                 layout: false
               });
             })
         }
+      }
+      else {
+        req.flash('mes', 'Token không tồn tại')
+        res.render('user/resetPassword', {
+          data: {
+            token: req.params.token,
+            info: req.body,
+            message: { error: req.flash('mes') }
+          },
+          layout: false
+        });
       }
     })
     .catch(err => {
@@ -414,7 +451,7 @@ const resetPassword = (req, res, next) => {
         data: {
           token: req.params.token,
           info: req.body,
-          message: req.flash('mes')
+          message: { error: req.flash('mes') }
         },
         layout: false
       });

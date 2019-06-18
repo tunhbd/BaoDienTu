@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="header">
+  </div>
+  <!-- content -->
+  <div class="row content">
+    <div class="col-md-8 list-content">
+      <div class="title-category">
+        <span>#Tag: {{data.tagName}}</span>
+      </div>
+      {{!-- <div class="tag-name mb-2">Tags:
+                <span>
+                    <a href="#">
+
+                        <span class="tag">Phạm Nhật Vũ</span>
+                    </a>
+                    <a href="#">
+
+                        <span class="tag">AVG</span>
+                    </a>
+                </span>
+            </div> --}}
+      {{#each data.posts}}
+      <div class="item-top-10">
+        <a href="/post/{{this.post_id}}">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="image-item">
+                <img src="/media/images/posts/{{this.post_avatar_image}}" alt="{{this.post_title}}">
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="item-title">
+                <span class="title">{{this.post_title}}</span>
+              </div>
+              <div class="item-description">
+                <p>{{this.post_summary}}
+                </p>
+              </div>
+              <div class="item-day">
+                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{this.published_date}}</i></span>
+              </div>
+              <div class="item-tags">
+                <span class="tags-title">
+                  <strong>Tags:</strong>
+                  <span class="badge badge-secondary p-1">Cây trồng</span>
+                  <span class="badge badge-secondary p-1">Thủy sản</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      {{/each}}
+
+
+
+    </div>
+    <!-- post relative -->
+    <div id="right-cont" style="overflow: hidden;" class="col-md-4 post-relative">
+      <div class="title-category-right"><span>Xem nhiều nhất</span></div>
+
+      {{#each data.tenPostsFromCatId}}
+      <div class="item-top-10">
+        <a href="/post/{{this.post_id}}">
+          <div class=" row">
+            <div class="col-md-6">
+              <div class="image-item">
+                <img src="/media/images/posts/{{this.post_avatar_image}}" alt="{{this.post_title}}">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="item-topic">
+                <span class="topic">{{this.category_name}}</span>
+              </div>
+              <div class="item-title">
+                <span class="title">{{this.post_title}}</span>
+              </div>
+              <div class="item-day">
+                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{this.published_date}}</i></span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      {{/each}}
+
+
+    </div>
+  </div>
+  <!-- pagination -->
+
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+
+</div>

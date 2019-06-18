@@ -1,6 +1,6 @@
-var menuIsShow = false
+var menuIsShow = false;
 
-$(document).ready(function () {
+$(document).ready(function() {
   // var slideout = new Slideout({
   //   'panel': document.getElementById('wrapper'),
   //   'menu': document.getElementById('menu'),
@@ -11,25 +11,30 @@ $(document).ready(function () {
   //   slideout.toggle();
   // });
 
-  $('.btn-menu').click(function() {
-    $('#menu').show()
-    $('#menu').removeClass('collapsed-main-menu')
-    $('#menu').addClass('expanded-main-menu')
-  })
+  $(".btn-menu").click(function() {
+    $("#menu").show();
+    $("#menu").removeClass("collapsed-main-menu");
+    $("#menu").addClass("expanded-main-menu");
+  });
 
-  $('.close-menu-button').click(function() {
-    $('#menu').removeClass('expanded-main-menu')
-    $('#menu').addClass('collapsed-main-menu')
-    setTimeout(function() {$('#menu').hide()}, 500)
-  })
+  $(".close-menu-button").click(function() {
+    $("#menu").removeClass("expanded-main-menu");
+    $("#menu").addClass("collapsed-main-menu");
+    setTimeout(function() {
+      $("#menu").hide();
+    }, 500);
+  });
 
-  $('.expand-sub-menu-button').click(function(e) {
-    e.stopPropagation()
-    e.preventDefault()
-    $(this).parent().next('.menu-list-item-dropdown__menu').slideToggle(300)
-  })
+  $(".expand-sub-menu-button").click(function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    $(this)
+      .parent()
+      .next(".menu-list-item-dropdown__menu")
+      .slideToggle(300);
+  });
 
-  $('.slick-image').slick({
+  $(".slick-image").slick({
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -37,69 +42,122 @@ $(document).ready(function () {
 
     dots: true,
     arrows: false,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 2000
     // fade: true,
     // cssEase: 'linear'
   });
 });
-var arrImageLink = ["nn-1.jpg", "nn-2.jpg", "vh-2.jpg", "gt-1.jpg", "tt-2.jpg", "xh-1.jpg", "tg-1.jpg", "cn-1.jpg", "pl-1.jpg", "gd-1.jpg"];
-var arrTopic = ["KINH TẾ", "KINH TẾ", "VĂN HÓA", "GIẢI TRÍ", "THỂ THAO", "XÃ HỘI", "THẾ GIỚI", "CÔNG NGHỆ", "PHÁP LUẬT", "GIÁO DỤC"];
-var arrTitle = ["Tuyên Quang: Đưa gỗ rừng vươn ra thế giới",
-  "Dự án Bất động sản tại Việt Nam đầu tiên sử dụng vật liệu từ nhựa tái chế"
-  , "Thái Nguyên: Long trọng tổ chức Lễ giỗ tổ Hùng Vương",
+var arrImageLink = [
+  "nn-1.jpg",
+  "nn-2.jpg",
+  "vh-2.jpg",
+  "gt-1.jpg",
+  "tt-2.jpg",
+  "xh-1.jpg",
+  "tg-1.jpg",
+  "cn-1.jpg",
+  "pl-1.jpg",
+  "gd-1.jpg"
+];
+var arrTopic = [
+  "KINH TẾ",
+  "KINH TẾ",
+  "VĂN HÓA",
+  "GIẢI TRÍ",
+  "THỂ THAO",
+  "XÃ HỘI",
+  "THẾ GIỚI",
+  "CÔNG NGHỆ",
+  "PHÁP LUẬT",
+  "GIÁO DỤC"
+];
+var arrTitle = [
+  "Tuyên Quang: Đưa gỗ rừng vươn ra thế giới",
+  "Dự án Bất động sản tại Việt Nam đầu tiên sử dụng vật liệu từ nhựa tái chế",
+  "Thái Nguyên: Long trọng tổ chức Lễ giỗ tổ Hùng Vương",
   "Hoa hậu Tiểu Vy: Tôi đi con đường riêng của mình",
   "Tiger Woods vô địch Masters 2019",
   "Nắng nóng 'đổ lửa' 39-40 độ C trên đường phố TP.HCM",
   "Tỉ phú Jack Ma khuyên giới trẻ 'vắt kiệt sức mà làm'",
   "Viettel mở công ty an ninh mạng gồm các chuyên gia hàng đầu Việt Nam",
   "Hàng chục cảnh sát phong tỏa phố, vây bắt vụ nghi mua bán ma túy",
-  "Thí sinh Hòa Bình được nâng điểm đang học trường tư"];
+  "Thí sinh Hòa Bình được nâng điểm đang học trường tư"
+];
 
-var arrDay = ["15-4-2019", "15-4-2019", "15-4-2019", "14-4-2019", "15-4-2019", "15-4-2019", "15-4-2019", "12-4-2019", "15-4-2019", "15-4-2019"];
+var arrDay = [
+  "15-4-2019",
+  "15-4-2019",
+  "15-4-2019",
+  "14-4-2019",
+  "15-4-2019",
+  "15-4-2019",
+  "15-4-2019",
+  "12-4-2019",
+  "15-4-2019",
+  "15-4-2019"
+];
 for (var i = 0; i < arrImageLink.length - 1; i++) {
-  var a = `
-  <div class="new-post mt-1" style="background-image: url(media/images/`+ arrImageLink[i] + `">
+  var a =
+    `
+  <div class="new-post" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),  url(media/images/${
+    arrImageLink[i]
+  })">
     <a href="/post/post_sample">
       <div class="d-flex topic-post">
-        <p class="topic">`+ arrTopic[i] + `</p>
+        <p class="topic">` +
+    arrTopic[i] +
+    `</p>
 
       </div>
-      <p class="title-post">`+ arrTitle[i] + `</p>
-      <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">`+ arrDay[i] + `</i></p>
+      <p class="title-post">` +
+    arrTitle[i] +
+    `</p>
+      <p class="date-post"><strong>Ngày đăng:</strong> <i class="date-post">` +
+    arrDay[i] +
+    `</i></p>
     </a>
   </div>`;
-  $('.slick-new-image').append(a);
-
+  $(".slick-new-image").append(a);
 }
 for (var i = 0; i < arrImageLink.length - 1; i++) {
-  var a = `
+  var a =
+    `
   <div class="mv col-md-4">
   <div class="item-most-view">
     <a href="/post/post_sample">
       <div class="mv-image">
-        <img src="media/images/`+ arrImageLink[i] + `" alt="">
+        <img src="media/images/` +
+    arrImageLink[i] +
+    `" alt="">
+    <div class="mv-topic" style="margin: -10px 0 0 10px;">
+    <span class="topic">
+      ` +
+    arrTopic[i] +
+    `
+    </span>
+  </div>
       </div>
       <div class="mv-title">
         <span class="title">
-          `+ arrTitle[i] + `
+          ` +
+    arrTitle[i] +
+    `
         </span>
       </div>
-      <div class="mv-topic float-right">
-        <span class="topic">
-          `+ arrTopic[i] + `
-        </span>
-      </div>
+
       <div class="mv-day ">
-        <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">`+ arrDay[i] + `</i></span>
+        <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">` +
+    arrDay[i] +
+    `</i></span>
       </div>
     </a>
   </div>
     </div>`;
-  $('.list-mv').append(a);
-
+  $(".list-mv").append(a);
 }
 for (var i = 0; i < arrImageLink.length - 1; i++) {
-  var a = `
+  var a =
+    `
   <div class="item-top-10">
     <a href="/post/post_sample">
       <div class=" row">
@@ -107,30 +165,37 @@ for (var i = 0; i < arrImageLink.length - 1; i++) {
         <div class="col-md-6">
           <div class="image-item">
 
-            <img src="media/images/`+ arrImageLink[i] + `" alt="">
+            <img src="media/images/` +
+    arrImageLink[i] +
+    `" alt="">
 
           </div>
         </div>
         <div class="col-md-6">
           <div class="item-topic">
-            <span class="topic">`+ arrTopic[i] + `</span>
+            <span class="topic">` +
+    arrTopic[i] +
+    `</span>
           </div>
           <div class="item-title">
-            <span class="title">`+ arrTitle[i] + `</span>
+            <span class="title">` +
+    arrTitle[i] +
+    `</span>
           </div>
           <div class="item-day">
-            <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">`+ arrDay[i] + `</i></span>
+            <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">` +
+    arrDay[i] +
+    `</i></span>
           </div>
         </div>
 
       </div>
     </a>
   </div>`;
-  $('.top-10-content').append(a);
-
+  $(".top-10-content").append(a);
 }
 
-setEventForAvatarUser()
+setEventForAvatarUser();
 // $(document).ready(function(){
 //   $('.slick-new-image').slick({
 //

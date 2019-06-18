@@ -1,14 +1,13 @@
-const { userHandlers } = require('../handlers')
+const { userHandlers } = require("../handlers");
 
 module.exports = {
-  'get': {
+  get: {
     '/': [userHandlers.renderHomePage],
-    '/category/category_sample': [userHandlers.showPostsListByCategoryGetRequest],
-    '/tag/tag_sample': [userHandlers.showPostsListByTagGetRequest],
+    '/category/:catId': [userHandlers.showPostsListByCategoryGetRequest],
+    '/tag/:tagId': [userHandlers.showPostsListByTagGetRequest],
     '/post/:postId': [userHandlers.showPostDetailGetRequest],
-    '/search/result': [userHandlers.getSearchResultsGetRequest],
-  },
-  'post': {
 
-  }
-}
+    '/search/result': [userHandlers.getSearchResultsGetRequest]
+  },
+  post: { '/comment/insert': [userHandlers.insertCommentPostRequest] }
+};

@@ -34,14 +34,14 @@ let hashPwd = pwd => {
   return bcrypt.hashSync(pwd, salt);
 };
 let checkPermis = (req, res, permis = null) => {
-  if (!permis) {
-    if (!req.user) {
-      req.flash("mes", "No user is logining");
-      res.redirect("/sign-in");
-    } else {
-      res.redirect("/");
-    }
-  }
+  // if (!permis) {
+  //   if (!req.user) {
+  //     req.flash("mes", "No user is logining");
+  //     res.redirect("/sign-in");
+  //   } else {
+  //     res.redirect("/");
+  //   }
+  // }
   return true;
 };
 

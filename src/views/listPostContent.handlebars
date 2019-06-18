@@ -1,13 +1,13 @@
 <div class="container">
-    <div class="header">
-    </div>
-    <!-- content -->
-    <div class="row content">
-        <div class="col-md-8 list-content">
-            <div class="title-category">
-                <span>KINH TẾ</span>
-            </div>
-            {{!-- <div class="tag-name mb-2">Tags:
+  <div class="header">
+  </div>
+  <!-- content -->
+  <div class="row content">
+    <div class="col-md-8 list-content">
+      <div class="title-category">
+        <span>{{data.catName}}</span>
+      </div>
+      {{!-- <div class="tag-name mb-2">Tags:
                 <span>
                     <a href="#">
 
@@ -19,380 +19,84 @@
                     </a>
                 </span>
             </div> --}}
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào
-                                    siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+      {{#each data.posts}}
+      <div class="item-top-10">
+        <a href="/post/{{this.post_id}}">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="image-item">
+                <img src="/media/images/posts/{{this.post_avatar_image}}" alt="{{this.post_title}}">
+              </div>
             </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào
-                                    siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+            <div class="col-md-8">
+              <div class="item-title">
+                <span class="title">{{this.post_title}}</span>
+              </div>
+              <div class="item-description">
+                <p>{{this.post_summary}}
+                </p>
+              </div>
+              <div class="item-day">
+                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{this.published_date}}</i></span>
+              </div>
+              <div class="item-tags">
+                <span class="tags-title">
+                  <strong>Tags:</strong>
+                  <span class="badge badge-secondary p-1">Cây trồng</span>
+                  <span class="badge badge-secondary p-1">Thủy sản</span>
+                </span>
+              </div>
             </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào
-                                    siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào
-                                    siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào
-                                    siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- post relative -->
-        <div class="col-md-4 post-relative">
-            <div class="title-category-right"><span>XEM NHIỀU NHẤT</span></div>
-            <a href="/post/post_sample" class="item-relative">
-                <div class="row">
-                    <div class="relative-content col-md-6">
-                        <div class="header-relative">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Doanh nghiệp phải tích cực đổi mới công nghệ</span>
-                            </div>
-                        </div>
-                        <div class="item-description">
-                            <p>Đó là ý kiến chỉ đạo của lãnh đạo Ủy ban Mặt trận Tổ quốc Việt Nam tại Hội nghị Tổng kết
-                                10 năm
-                                “Cuộc vận động người Việt Nam ưu tiên dùng hàng Việt Nam” tổ chức cuối tuần qua tại
-                                TP.HCM.
-                            </p>
-                        </div>
-                        <div class="item-day">
-                            <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">22-4-2019</i></span>
-                        </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                    </div>
-                    <div class="relative-image col-md-6">
-                        <div class="image-item mt-4">
-                            <img src="/media/images/cn-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <hr>
-            <a href="/post/post_sample" class="item-relative">
-                <div class="row">
-                    <div class="relative-content col-md-6">
-                        <div class="header-relative">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Doanh nghiệp phải tích cực đổi mới công nghệ</span>
-                            </div>
-                        </div>
-                        <div class="item-description">
-                            <p>Đó là ý kiến chỉ đạo của lãnh đạo Ủy ban Mặt trận Tổ quốc Việt Nam tại Hội nghị Tổng kết
-                                10 năm
-                                “Cuộc vận động người Việt Nam ưu tiên dùng hàng Việt Nam” tổ chức cuối tuần qua tại
-                                TP.HCM.
-                            </p>
-                        </div>
-                        <div class="item-day">
-                            <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">22-4-2019</i></span>
-                        </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                    </div>
-                    <div class="relative-image col-md-6">
-                        <div class="image-item mt-4">
-                            <img src="/media/images/cn-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <hr>
-            <a href="/post/post_sample" class="item-relative">
-                <div class="row">
-                    <div class="relative-content col-md-6">
-                        <div class="header-relative">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Doanh nghiệp phải tích cực đổi mới công nghệ</span>
-                            </div>
-                        </div>
-                        <div class="item-description">
-                            <p>Đó là ý kiến chỉ đạo của lãnh đạo Ủy ban Mặt trận Tổ quốc Việt Nam tại Hội nghị Tổng kết
-                                10 năm
-                                “Cuộc vận động người Việt Nam ưu tiên dùng hàng Việt Nam” tổ chức cuối tuần qua tại
-                                TP.HCM.
-                            </p>
-                        </div>
-                        <div class="item-day">
-                            <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">22-4-2019</i></span>
-                        </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                    </div>
-                    <div class="relative-image col-md-6">
-                        <div class="image-item mt-4">
-                            <img src="/media/images/cn-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <hr>
-            <a href="/post/post_sample" class="item-relative">
-                <div class="row">
-                    <div class="relative-content col-md-6">
-                        <div class="header-relative">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Doanh nghiệp phải tích cực đổi mới công nghệ</span>
-                            </div>
-                        </div>
-                        <div class="item-description">
-                            <p>Đó là ý kiến chỉ đạo của lãnh đạo Ủy ban Mặt trận Tổ quốc Việt Nam tại Hội nghị Tổng kết
-                                10 năm
-                                “Cuộc vận động người Việt Nam ưu tiên dùng hàng Việt Nam” tổ chức cuối tuần qua tại
-                                TP.HCM.
-                            </p>
-                        </div>
-                        <div class="item-day">
-                            <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">22-4-2019</i></span>
-                        </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                    </div>
-                    <div class="relative-image col-md-6">
-                        <div class="image-item mt-4">
-                            <img src="/media/images/cn-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <hr>
-            <a href="/post/post_sample" class="item-relative">
-                <div class="row">
-                    <div class="relative-content col-md-6">
-                        <div class="header-relative">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Doanh nghiệp phải tích cực đổi mới công nghệ</span>
-                            </div>
-                        </div>
-                        <div class="item-description">
-                            <p>Đó là ý kiến chỉ đạo của lãnh đạo Ủy ban Mặt trận Tổ quốc Việt Nam tại Hội nghị Tổng kết
-                                10 năm
-                                “Cuộc vận động người Việt Nam ưu tiên dùng hàng Việt Nam” tổ chức cuối tuần qua tại
-                                TP.HCM.
-                            </p>
-                        </div>
-                        <div class="item-day">
-                            <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">22-4-2019</i></span>
-                        </div>
-                            <div class="item-tags">
-                                <span class="tags-title">
-                                    <strong>Tags:</strong>
-                                    <span class="badge badge-secondary p-1">Cây trồng</span>
-                                    <span class="badge badge-secondary p-1">Thủy sản</span>
-                                </span>
-                            </div>
-                    </div>
-                    <div class="relative-image col-md-6">
-                        <div class="image-item mt-4">
-                            <img src="/media/images/cn-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <hr>
-        </div>
-    </div>
-    <!-- pagination -->
+          </div>
+        </a>
+      </div>
 
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
+      {{/each}}
+
+
+
+    </div>
+    <!-- post relative -->
+    <div id="right-cont" style="overflow: hidden;" class="col-md-4 post-relative">
+      <div class="title-category-right"><span>Xem nhiều nhất</span></div>
+
+      {{#each data.tenPostsFromCatId}}
+      <div class="item-top-10">
+        <a href="/post/{{this.post_id}}">
+          <div class=" row">
+            <div class="col-md-6">
+              <div class="image-item">
+                <img src="/media/images/posts/{{this.post_avatar_image}}" alt="{{this.post_title}}">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="item-topic">
+                <span class="topic">{{this.category_name}}</span>
+              </div>
+              <div class="item-title">
+                <span class="title">{{this.post_title}}</span>
+              </div>
+              <div class="item-day">
+                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{this.published_date}}</i></span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      {{/each}}
+
+
+    </div>
+  </div>
+  <!-- pagination -->
+
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
 
 </div>

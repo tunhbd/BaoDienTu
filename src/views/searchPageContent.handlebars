@@ -1,163 +1,90 @@
 <div class="container">
-    <div class="header">
-        <!-- <div class="title-category">
+  <div class="header">
+    <!-- <div class="title-category">
           <span>KINH TẾ</span>
         </div> -->
-        <!-- <div class="title-category-right"><span>BÀI VIẾT LIÊN QUAN</span></div> -->
-    </div>
-    <!-- content -->
-    <div class="row content">
-        <div class="col-md-8 list-content" style="border:none;">
-            <div class="title-category">
-                <span>KẾT QUẢ TÌM KIẾM CHO: {{searchInput}}</span>
+    <!-- <div class="title-category-right"><span>BÀI VIẾT LIÊN QUAN</span></div> -->
+  </div>
+  <!-- content -->
+  <div class="row content">
+    <div class="col-md-8 list-content" style="border:none;">
+      <div class="title-category">
+        <span>Kết quả tìm kiếm: {{data.search}} ({{data.posts.length}})</span>
+      </div>
+      {{#each data.posts}}
+      <div class="item-top-10">
+        <a href="/post/{{this.post_id}}">
+          <div class="row">
+            <div class="col-md-4 position-relative">
+              <div class="image-item">
+                <img src="/media/images/posts/{{this.post_avatar_image}}" alt="{{this.post_title}}">
+              </div>
+              <div style="top: 16px; left: 32px;" class="item-topic position-absolute">
+                <span class="topic">{{this.category_name}}</span>
+              </div>
             </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+            <div class="col-md-8">
+
+              <div class="item-title">
+                <span class="title">{{this.post_title}}</span>
+              </div>
+              <div class="item-description">
+                <p>{{this.post_summary}}
+                </p>
+              </div>
+              <div class="item-day">
+                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">{{this.published_date}}</i></span>
+              </div>
             </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="item-top-10">
-                <a href="/post/post_sample">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="image-item">
-                                <img src="/media/images/cn-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="item-topic">
-                                <span class="topic">KINH TẾ</span>
-                            </div>
-                            <div class="item-title">
-                                <span class="title">Lá chuối vào siêu thị</span>
-                            </div>
-                            <div class="item-description">
-                                <p>Tuy là phụ phẩm nông nghiệp, nhưng lá chuối được thu mua với giá cao để bọc rau củ
-                                    quả đưa vào siêu thị.
-                                </p>
-                            </div>
-                            <div class="item-day">
-                                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">14-9-2019</i></span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- post relative -->
+          </div>
+        </a>
+      </div>
+      {{/each}}
 
     </div>
-    <!-- pagination -->
+    <!-- post relative -->
 
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
+
+
+
+    <div id="right-cont" style="overflow: hidden;" class="col-lg-4 col-md-4 post-relative pr-4">
+      <div style="margin-left: 0px !important;" class="row title-relative">
+        <span>Tin nổi bật</span>
+      </div>
+      <div class="item-top-10">
+        <a href="/post/post_sample">
+          <div class=" row">
+            <div class="col-md-6">
+              <div class="image-item">
+                <img src="/media/images/cn-1.jpg" alt="">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="item-topic">
+                <span class="topic">KINH TẾ</span>
+              </div>
+              <div class="item-title">
+                <span class="title">Doanh nghiệp phải tích cực đổi mới công nghệ</span>
+              </div>
+              <div class="item-day">
+                <span class="day"><strong>Ngày đăng:</strong> <i class="date-post">22-4-2019</i></span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- pagination -->
+
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
 
 </div>

@@ -652,6 +652,145 @@ const checkIsRejectedOrDraftById = id => new Promise((resolve, reject) => {
     })
 })
 
+// có thể có categoryId để trả ra 10 bài mới nhất của cat đó
+const getTenLatestPosts = (premium, categoryId) =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM posts join categories on posts.category = categories.category_id WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+      } and posts.published_date ORDER BY  posts.premium DESC, posts.published_date DESC  LIMIT 10`;
+    if (categoryId)
+      query = `SELECT * FROM posts join categories on posts.category = categories.category_id WHERE ${
+        premium
+          ? "(posts.premium = 1 or posts.premium = 0)"
+          : "posts.premium = 0"
+        } and posts.category = '${categoryId}' AND posts.published_date  ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT 10`;
+
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rows => {
+        resolve(rows);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getNameCatById = id =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT category_name FROM categories WHERE categories.category_id = '${id}'`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rows => {
+        resolve(rows[0]);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getPostsFromCategoryId = (premium, id, from, limit) =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM posts join categories on categories.category_id = posts.category WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+      } and posts.category = '${id}' and posts.published_date ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getPostsFromId = (premium, id) =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM posts join categories on posts.category = categories.category_id
+    WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+      } and posts.post_id = '${id}' and posts.published_date order by posts.premium DESC, posts.published_date DESC`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+const getTagsFromPostId = id =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM post_tags join tags on post_tags.tag_id = tags.tag_id where post_tags.post_id = '${id}'`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getNameTagById = id =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM tags WHERE tag_id = '${id}'`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rows => {
+        resolve(rows[0]);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getPostsFromTagId = (premium, id, from, limit) =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM  post_tags join posts on post_tags.post_id = posts.post_id
+    join tags on tags.tag_id = post_tags.tag_id WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+      } and tags.tag_id = '${id}' and posts.published_date ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+const getPostFromFTSearch = (premium, searchStr, from, limit) =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT * FROM  posts join categories on posts.category = categories.category_id WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+      } and MATCH(post_title) AGAINST('${searchStr}' IN NATURAL LANGUAGE MODE) and posts.published_date order by posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
+    let dbConn = new DBConnection();
+
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        resolve(rets);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
 module.exports = {
   createPost,
   updatePost,
@@ -668,4 +807,12 @@ module.exports = {
   deletePosts,
   checkIsRejectedOrDraftByAlias,
   checkIsRejectedOrDraftById,
-}
+  getTenLatestPosts,
+  getPostsFromCategoryId,
+  getNameCatById,
+  getPostsFromId,
+  getTagsFromPostId,
+  getPostsFromTagId,
+  getNameTagById,
+  getPostFromFTSearch
+};

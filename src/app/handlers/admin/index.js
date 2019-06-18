@@ -1,9 +1,7 @@
 const { tagBus, postTagBus, postBus, categoryBus, authBus } = require('../../business')
-const mockData = require('../../mockData')
 const config = require('../../config')
 const moment = require('moment')
 const { Post, Tag, PostTag, User, Category } = require('../../models')
-const { multerMiddlewares } = require('../../middlewares')
 const { convertToAlias } = require('../../utils')
 const { trim } = require('lodash')
 
