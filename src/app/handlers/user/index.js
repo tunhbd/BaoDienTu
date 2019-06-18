@@ -7,7 +7,7 @@ const {
   getTagsFromPostId,
   getPostsFromTagId,
   getNameTagById,
-  ftSearch
+  getPostFromFTSearch
 } = require("../../business/postBus");
 const { addComment, loadComment } = require("../../business/commentBus");
 const moment = require("moment");
@@ -53,7 +53,10 @@ let parseData = posts => {
 
 const getSearchResultsGetRequest = (req, res) => {
   let searchStr = req.query.search;
-  Promise.all([ftSearch(searchStr, 0, 10)])
+  let sub = false;
+  if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
+
+  Promise.all([getPostFromFTSearch(sub, searchStr, 0, 10)])
     .then(([posts]) => {
       posts = parseData(posts);
       res.render("searchPageContent", {
@@ -72,7 +75,9 @@ const getSearchResultsGetRequest = (req, res) => {
 };
 
 const renderHomePage = function(req, res) {
-  Promise.all([getTenLatestPosts()])
+  let sub = false;
+  if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
+  Promise.all([getTenLatestPosts(sub)])
     .then(([posts]) => {
       posts = parseData(posts);
       res.render("indexContent", {
@@ -93,8 +98,10 @@ const renderHomePage = function(req, res) {
 };
 
 const showPostsListByCategoryGetRequest = (req, res) => {
+  let sub = false;
+  if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
   Promise.all([
-    getPostsFromCategoryId(req.params.catId, 0, 10),
+    getPostsFromCategoryId(sub, req.params.catId, 0, 10),
     getNameCatById(req.params.catId)
   ])
     .then(([postsFromCatId, catName]) => {
@@ -116,8 +123,10 @@ const showPostsListByCategoryGetRequest = (req, res) => {
 };
 
 const showPostsListByTagGetRequest = (req, res) => {
+  let sub = false;
+  if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
   Promise.all([
-    getPostsFromTagId(req.params.tagId, 0, 10),
+    getPostsFromTagId(sub, req.params.tagId, 0, 10),
     getNameTagById(req.params.tagId)
   ])
     .then(([postsFromTagId, tagName]) => {
@@ -139,11 +148,12 @@ const showPostsListByTagGetRequest = (req, res) => {
 
 const showPostDetailGetRequest = (req, res) => {
   let postId = req.params.postId;
-
+  let sub = false;
+  if (req.user) if (req.user.role === "SUBSCRIBER") sub = true;
   Promise.all([
     getTagsFromPostId(postId),
-    getPostsFromId(postId),
-    getTenLatestPosts(req.params.caId),
+    getPostsFromId(sub, postId),
+    getTenLatestPosts(sub, req.params.caId),
     loadComment(postId)
   ])
 

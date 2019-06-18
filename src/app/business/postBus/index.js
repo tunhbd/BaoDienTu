@@ -794,12 +794,17 @@ const checkIsRejectedOrDraftById = id =>
   });
 
 // có thể có categoryId để trả ra 10 bài mới nhất của cat đó
-const getTenLatestPosts = categoryId =>
+const getTenLatestPosts = (premium, categoryId) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT *  FROM posts join categories on posts.category = categories.category_id WHERE posts.published_date  ORDER BY posts.published_date DESC LIMIT 10`;
-
+    let query = `SELECT *  FROM posts join categories on posts.category = categories.category_id WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+    } and posts.published_date ORDER BY  posts.premium DESC, posts.published_date DESC  LIMIT 10`;
     if (categoryId)
-      query = `SELECT *  FROM posts join categories on posts.category = categories.category_id WHERE posts.category = '${categoryId}' AND posts.published_date  ORDER BY published_date DESC LIMIT 10`;
+      query = `SELECT *  FROM posts join categories on posts.category = categories.category_id WHERE ${
+        premium
+          ? "(posts.premium = 1 or posts.premium = 0)"
+          : "posts.premium = 0"
+      } and posts.category = '${categoryId}' AND posts.published_date  ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT 10`;
 
     let dbConn = new DBConnection();
 
@@ -828,9 +833,11 @@ const getNameCatById = id =>
       });
   });
 
-const getPostsFromCategoryId = (id, from, limit) =>
+const getPostsFromCategoryId = (premium, id, from, limit) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT * FROM posts join categories on categories.category_id = posts.category where posts.category = '${id}' and posts.published_date ORDER BY posts.published_date LIMIT ${limit} OFFSET ${from}`;
+    let query = `SELECT * FROM posts join categories on categories.category_id = posts.category WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+    } and posts.category = '${id}' and posts.published_date ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -843,10 +850,12 @@ const getPostsFromCategoryId = (id, from, limit) =>
       });
   });
 
-const getPostsFromId = id =>
+const getPostsFromId = (premium, id) =>
   new Promise((resolve, reject) => {
     let query = `SELECT * FROM posts join categories on posts.category = categories.category_id
-      where posts.post_id = '${id}' and posts.published_date`;
+    WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+    } and posts.post_id = '${id}' and posts.published_date order by posts.premium DESC, posts.published_date DESC `;
     let dbConn = new DBConnection();
 
     dbConn
@@ -888,10 +897,12 @@ const getNameTagById = id =>
       });
   });
 
-const getPostsFromTagId = (id, from, limit) =>
+const getPostsFromTagId = (premium, id, from, limit) =>
   new Promise((resolve, reject) => {
     let query = `SELECT * FROM  post_tags join posts on post_tags.post_id = posts.post_id
-    join tags on tags.tag_id = post_tags.tag_id where tags.tag_id = '${id}' and posts.published_date ORDER BY posts.published_date LIMIT ${limit} OFFSET ${from}`;
+    join tags on tags.tag_id = post_tags.tag_id WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+    } and tags.tag_id = '${id}' and posts.published_date ORDER BY posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -904,9 +915,11 @@ const getPostsFromTagId = (id, from, limit) =>
       });
   });
 
-const ftSearch = (searchStr, from, limit) =>
+const getPostFromFTSearch = (premium, searchStr, from, limit) =>
   new Promise((resolve, reject) => {
-    let query = `SELECT * FROM  posts join categories on posts.category = categories.category_id where MATCH (post_title) AGAINST ('${searchStr}' IN NATURAL LANGUAGE MODE) and posts.published_date LIMIT ${limit} OFFSET ${from}`;
+    let query = `SELECT * FROM  posts join categories on posts.category = categories.category_id WHERE ${
+      premium ? "(posts.premium = 1 or posts.premium = 0)" : "posts.premium = 0"
+    } and MATCH (post_title) AGAINST ('${searchStr}' IN NATURAL LANGUAGE MODE) and posts.published_date order by posts.premium DESC, posts.published_date DESC  LIMIT ${limit} OFFSET ${from}`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -942,5 +955,5 @@ module.exports = {
   getTagsFromPostId,
   getPostsFromTagId,
   getNameTagById,
-  ftSearch
+  getPostFromFTSearch
 };
