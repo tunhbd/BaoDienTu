@@ -14,6 +14,7 @@ const tagBus = require('../tagBus')
 const postBus = require('../postBus')
 const fs = require("fs");
 const path = require("path");
+const moment = require('moment')
 
 const createPost = post =>
   new Promise(async (resolve, reject) => {
@@ -1145,8 +1146,8 @@ const getMuchViewPosts = sub =>
       JOIN users u ON p.author=u.user_account
       JOIN writers w ON u.user_account=w.user_account
     WHERE p.checked=1 AND p.published_date IS NOT NULL AND DATEDIFF(now(), p.published_date) >= 0
-    ORDER BY p.views ${sub ? `, p.premium` : ""} DESC
-    LIMIT 0, 12`;
+    ORDER BY p.views, p.published_date ${sub ? `, p.premium` : ""} DESC
+    LIMIT 0, ${LIMIT_MUCH_VIEW_POSTS}`;
     let dbConn = new DBConnection();
     dbConn
       .loadRequest(query)
@@ -1196,6 +1197,67 @@ const filterHighlightPostsFrom = posts => {
   console.log("highlight", highlightPosts);
   return highlightPosts;
 };
+
+const getHighlightPosts = sub => new Promise((resolve, reject) => {
+  let startDate = moment().startOf('week').format('YYYY/MM/DD')
+  let endDate = moment().endOf('week').format('YYYY/MM/DD')
+  console.log(startDate, endDate)
+
+  let query = `SELECT 
+      p.post_id, p.post_alias, p.post_title, p.post_summary, p.created_date, p.published_date, p.premium, p.views, p.post_avatar_image, 
+      c.category_id, c.category_name, c.category_alias,
+      u.user_account, u.user_fullname,
+      w.pseudonym
+    FROM 
+      posts p JOIN categories c ON p.category=c.category_id
+      JOIN users u ON p.author=u.user_account
+      JOIN writers w ON u.user_account=w.user_account
+    WHERE 
+      p.checked=1 
+      AND p.published_date IS NOT NULL 
+      AND DATEDIFF(now(), p.published_date) >= 0
+      AND DATEDIFF('${startDate}', p.published_date) <= 0
+      AND DATEDIFF('${endDate}', p.published_date) >= 0
+    ORDER BY p.views,  p.published_date ${sub ? `, p.premium` : ""} DESC
+    LIMIT 0, ${LIMIT_HIGHLIGHT_POSTS}`;
+  let dbConn = new DBConnection();
+  dbConn
+    .loadRequest(query)
+    .then(rets => {
+      let posts = rets.map(ret => {
+        let post = new Post();
+        post.postId = ret.post_id;
+        post.postTitle = ret.post_title;
+        post.postSummary = ret.post_summary;
+        // post.postContent = ret.post_content
+        post.premium = ret.premium;
+        post.alias = ret.post_alias;
+        post.createdDate = ret.created_date;
+        post.publishedDate = ret.published_date;
+        post.postAvatarImage = ret.post_avatar_image;
+        post.views = ret.views;
+
+        let category = new Category();
+        category.categoryId = ret.category_id;
+        category.categoryName = ret.category_name;
+        category.alias = ret.category_alias;
+        post.category = category;
+
+        let author = new Writer();
+        author.account = ret.user_account;
+        author.pseudonym = ret.pseudonym;
+        author.fullname = ret.user_fullname;
+        post.author = author;
+
+        return post;
+      });
+
+      resolve(posts);
+    })
+    .catch(err => {
+      reject(err);
+    });
+})
 
 const getRelativePostsViaCategoryId = (sub, categoryId, postId) => new Promise((resolve, reject) => {
   let query =
@@ -1372,4 +1434,5 @@ module.exports = {
   getCountPostsFromCategoryId,
   getRelativePostsViaCategoryId,
   getTopCategoryWithLatestPost,
+  getHighlightPosts,
 };

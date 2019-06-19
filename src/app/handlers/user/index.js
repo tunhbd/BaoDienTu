@@ -44,9 +44,7 @@ let parseData = posts => {
     }) => {
       return {
         post_title: post_title,
-        published_date: moment(published_date)
-          .startOf("hour")
-          .fromNow(),
+        published_date: published_date,
         post_avatar_image,
         post_summary: post_summary,
         post_content: post_content,
@@ -109,14 +107,15 @@ const renderHomePage = function (req, res) {
 
   Promise
     .all([
+      postBus.getHighlightPosts(sub),
       getTenLatestPosts(sub),
       postBus.getMuchViewPosts(sub),
       postBus.getTopCategoryWithLatestPost(sub)
     ])
-    .then(([latestPosts, muchViewPosts, topCategoryWithPosts]) => {
-      let highlightPosts = postBus.filterHighlightPostsFrom(muchViewPosts);
+    .then(([highlightPosts, latestPosts, muchViewPosts, topCategoryWithPosts]) => {
+      // let highlightPosts = postBus.filterHighlightPostsFrom(muchViewPosts);
       latestPosts = parseData(latestPosts);
-      console.log(req.user);
+
       res.render("user/indexContent", {
         data: {
           user: req.user,
