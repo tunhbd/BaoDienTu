@@ -101,10 +101,10 @@
   {{#if data.count.length}}
   <ul class="pagination">
     <li class="page-item">
-      {{#if (opt this.data '===' 1 opt)}}
+      {{#if (opt data.thisPage '===' 1 opt)}}
       <a class="page-link" href="javascript:;">Trước</a>
       {{else}}
-      <a class="page-link" href="/tag/{{../data.tag.tagId}}?page={{#opt this.data '-' 1}}{{/opt}}">Trước</a>
+      <a class="page-link" href="/tag/{{data.tag.tagId}}?page={{#opt data.thisPage '-' 1}}{{/opt}}">Trước</a>
       {{/if}}
     </li>
     {{#each data.count}}
@@ -113,10 +113,10 @@
     </li>
     {{/each}}
     <li class="page-item">
-      {{#if (opt this.data '===' ../data.count.length opt)}}
+      {{#if (opt data.thisPage '===' data.count.length opt)}}
       <a class="page-link" href="javascript:;">Sau</a>
       {{else}}
-      <a class="page-link" href="/tag/{{../data.tag.tagId}}?page={{#opt this.data '+' 1}}{{/opt}}">Sau</a>
+      <a class="page-link" href="/tag/{{data.tag.tagId}}?page={{#opt data.thisPage '+' 1}}{{/opt}}">Sau</a>
       {{/if}}
     </li>
   </ul>

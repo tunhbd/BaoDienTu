@@ -101,12 +101,24 @@
   <!-- pagination -->
   {{#if data.count.length}}
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Trước</a></li>
+    <li class="page-item">
+      {{#if (opt data.thisPage '===' 1 opt)}}
+      <a class="page-link" href="javascrypt:;">Trước</a>
+      {{else}}
+      <a class="page-link" href="/category/{{data.category.alias}}?page={{#opt data.thisPage '-' 1}}{{/opt}}">Trước</a>
+      {{/if}}
+    </li>
     {{#each data.count}}
     <li class="page-item"><a class="page-link{{#if (opt ../data.thisPage '===' this.data opt)}} page-active{{/if}}"
         href="/category/{{../data.category.alias}}?page={{this.data}}">{{this.data}}</a></li>
     {{/each}}
-    <li class="page-item"><a class="page-link" href="#">Sau</a></li>
+    <li class="page-item">
+      {{#if (opt data.thisPage '===' data.count.length opt)}}
+      <a class="page-link" href="javascrypt:;">Sau</a>
+      {{else}}
+      <a class="page-link" href="/category/{{data.category.alias}}?page={{#opt data.thisPage '+' 1}}{{/opt}}">Sau</a>
+      {{/if}}
+    </li>
   </ul>
   {{/if}}
 

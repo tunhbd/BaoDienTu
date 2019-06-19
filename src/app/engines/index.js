@@ -8,6 +8,18 @@ const getViewEngine = () => {
     helpers: {
       opt: function (valA, opt, valB, options) {
         switch (opt) {
+          case '-':
+            return (valA - valB)
+            break;
+          case '+':
+            return (valA + valB)
+            break;
+          case '*':
+            return (valA * valB)
+            break;
+          case '/':
+            return (valA / valB)
+            break;
           case '==':
             return (valA == valB)
             break;
