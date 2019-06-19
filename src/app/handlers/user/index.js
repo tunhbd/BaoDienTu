@@ -20,7 +20,7 @@ let categories = [];
 Promise.all([categoryBus.getAllWithLevel()])
   .then(function ([categs]) {
     // categs.unshift({ categoryName: "Home", categoryId: "home" });
-    categs.push({ categoryName: "More", categoryId: "more" });
+    // categs.push({ categoryName: "More", categoryId: "more" });
     categories = categs;
   })
   .catch(err => {
