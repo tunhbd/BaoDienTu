@@ -54,6 +54,11 @@ body {
     img {
     height: 200px;
   }
+
+  #section-body .mid-body .most-view-content .col-md-4 {
+    margin-bottom: 120px;
+    height: auto;
+  }
 }
 @media screen and (max-width: 768px) {
   .item-top-10 .item-topic {

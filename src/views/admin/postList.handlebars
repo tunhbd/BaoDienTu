@@ -117,18 +117,20 @@
               </button>
               {{/if}} --}}
               {{#if (opt (opt ../data/postType '===' 'DRAFT' opt) '||' (opt ../data/postType '===' 'REJECT' opt) opt)}}
+              {{#if (opt (opt ../data.user.role '===' 'ADMIN') '||' (opt ../data.user.role '===' 'WRITER') opt)}}
               <button type="button" class="btn btn-raised btn-info edit-btn" post-alias="{{this.alias}}"
                 onclick="goToEditPostPage('{{this.alias}}')">
                 <i class="fas fa-pen"></i>
               </button>
               {{/if}}
+              {{/if}}
 
-              {{#if (opt (opt ../data.user.role '===' 'ADMIN') '||' (opt ../data.user.role '===' 'WRITER') opt)}}
+
               <button type="button" class="btn btn-raised btn-danger preview-btn" post-alias="{{this.alias}}"
                 onclick="goToPreviewAndCheckPage('{{this.alias}}')">
                 <i class="fas fa-eye"></i>
               </button>
-              {{/if}}
+              {{!-- {{/if}} --}}
             </div>
           </div>
           {{/if}}

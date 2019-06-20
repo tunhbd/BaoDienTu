@@ -9,12 +9,12 @@ const getLessInfoCategories = (account = null) =>
       account !== null
         ? `JOIN assigned_categories ac ON ac.category_id=c.category_id`
         : ""
-      } 
+    } 
     WHERE c.category_active=1 ${
       account !== null
-        ? `ac.user_account='${account}' AND ac.disabled_category=0`
+        ? ` AND ac.user_account='${account}' AND ac.disabled_category=0`
         : ""
-      }`;
+    }`;
     let dbConn = new DBConnection();
 
     await dbConn
@@ -79,9 +79,9 @@ const addCategory = category =>
     category.generateAlias();
     let query = `INSERT INTO categories(category_id, category_name, category_alias, parent_category) VALUES('${
       category.categoryId
-      }','${category.categoryName}','${category.alias}',${
+    }','${category.categoryName}','${category.alias}',${
       category.parent === null ? null : `'${category.parent}'`
-      })`;
+    })`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -98,7 +98,7 @@ const updateCategory = category =>
   new Promise((resolve, reject) => {
     let query = `UPDATE categories SET category_name='${
       category.categoryName
-      }' WHERE category_id='${category.categoryId}'`;
+    }' WHERE category_id='${category.categoryId}'`;
     let dbConn = new DBConnection();
 
     dbConn
@@ -133,24 +133,25 @@ const deleteCategory = (categoryId, isParent) =>
       });
   });
 
-const getCommonOneByAlias = alias => new Promise((resolve, reject) => {
-  let query = `SELECT category_id, category_name FROM categories WHERE category_alias='${alias}'`
-  let dbConn = new DBConnection()
+const getCommonOneByAlias = alias =>
+  new Promise((resolve, reject) => {
+    let query = `SELECT category_id, category_name FROM categories WHERE category_alias='${alias}'`;
+    let dbConn = new DBConnection();
 
-  dbConn
-    .loadRequest(query)
-    .then(rets => {
-      let category = new Category()
-      category.categoryId = rets[0].category_id
-      category.categoryName = rets[0].category_name
-      category.alias = alias
+    dbConn
+      .loadRequest(query)
+      .then(rets => {
+        let category = new Category();
+        category.categoryId = rets[0].category_id;
+        category.categoryName = rets[0].category_name;
+        category.alias = alias;
 
-      resolve(category)
-    })
-    .catch(err => {
-      reject(err)
-    })
-})
+        resolve(category);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
 
 module.exports = {
   getLessInfoCategories,
@@ -158,5 +159,5 @@ module.exports = {
   addCategory,
   updateCategory,
   deleteCategory,
-  getCommonOneByAlias,
+  getCommonOneByAlias
 };
